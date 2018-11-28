@@ -162,6 +162,28 @@ class postsController extends baseController {
 		
 		return array('posts' => $posts);
 	}
+
+		$valid = true;
+		
+		if($action == 'create') {
+			if(!PVValidator::check('notempty', $data['first_name'])) {
+				$valid = false;
+				$this -> _errorMessage = 'First name is required to register';
+			} else if(!PVValidator::check('notempty', $data['last_name'])) {
+				$valid = false;
+				$this -> _errorMessage = 'Last name is required to register';
+			} else if(!PVValidator::check('notempty', $data['email'])) {
+				$valid = false;
+				$this -> _errorMessage = 'Email is required to register';
+			} else if(!PVValidator::check('notempty', $data['password'])) {
+				$valid = false;
+				$this -> _errorMessage = 'Password is required to register';
+			}
+		}
+		
+		return $valid;
+		
+	}
 	
 	
 }

@@ -22,7 +22,7 @@ class Users extends HModel {
 		'email' => array('type' => 'string', 'precision' =>255, 'default' => '', 'cast' => 'sanitize'),
 		'github_profile' => array('type' => 'string', 'precision' =>255, 'default' => '', 'cast' => 'sanitize'),
 		'bio' => array('type' => 'text', 'cast' => 'sanitize_wysiwyg_ahref'),
-		'date_registered' => array('type' => 'datetime',),
+		'date_registered' => array('type' => 'datetime'),
 		'is_active' => array('type' => 'tinyint', 'default' => 0),
 		'activation_token' => array('type' => 'string', 'precision' =>255, 'default' => ''),
 		'email_weekly_updates' => array('type' => 'tinyint', 'default' => 0),
@@ -89,6 +89,9 @@ Users::addFilter('app\models\basic\Users', 'create','filter', function($data, $o
 	
 	//Generate a random string for their activation token
 	$data['data']['activation_token'] = \PVTools::generateRandomString();
+	
+	//Set date registered
+	$data['data']['date_registered'] = date("Y-m-d H:i:s");
 	
 	//Assign default values to recieving emails
 	$data['data']['email_weekly_updates'] = 1;

@@ -1,16 +1,12 @@
 <?php
 
-use app\models\basic\Posts;
-use app\models\basic\Images;
-use app\models\basic\Users;
-use app\models\basic\UserPasswords;
-use app\services\AuthenticationService;
 use app\services\session\SessionService;
 
 include('baseController.php');
 
 class usersController extends baseController {
 	
+	protected $_errorMessage = '';
 	/**
 	 * In the construct, we are restricting access to certian routes of this controller.
 	 */
@@ -61,43 +57,53 @@ class usersController extends baseController {
 	
 	public function register()  {
 		
-		$user = new Users();
+		$user = new PVCollection($this -> registry -> post);
 		
-		if($this -> registry -> post && $user -> create($this -> registry -> post)) {
-			PVTemplate::successMessage('Account successfully created!');
-			AuthenticationService::forceLogin($user -> email);
-			return $this -> redirect('/profile/'. SessionService::read('user_id'));
+		if($this -> registry -> post && $this -> _validateUser('create', $this -> registry -> post)) {
+			
+			//Get The Data
+			$data = $this -> registry -> post;
+			$data = $this -> _factory -> createUser($data);
+			
+			//Create User
+			if($this -> _firebase->getReference('users/'. $data['user_id'])->set($data)) {
+				SessionService::write('user_id', $data['user_id']);
+				SessionService::write('is_loggedin', 1);
+				return $this -> redirect('/profile/' . $data['user_id']);
+			}
+			
+		} else if($this -> registry -> post) {
+			  PVTemplate::errorMessage($this -> _errorMessage);	
 		}
 		
 		return array('user' => $user);
-		
 	}
 	
 	public function profile() : array  {
 		
-		$user = Users::findOne(array(
-			'conditions' => array('user_id' => $this -> registry -> route['id']),
-			'join' => array('image_left'),
-		));
+		$id = $this -> registry -> route['id'];
+		$reference  = $this -> _firebase -> getReference('users/' . $id);
+		$snapshot = $reference->getSnapshot();
+
+		$value = $snapshot->getValue();
+		$user = new PVCollection($value);
 		
 		if(!$user) {
 			return $this -> error404(array('post_id' => $this -> registry -> route['id']),  'User Not Found');
 		}
 		
-		$posts = Posts::findAll(array(
-			'conditions' => array('user_id' => $user -> user_id),
-			'order_by' => 'date_created'
-		));
+		$posts = new PVCollection();
 		
 		return array('user' => $user, 'posts' => $posts);
 	}
 	
 	public function account() : array  {
 		
-		$user = Users::findOne(array(
-			'conditions' => array('user_id' => SessionService::read('user_id')),
-			'join' => array('image_left'),
-		));
+		$reference  = $this -> _firebase -> getReference('users/' . SessionService::read('user_id'));
+		$snapshot = $reference->getSnapshot();
+
+		$value = $snapshot->getValue();
+		$user = new PVCollection($value);
 		
 		if(!$user) {
 			return $this -> error404(array('post_id' => $this -> registry -> route['id']),  'User Not Found');
@@ -176,6 +182,29 @@ class usersController extends baseController {
 		SessionService::endSession();
 		
 		return $this -> redirect('/');
+	}
+	
+	protected function _validateUser($action, $data) {
+		$valid = true;
+		
+		if($action == 'create') {
+			if(!PVValidator::check('notempty', $data['first_name'])) {
+				$valid = false;
+				$this -> _errorMessage = 'First name is required to register';
+			} else if(!PVValidator::check('notempty', $data['last_name'])) {
+				$valid = false;
+				$this -> _errorMessage = 'Last name is required to register';
+			} else if(!PVValidator::check('notempty', $data['email'])) {
+				$valid = false;
+				$this -> _errorMessage = 'Email is required to register';
+			} else if(!PVValidator::check('notempty', $data['password'])) {
+				$valid = false;
+				$this -> _errorMessage = 'Password is required to register';
+			}
+		}
+		
+		return $valid;
+		
 	}
 		
 		

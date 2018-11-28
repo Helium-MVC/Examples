@@ -11,11 +11,11 @@ The pros and cons to database sessions are:
 - Can be made persistent
 - More secure than storing data in the browser
 - Can store a lot more data
-- Can scale across a large infrastructure
+- Can scale horizantally
 
 **Cons**
 - Can cause latency
-- Has to be made redundant to not become a point of failure
+- Has to be made redundant in order to not become a point of failure
 
 ### Cookie Session
 
@@ -29,7 +29,22 @@ Cookie Sessions is when a session is stored on the cookie in the browser or in P
 - Limited to the size of storage on the server or in the browser
 - Can be insecure if not properly encrypted
 - Is not persistent and the client can cause data to be lost
+- Does not scale horizantally, each server will have a different session
 
-### Our Examples
+### Our Examples With Dependency Injection
 
-The two examples we have above utilize a database storage of session and a cookie session. The database session works by creating a session and storing the id of the session in the browser. The session data is then stored and retrieved by using that id stored in the browser.
+In our example we are using dependency inject to easily swap out what kind of session we are utilizing. For example, lets look in our entry points for the sites:
+##### sites1/public_html/index.php
+```php
+//Set the model and service used for session handling
+ app\services\session\SessionService::initializeSession(app\services\session\WebSessionService::initializeSession(''), true);
+```
+ 
+#####  sites2/public_html/index.php
+```php
+   //Set the model and service used for session handling
+ app\services\session\SessionService::initializeSession(app\services\session\DBSessionService::initializeSession('app\models\uuid\Sessions'), true);
+```
+Both examples are using the SessionService, but one is receiving  WebSessionService while the other is receiving  DBSessionService.
+
+Dive into those classes to see how they differ in their implementation.

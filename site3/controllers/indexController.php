@@ -11,23 +11,11 @@ class indexController extends baseController {
 
 	public function index() : array  {
 		
-		
-		$api = new PVCommunicator();
-		$results = $api -> send('get', 'http://site1.he2examples.local', array('is_deleted' => 0), array('enable_proxy' => true));
-		
-		print_r($results);
-		print_r($api -> getResponseInfo());
-		print_r($api -> getResponseHeader()); 
-		print_r($api -> getResponseBody()); 
-		print_r($api -> getError()); 
-		
-		exit();
-		$posts = Posts::findAll(array(
-			'conditions' => array('is_deleted' => 0, 'is_published' => 1),
-			'join' => array('user'),
-			'order_by' => 'date_created',
-			'limit' => 5
-		));
+		$reference  = $this -> _firebase -> getReference('posts');
+		$snapshot = $reference->getSnapshot();
+
+		$value = $snapshot->getValue();
+		$posts = new PVCollection($value);
 		
 		return array('posts' => $posts);
 	}

@@ -1,6 +1,10 @@
 <?php
 use app\services\LoggingService;
+use app\factories\FirebaseFactory;
 use prodigyview\helium\He2Controller;
+
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\ServiceAccount;
 
 /**
  * baseController
@@ -17,6 +21,10 @@ class baseController extends He2Controller {
 	
 	protected $_apiRoutes = array();
 	
+	protected $_firebase = null;
+	
+	protected $_factory = null;
+	
 	public function __construct($registry, $configurtion = array()) {
 		parent::__construct($registry, $configurtion );
 		
@@ -25,6 +33,12 @@ class baseController extends He2Controller {
 		$this -> _apiRoutes= array(
 			'getPosts' => $api_url.'posts'
 		);
+		
+		$serviceAccount = ServiceAccount::fromJsonFile(PVConfiguration::getConfiguration('firebase') -> jsonFile);
+		$firebase = (new Factory)->withServiceAccount($serviceAccount)->create();
+		$this -> _firebase = $firebase->getDatabase();
+		
+		$this-> _factory = new FirebaseFactory($this -> _firebase);
 		
 	}
 	

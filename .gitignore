@@ -3,6 +3,7 @@
 vendor/*
 data/*
 app/config/config.php
+app/config/google-service-account.json
 composer.lock
 tmp/*
 !tmp/index.php

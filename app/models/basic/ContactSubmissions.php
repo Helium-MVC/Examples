@@ -34,6 +34,17 @@ class ContactSubmissions extends PGModel {
 	
 }
 
+//Data to filter on the creation of the user.
+ContactSubmissions::addFilter('app\models\basic\ContactSubmissions', 'create','filter', function($data, $options) {
+	
+	//Set date registered
+	$data['data']['date_sent'] = date("Y-m-d H:i:s");
+	
+	//Return data to normal operations
+	return $data;
+	
+}, array('type' => 'closure', 'event' => 'args'));
+
 //Observer to be executed after CRUD create operation
 ContactSubmissions::addObserver('app\models\basic\ContactSubmissions::create', 'read_closure', function($model, $result, $id, $data, $options) {
 	

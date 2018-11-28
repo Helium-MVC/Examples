@@ -65,6 +65,17 @@ class Comments extends HModel {
 	
 }
 
+//Data to filter on the creation of the user.
+Comments::addFilter('app\models\basic\Comments', 'create','filter', function($data, $options) {
+	
+	//Set date registered
+	$data['data']['date_added'] = date("Y-m-d H:i:s");
+	
+	//Return data to normal operations
+	return $data;
+	
+}, array('type' => 'closure', 'event' => 'args'));
+
 //Observer to be executed after CRUD create operation
 Comments::addObserver('app\models\basic\Comments::create', 'read_closure', function($model, $result, $id, $data, $options) {
 	

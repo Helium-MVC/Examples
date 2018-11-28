@@ -98,3 +98,7 @@ PVConfiguration::addConfiguration('mail', array(
 	'from_name' => '',
 ));
 
+//Set the mail arguments for the development site
+PVConfiguration::addConfiguration('firebase', array(
+	'jsonFile' => PV_ROOT.DS.'app/config/google-service-account.json', 
+));

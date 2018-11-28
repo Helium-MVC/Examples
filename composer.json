@@ -11,7 +11,7 @@
     "minimum-stability" : "dev",
     "prefer-stable": true,
     "require": {
-        "prodigyview/helium": "^0.1.0",
+        "prodigyview/helium": "^0.1.1",
         "prodigyview/prodigyview": "dev-master",
         "mongodb/mongodb": "1.1.*",
         "phpmailer/phpmailer": "^6.0",
@@ -20,6 +20,7 @@
         "erusev/parsedown": "^1.7",
 	    "soundasleep/html2text": "~0.5",
         "mashape/unirest-php": "^3.0",
-        "html2text/html2text": "^4.2"
+        "html2text/html2text": "^4.2",
+        "kreait/firebase-php": "^4.18"
     }
 }

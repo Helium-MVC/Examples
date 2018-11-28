@@ -1,9 +1,9 @@
 # He2MVC - Minimalist Framework For Rapid Prototyping
 ### What is Helium, why does it exist and who is it for?
 
-As a  developer that does rapid prototyping and MVPs for startups, I have been under several strenuous situations of having to deliver production-ready solutions within a week to a months time period. In response, I wanted to develop a solution with enough structure to make code easy to maintain, flexibility to respond to crazy demands quickly, and freedom to things your way ( and satisfy rebellious streaks).
+As a  developer that does rapid prototyping and MVPs for startups, I have been under several strenuous situations of having to deliver production-ready solutions within a week to a months time period. In response, I wanted to develop a solution with enough structure to make code easy to maintain, flexibility to respond to crazy demands quickly, and freedom to do things your way ( and satisfy rebellious streaks).
 
-If you want to install few packages to quickly create a product and not develop to much on your own, this framework is NOT for you. Helium (He2MVC) is a minimalist framework that focuses on giving the developer a few guidelines and the freedom to explore and "innovate" (for better or for worse). 
+If you want to install few packages to quickly create a product and not develop to much on your own, *this framework is NOT for you*. Helium (He2MVC) is a minimalist framework that focuses on giving the developer a few guidelines and the freedom to explore and "innovate" (for better or for worse). 
 
 #### The developers that I hope consider this framework are:
 - Developers that learn rules and conventions, only to break them
@@ -44,9 +44,12 @@ git clone git@github.com:ProdigyView/helium-examples.git
 
 We are running this on your local, add these sites to your /etc/hosts local.
 > 127.0.0.1       site1.he2examples.local
-127.0.0.1       site2.he2examples.local
-127.0.0.1       site3.he2examples.local
-127.0.0.1       api.he2examples.local
+
+> 127.0.0.1       site2.he2examples.local
+
+> 127.0.0.1       site3.he2examples.local
+
+> 127.0.0.1       api.he2examples.local
 
 A quick way to do this:
 ```bash
@@ -99,19 +102,19 @@ Through this repo you will find explanations on several of the pages with exampl
 
 A break down:
 
-##### api
+#### api
 The is the api site. This api is special because it was designed for rapid development and creating a CRUD implementation for any model with only a few lines of code.
 
-##### app
+#### app
 This where the meat of the application lives. This includes modes, libraries, services, email templates, the config, etc.
 
-##### site1
+#### site1
 Site 1 is a beginner example site. It uses MySQL, incremental IDs, cookie sessions, file cache, and VueJS - without npm. This site will not scale well but services as a good starting point.
 
-##### site2
+#### site2
 Site 2 is more advanced than site one with Postgresql, UUID using Instagram's approach, database session, redis caching, AngularJS - without npm, and improved access control.
 
-##### site3
+#### site3
 Site 3 is more of the advanced site. It focus on uses a microservice approach, assuming that your site will interact with other services. The sessions are in redis, and starts to take a beginning approach to more functional programming.
 
 ## Special Thanks

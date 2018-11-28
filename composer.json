@@ -1,0 +1,25 @@
+{
+    "name": "he2examples/app",
+    "description": "He2MVC Example Applications",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Devin Dixon",
+            "email": "ddixon@bingewave.com"
+        }
+    ],
+    "minimum-stability" : "dev",
+    "prefer-stable": true,
+    "require": {
+        "prodigyview/helium": "^0.1.0",
+        "prodigyview/prodigyview": "dev-master",
+        "mongodb/mongodb": "1.1.*",
+        "phpmailer/phpmailer": "^6.0",
+        "aws/aws-sdk-php": "^3.52",
+        "ramsey/uuid": "^3.7",
+        "erusev/parsedown": "^1.7",
+	    "soundasleep/html2text": "~0.5",
+        "mashape/unirest-php": "^3.0",
+        "html2text/html2text": "^4.2"
+    }
+}

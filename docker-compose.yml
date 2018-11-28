@@ -1,0 +1,85 @@
+version: "3"
+
+volumes:
+  postgres_database :
+     external: true
+  mysql_data : {}
+  schemas:
+    external: false
+services:
+  web:
+    image: nginx:latest
+    container_name: "he2_nginx"
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/code
+      - ./site.conf:/etc/nginx/conf.d/site.conf
+      - ./nginx_custom_settings.conf:/etc/nginx/conf.d/nginx_custom_settings.conf
+    links: ['php']
+  php:
+    container_name: "he2_php"
+    build:
+      context : ./
+      dockerfile : Dockerfile
+    volumes:
+      - ./:/code
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    depends_on: [ "postgres"]
+  postgres:
+    container_name: "he2_postgres"
+    image: ntboes/postgres-uuid
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_database:/var/postgres_database
+    environment:
+      - PGDATA=/var/postgres_database
+      - POSTGRES_PASSWORD=helium
+      - POSTGRES_USER=helium
+      - POSTGRES_DB=helium
+    restart: always
+  adminer:
+    container_name: "he2_adminer"
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  redis:
+    container_name: "he2_redis"
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  mongodb:
+    image: mongo:latest
+    container_name: "he2_mongodb"
+    environment:
+        - AUTH=yes
+        - MONGO_DATA_DIR=/data/db
+        - MONGO_LOG_DIR=/dev/null
+        - MONGODB_ADMIN_USER=helium
+        - MONGODB_ADMIN_PASS=helium
+        - MONGODB_APPLICATION_DATABASE=helium
+        - MONGODB_APPLICATION_USER=helium
+        - MONGODB_APPLICATION_PASSWORD=helium
+        - MONGODB_USER=helium
+        - MONGODB_PASS=helium
+        - MONGO_INITDB_ROOT_USERNAME=helium
+        - MONGO_INITDB_ROOT_PASSWORD=helium
+        - MONGO_INITDB_DATABASE=helium
+    volumes:
+        - ./data/db:/data/db
+    ports:
+          - 27017:27017
+    command: mongod --smallfiles --logpath=/dev/null # --quiet
+  mysql:
+    container_name: "he2_mysql"
+    image: mysql:5.6
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: helium
+      MYSQL_DATABASE: helium
+      MYSQL_USER: helium
+      MYSQL_PASSWORD: helium
+    ports:
+      - "3307:3306"

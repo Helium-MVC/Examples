@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<project name="Site 3 Compiler" basedir="../public_html/" default="compile">
+
+  <target name="-js.compile">
+    <taskdef name="jscomp" classname="com.google.javascript.jscomp.ant.CompileTask" classpath="../../app/build/compiler.jar"/>
+    <jscomp compilationLevel="simple" languageIn="ECMASCRIPT6" warning="verbose" debug="true" output="${basedir}/js/scripts.js">
+      <externs dir="${basedir}/js/externs/">
+        <file name="jquery.1.10.js"/>
+        <file name="angular-1.6.js"/>
+      </externs>
+      <sources dir="${basedir}/js/libs/">
+        <file name="angular/angular-sanitize.js"/>
+        <file name="angular/angular-route.js"/>
+        <file name="angular/angular-resource.js"/>
+        <file name="angular-wysiwyg.js"/>
+        <file name="bootstrap-colorpicker-module.js"/>
+      
+      </sources>
+      <sources dir="${basedir}/js/app/">
+        <file name="app.js"/>
+      </sources>
+      
+      <sources dir="${basedir}/js/directives/">
+        <file name="cbValue.js"/>
+      </sources>
+      
+      <sources dir="${basedir}/js/resources/">
+        <file name="posts.js"/>
+        <file name="users.js"/>
+      </sources>
+      
+      <sources dir="${basedir}/js/controllers/">
+        <file name="posts.js"/>
+        <file name="users.js"/>
+      </sources>
+
+    </jscomp>
+
+  </target>
+  
+  <target name="-css.concatenate" description="Concatenates specified CSS files">
+    <concat destfile="${basedir}/css/main.concat.css">
+      <!--first.css and second.css should be first in the concatenated file-->
+      <filelist
+      dir="${basedir}/css/"
+      files="clean-blog.css, custom.css"/>
+    </concat>
+    <echo>Finished</echo>
+  </target>
+  
+  <target name="-css.minify" depends="-css.concatenate" 
+        description="Minifies CSS files">
+        <apply executable="java" parallel="false"  dest="${basedir}/css/">
+            <fileset dir="${basedir}/css/" includes="main.concat.css"/>
+            <arg line="-jar"/>
+            <arg path="../../app/build/yuicompressor-2.4.8.jar"/>
+            <srcfile/>
+            <arg line="-o"/>
+            <mapper type="glob" from="*.concat.css" to="*.min.css"/>
+            <targetfile/>
+        </apply>
+        <echo>Finished</echo>
+    </target>
+  
+  
+  <target name="compile" 
+        description="Builds project files for production use"
+        depends="
+            -js.compile,
+            -css.concatenate,
+            -css.minify
+            ">
+    </target>
+
+</project>

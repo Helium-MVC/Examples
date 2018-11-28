@@ -1,4 +1,4 @@
-# He2 Model BasicsHe2 Model Basics
+# He2 Model Basics
 
 Welcome to the models section. Models allows access to the database and a create virtual representation of the database connected to your website, aka an ORM. Models are compromised of the 3 important features: **virtual schema, validation, and joins**. CRUD operations are in a different section.
 

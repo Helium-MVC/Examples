@@ -1,4 +1,4 @@
-## He2MVC - Minimalist Framework For Rapid Prototyping
+# He2MVC - Minimalist Framework For Rapid Prototyping
 ### What is Helium, why does it exist and who is it for?
 
 As a  developer that does rapid prototyping and MVPs for startups, I have been under several strenuous situations of having to deliver production-ready solutions within a week to a months time period. In response, I wanted to develop a solution with enough structure to make code easy to maintain, flexibility to respond to crazy demands quickly, and freedom to things your way ( and satisfy rebellious streaks).

@@ -77,8 +77,7 @@ docker-compose up
 
 Next we have to install the php packages via composer and sync our database. First ssh into your docker instance:
 ```bash
-bash
-exec -it he2_php bash
+docker exec -it he2_php bash
 ```
 Then we are going to the sites root directory and installing composer
 ```bash

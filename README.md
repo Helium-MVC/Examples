@@ -7,7 +7,7 @@ If you want to install few packages to quickly create a product and not develop 
 
 #### The developers that I hope consider this framework are:
 - Developers that learn rules and conventions, only to break them
-- Developers that want sites to load in 100ms to 500ms without cache(my record is 102ms)
+- Developers that want sites to load in 100ms to 500ms without cache(my record is 93ms)
 - Developers that like to try new technologies and want to explore
 - Developers that are bored of doing what everyone else does
 - Developers that want to develop quickly with almost no safety nets

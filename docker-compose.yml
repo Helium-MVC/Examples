@@ -2,7 +2,7 @@ version: "3"
 
 volumes:
   postgres_database :
-     external: true
+     external: false
   mysql_data : {}
   schemas:
     external: false

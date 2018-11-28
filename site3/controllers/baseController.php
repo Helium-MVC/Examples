@@ -15,31 +15,31 @@ use Kreait\Firebase\ServiceAccount;
  
 class baseController extends He2Controller {
 	
-	public function index() {
-		exit();
-	}
-	
 	protected $_apiRoutes = array();
 	
 	protected $_firebase = null;
 	
 	protected $_factory = null;
 	
+	/**
+	 * In the constructor we are going to assign the factory and the firebase
+	 * connection. Please setup your Firebase preferences in the app/config/config.php
+	 */
 	public function __construct($registry, $configurtion = array()) {
 		parent::__construct($registry, $configurtion );
 		
-		$api_url = PVConfiguration::getConfiguration('sites') -> api;
-		
-		$this -> _apiRoutes= array(
-			'getPosts' => $api_url.'posts'
-		);
-		
+		//Setup the Firebase Connection
 		$serviceAccount = ServiceAccount::fromJsonFile(PVConfiguration::getConfiguration('firebase') -> jsonFile);
 		$firebase = (new Factory)->withServiceAccount($serviceAccount)->create();
 		$this -> _firebase = $firebase->getDatabase();
 		
+		//Call the Firebase factory created in app/factories folder
 		$this-> _factory = new FirebaseFactory($this -> _firebase);
 		
+	}
+	
+	public function index() {
+		exit();
 	}
 	
 	/**

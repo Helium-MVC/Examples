@@ -119,7 +119,7 @@ ca-certificates-java
 
 RUN apt-get -t stretch-backports install -y default-jdk-headless
 
-RUN apt-get install ant
+RUN apt-get install -y ant
 
 
 RUN export CFLAGS="$PHP_CFLAGS" CPPFLAGS="$PHP_CPPFLAGS" LDFLAGS="$PHP_LDFLAGS" \

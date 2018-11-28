@@ -3,7 +3,7 @@
 
 As a  developer that does rapid prototyping and MVPs for startups, I have been under several strenuous situations of having to deliver production-ready solutions within a week to a months time period. In response, I wanted to develop a solution with enough structure to make code easy to maintain, flexibility to respond to crazy demands quickly, and freedom to do things your way ( and satisfy rebellious streaks).
 
-If you want to install few packages to quickly create a product and not develop to much on your own, *this framework is NOT for you*. Helium (He2MVC) is a minimalist framework that focuses on giving the developer a few guidelines and the freedom to explore and "innovate" (for better or for worse). 
+If you want to install few packages to quickly create a product and not develop to much on your own, **this framework is NOT for you**. Helium (He2MVC) is a minimalist framework that focuses on giving the developer a few guidelines and the freedom to explore and "innovate" (for better or for worse). 
 
 #### The developers that I hope consider this framework are:
 - Developers that learn rules and conventions, only to break them

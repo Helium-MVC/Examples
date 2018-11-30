@@ -9,6 +9,7 @@ RUN apt-get update \
         libpng-dev \
         libmcrypt-dev \
         wget \
+        gnupg \
 	libav-tools \
 	software-properties-common \
 	libcurl4-openssl-dev \
@@ -62,6 +63,11 @@ RUN apt-get update && apt-get install -y \
         libfribidi-dev \
         libfontconfig1-dev
 
+#Install Node
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+  apt-get install -y nodejs
+
+#Install FFMPEG
 RUN mkdir /software \
     && cd /software \
     && wget http://ffmpeg.org/releases/ffmpeg-2.7.2.tar.bz2 \

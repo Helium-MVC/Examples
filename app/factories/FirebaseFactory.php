@@ -19,7 +19,7 @@ class FirebaseFactory {
 		$this -> _firebase = $database;
 	}
 	
-	public function createUser($data , $format = 'array') {
+	public function createUser(array $data , $format = 'array') {
 		
 		//Create Document ID
 		$id = $uuid5 = Uuid::uuid4();
@@ -43,7 +43,7 @@ class FirebaseFactory {
 		
 	}
 	
-	public function createPost($data, $user, $format = 'array') {
+	public function createPost(array $data, $user, $format = 'array') {
 		$data['user'] = array(
 			'user_id' => $user -> user_id,
 			'first_name' => $user -> first_name,
@@ -57,5 +57,9 @@ class FirebaseFactory {
 		} else {
 			return new \PVCollection($data);
 		}
+	}
+	
+	public function retrieveUser($id) {
+		
 	}
 }

@@ -71,15 +71,21 @@ PVValidator has many built-in functions from finding if a string contains an int
 
 ```php
 <?php
-function($number) {
+$is_currency = function($number) {
     return preg_match("/^-?[0-9]+(?:\.[0-9]{1,2})?$/", $number);
 }
 ?>
 ```
 
-If follows the rules of functional programming because…
+If we follow the rules of functional programming:
 
-We can add the annmomyous function to our validator class like so:
+1. Function does not access or modify the scope outside the function
+2. Functions are first-class function, aka can be assigned to a variable
+3. Function variables are immutable and cannot be changed once assigned
+4. Function are pure, meaning when given the same inputs they will always return the same outputs
+5. Functions avoid side affects, ie causing a state change outside of the functions scope
+
+In many of Heliums implementations we can follow 1-4, 5 gets tricky. But with our example, we can add the annmomyous function to our validator class like so:
 
 ```php
 <?php

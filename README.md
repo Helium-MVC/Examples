@@ -5,7 +5,7 @@ Development for startups involves rapid prototyping and MVPs in very short time 
 
 In response, I wanted to develop a solution with enough structure to make code easy to maintain, flexibility to respond to crazy demands quickly, while allowing the freedom and creativity to do things your way. Competing interests.
 
-If you want to install a few packages to create a product quickly in a cookie cutter approach and not develop too much on your own, **this framework is NOT for you**. Helium (He2MVC) is a minimalist framework that focuses on giving the developer a few guidelines and the freedom to explore and "innovate" (for better or for worse). 
+If you want to install a few packages to create a product quickly in a cookie cutter approach, **this framework is NOT for you**. Helium (He2MVC) is a minimalist framework that focuses on giving the developer a few guidelines and the freedom to explore and "innovate" (for better or for worse). 
 
 #### The developers that I hope consider this framework are:
 - Developers that learn rules and conventions, only to break them
@@ -29,7 +29,7 @@ The example sites can be a beneficial learning lesson for both new and experienc
 - and more
 
 ## Getting Started
-Wow, you're still reading!? I must have caught your attention. Getting started is relatively quickly. We use docker to get setup promptly. To being.
+Wow, you're still reading!? I must have caught your attention. Getting started is relatively quickly. We use docker to get setup promptly. To begin.
 
 **1) Download Docker**
 

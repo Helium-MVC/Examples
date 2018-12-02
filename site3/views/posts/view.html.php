@@ -51,7 +51,9 @@ PVTemplate::appendSiteMetaTags('<meta name="twitter:description" content="'. $th
 					<h1><?= $post -> title; ?></h1>
 					<small><span class="meta">Posted by <a href="/profile/<?= $post -> user_id; ?>"><?= $post -> first_name; ?> <?= $post -> user_last; ?></a> on <?= $this -> Format ->dateTime($post -> date_created); ?></span></small>
 				<?php endif; ?>
-				<?= $post -> content; ?>
+				<div class="content">
+					<?= $post -> content; ?>
+				</div>
 				
 				<?php if($this -> Session -> get('is_loggedin')): ?>
 					<div class="card">
@@ -79,20 +81,21 @@ PVTemplate::appendSiteMetaTags('<meta name="twitter:description" content="'. $th
 					<br />
 				<?php endif; ?>
 				
-				<?php if($comments): ?>
+				<?php if($post -> comments): ?>
 					<h4>Comments</h4>
 					<hr />	
+					
+					<?php foreach($post -> comments as $comment): ?>
+						<div class="media">
+						  
+						  <div class="media-body">
+						    <h5 class="mt-0"><?= $comment -> user -> first_name; ?> <?= $comment -> user -> last_name; ?> said...</h5>
+						    <?= $comment -> comment; ?>
+						  </div>
+						</div>
+					<?php endforeach; ?>
 				<?php endif; ?>
 				
-				<?php foreach($comments as $comment): ?>
-					<div class="media">
-					  
-					  <div class="media-body">
-					    <h5 class="mt-0"><?= $comment -> first_name; ?> <?= $comment -> last_name; ?> said...</h5>
-					    <?= $comment -> comment; ?>
-					  </div>
-					</div>
-				<?php endforeach; ?>
 			</div>
 		</div>
 	</div>

@@ -138,10 +138,9 @@ class apiController extends He2Controller {
 		
 		$model = new $this ->_model();
 		
-		if($model -> create($data)){
+		if($model -> create($data, array('validate_options' => array('display' => false, 'event' => 'create')))){
 			return $this -> _jsonResponse($model -> getIterator() -> getData());
 		}	else {
-			//print_r($model -> getVadilationErrors());
 			echo PVResponse::createResponse(410, $model -> getErrorsString());
 		}	
 			
@@ -171,7 +170,7 @@ class apiController extends He2Controller {
 		$model = $object::findOne(compact('conditions'));
 		
 		if($model) {
-			$model -> update($data);
+			$model -> update($data, array('validate_options' => array('display' => false, 'event' => 'update')));
 			
 			$errors = $model -> getVadilationErrors();
 			

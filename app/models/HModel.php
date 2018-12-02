@@ -25,7 +25,7 @@ class HModel extends He2Model {
 		
 		$errors = $this -> getValidationErrors();
 		$string = '';
-
+		
 		foreach ($errors as $error) {
 			$string .= implode('', $error);
 		}

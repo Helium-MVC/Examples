@@ -4,9 +4,9 @@ include('apiController.php');
 
 class usersController extends apiController {
 	
-	protected $_model = 'apps\models\mongo\users';
+	protected $_model = 'app\models\mongo\Users';
 	
-	protected $_id = 'user_id';
+	protected $_id = '_id';
 	
 	
 }

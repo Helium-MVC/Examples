@@ -1,6 +1,8 @@
 <?php
-use app\services\LoggingService;
-use app\factories\FirebaseFactory;
+
+use app\facades\ValidationFacade;
+use app\facades\FirebaseModelFacade;
+use app\factories\ServiceFactory;
 use prodigyview\helium\He2Controller;
 
 use Kreait\Firebase\Factory;
@@ -19,7 +21,7 @@ class baseController extends He2Controller {
 	
 	protected $_firebase = null;
 	
-	protected $_factory = null;
+	protected $_models = null;
 	
 	/**
 	 * In the constructor we are going to assign the factory and the firebase
@@ -33,8 +35,32 @@ class baseController extends He2Controller {
 		$firebase = (new Factory)->withServiceAccount($serviceAccount)->create();
 		$this -> _firebase = $firebase->getDatabase();
 		
-		//Call the Firebase factory created in app/factories folder
-		$this-> _factory = new FirebaseFactory($this -> _firebase);
+		//Call the FirebaseModelFacade created in app/facades folder
+		$this-> _models = new FirebaseModelFacade($this -> _firebase);
+		
+	}
+	
+	/**
+	 * Validates an action and its data according to the rules in the ValidationFacade
+	 * 
+	 * @param string $type The type of validation, user, post or contact
+	 * @param string $action. Normally either create or update, but custom validation rules can be added
+	 * @param array $data And array of values to validate against
+	 * @param boolean $display If set to true, will write the errors out to the template
+	 * 
+	 * @return boolean Etierh returns true or false
+	 */
+	public function validate($type, $action, $data, $display = true) {
+		
+		$validate = new ValidationFacade();
+		
+		if($type == 'user') {
+			return $validate -> checkUser($action, $data, $display);
+		} else if($type == 'post') {
+			return $validate -> checkPost($action, $data, $display);
+		}
+		
+		return false;
 		
 	}
 	

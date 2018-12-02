@@ -21,7 +21,7 @@ PVTemplate::addAdapter('prodigyview\helium\He2Template', '_titleCheck', function
 	
 	$title = PVTemplate::getSiteTitle();
 	
-	if($title == 'Site 1' && !($view['view'] == 'index' && $view['prefix'] == 'index')) {
+	if($title == 'Site 3' && !($view['view'] == 'index' && $view['prefix'] == 'index')) {
 			
 		if($view['prefix'] == 'index')
 			$view['prefix'] = 'main';

@@ -17,4 +17,6 @@ include_once 'bootstrap/template.php';
 //include_once 'bootstrap/mail.php';
 include_once 'bootstrap/cache.php';
 include_once 'bootstrap/media.php';
+//New Include! We are adding factories on our boot
+include_once 'bootstrap/factories.php';
 include_once 'bootstrap/router.php';

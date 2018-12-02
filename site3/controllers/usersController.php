@@ -1,12 +1,15 @@
 <?php
 
-use app\services\session\SessionService;
+use app\factories\ServiceFactory;
+
 
 include('baseController.php');
 
 class usersController extends baseController {
 	
 	protected $_errorMessage = '';
+	
+	protected $_session = null;
 	/**
 	 * In the construct, we are restricting access to certian routes of this controller.
 	 */
@@ -19,7 +22,11 @@ class usersController extends baseController {
 			'/users/logout'
 		);
 		
-		if(!SessionService::read('is_loggedin') && in_array($this->registry -> route[0], $restricted_routes)) {
+		$session  = ServiceFactory::getSessionService();
+		
+		$this -> _session = $session;
+		
+		if(!$session::read('is_loggedin') && in_array($this->registry -> route[0], $restricted_routes)) {
 			PVTemplate::errorMessage('The section is restricted to members. Please login.');
 			PVRouter::redirect('/login');
 		}
@@ -28,10 +35,7 @@ class usersController extends baseController {
 		
 	public function index() : array  {
 		
-		$users = Users::findOne(array(
-			'conditions' => array('is_active' => 1),
-			'order_by' => 'first_name, last_name'
-		));
+		$users = $this -> _models -> queryUsers();
 		
 		return array('users' => $users);
 		
@@ -39,54 +43,45 @@ class usersController extends baseController {
 	
 	public function login()  {
 		
-		$user = new Users();
+		$user = new PVCollection($this -> registry -> post);
 		
 		$failed_login_attempts = false;
 		
 		if($this -> registry -> post && AuthenticationService::authenticate($this -> registry -> post['email'], $this -> registry -> post['password'])) {
 			PVTemplate::successMessage('Login Successful!');
-			return $this -> redirect('/profile/'. SessionService::read('user_id'));
+			return $this -> redirect('/profile/'. $this -> _session::read('user_id'));
 		} else if($this -> registry -> post) {
 			PVTemplate::errorMessage('Invalid Username/Password');
 			
-			$failed_login_attempts = SessionService::read('failed_login_attempts');
+			$failed_login_attempts = $this -> _session::read('failed_login_attempts');
 		}
 		
-		return array('user' => $user, 'failed_login_attempts' => $failed_login_attempts);
+		return array('user' => $user, 'failed_login_attempts' => $failed_login_attempts, 'disable_cache' => true);
 	}
 	
 	public function register()  {
 		
 		$user = new PVCollection($this -> registry -> post);
 		
-		if($this -> registry -> post && $this -> _validateUser('create', $this -> registry -> post)) {
+		if($this -> registry -> post && $this -> validate('user','create', $this -> registry -> post)) {
 			
 			//Get The Data
-			$data = $this -> registry -> post;
-			$data = $this -> _factory -> createUser($data);
+			$user = $this -> _models -> createUser($this -> registry -> post);
 			
 			//Create User
-			if($this -> _firebase->getReference('users/'. $data['user_id'])->set($data)) {
-				SessionService::write('user_id', $data['user_id']);
-				SessionService::write('is_loggedin', 1);
-				return $this -> redirect('/profile/' . $data['user_id']);
-			}
-			
-		} else if($this -> registry -> post) {
-			  PVTemplate::errorMessage($this -> _errorMessage);	
+			if($user) {
+				$this -> _session::write('user_id', $user -> user_id);
+				$this -> _session::write('is_loggedin', 1);
+				return $this -> redirect('/profile/' . $user -> user_id);
+			}	
 		}
 		
-		return array('user' => $user);
+		return array('user' => $user, 'disable_cache' => true);
 	}
 	
 	public function profile() : array  {
 		
-		$id = $this -> registry -> route['id'];
-		$reference  = $this -> _firebase -> getReference('users/' . $id);
-		$snapshot = $reference->getSnapshot();
-
-		$value = $snapshot->getValue();
-		$user = new PVCollection($value);
+		$user = $this -> _models -> retrieveUser($this -> registry -> route['id']);
 		
 		if(!$user) {
 			return $this -> error404(array('post_id' => $this -> registry -> route['id']),  'User Not Found');
@@ -99,11 +94,7 @@ class usersController extends baseController {
 	
 	public function account() : array  {
 		
-		$reference  = $this -> _firebase -> getReference('users/' . SessionService::read('user_id'));
-		$snapshot = $reference->getSnapshot();
-
-		$value = $snapshot->getValue();
-		$user = new PVCollection($value);
+		$user = $this -> _models -> retrieveUser($this -> registry -> route['id']);
 		
 		if(!$user) {
 			return $this -> error404(array('post_id' => $this -> registry -> route['id']),  'User Not Found');
@@ -111,7 +102,9 @@ class usersController extends baseController {
 		
 		if($this -> registry -> post) {
 			
-			if(isset($this -> registry -> post['update_profile']) && $user -> update($this -> registry -> post)) {
+			if(isset($this -> registry -> post['update_profile']) && $this -> validate('user','update', $this -> registry -> post)) {
+				
+				$this -> _models -> updateUser($user -> user_id, $this -> registry -> post);
 				
 				if(isset($this -> registry -> files['profile_image'] ) && $this -> registry -> files['profile_image']['error'] == 0 && PVValidator::isImageFile(PVFileManager::getFileMimeType($this -> registry -> files['profile_image']['tmp_name'])) ) {	
 					$image = Images::uploadImage($this -> registry -> files['profile_image']['tmp_name']);
@@ -123,36 +116,26 @@ class usersController extends baseController {
 					
 				PVTemplate::successMessage('Profile successfully updated.');
 			
-			} else if(isset($this -> registry -> post['update_email'])) {
-				$email = (isset($this -> registry -> post['email'])) ? $this -> registry -> post['email'] : '';
-				$tmp_user = Users::findOne(array(
-					'conditions' => array('email' => $email )
-				));
+			} else if(isset($this -> registry -> post['update_email']) && $this -> validate('user','email', $this -> registry -> post)) {
+				$this -> _models -> updateUser($user -> user_id, $this -> registry -> post);
 				
-				if(!$tmp_user || $tmp_user -> user_id = $user -> user_id) {
-					if($user -> update(array('email' => $email))){
-						PVTemplate::successMessage('Email successfully updated.');
-					}
-				} else{
-					PVTemplate::errorMessage('Another user has that email');
-				}
-			} else if(isset($this -> registry -> post['update_password'])) {
-				$password = UserPasswords::findOne(array(
-					'conditions' => array('user_id' => $user -> user_id)
-				));
+				PVTemplate::successMessage('Email successfully updated.');
+			} else if(isset($this -> registry -> post['update_password']) && $this -> validate('user','password', $this -> registry -> post)) {
+				$this -> _models -> updateUser($user -> user_id, $this -> registry -> post);
 				
-				if($password -> update($this -> registry -> post)) {
-					PVTemplate::successMessage('Password successfully updated.');
-				}
+				PVTemplate::successMessage('Password successfully updated.');
 			}
+			
+			//Reload
+			$user = $this -> _models -> retrieveUser($this -> registry -> route['id']);
 		}
 		
-		return array('user' => $user);
+		return array('user' => $user, 'disable_cache' => true);
 	}
 
 	public function myposts() : array {
 		$posts = Posts::findAll(array(
-			'conditions' => array('user_id' =>SessionService::read('user_id')),
+			'conditions' => array('user_id' =>$this -> _session::read('user_id')),
 			'order_by' => 'date_created'
 		));
 		
@@ -179,32 +162,9 @@ class usersController extends baseController {
 	}
 	
 	public function logout() {
-		SessionService::endSession();
+		$this -> _session::endSession();
 		
 		return $this -> redirect('/');
-	}
-	
-	protected function _validateUser($action, $data) {
-		$valid = true;
-		
-		if($action == 'create') {
-			if(!PVValidator::check('notempty', $data['first_name'])) {
-				$valid = false;
-				$this -> _errorMessage = 'First name is required to register';
-			} else if(!PVValidator::check('notempty', $data['last_name'])) {
-				$valid = false;
-				$this -> _errorMessage = 'Last name is required to register';
-			} else if(!PVValidator::check('notempty', $data['email'])) {
-				$valid = false;
-				$this -> _errorMessage = 'Email is required to register';
-			} else if(!PVValidator::check('notempty', $data['password'])) {
-				$valid = false;
-				$this -> _errorMessage = 'Password is required to register';
-			}
-		}
-		
-		return $valid;
-		
 	}
 		
 		

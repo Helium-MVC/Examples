@@ -15,3 +15,4 @@ api/public_html/img/uploads/
 !site2/public_html/img/uploads/index.php
 !site3/public_html/img/uploads/index.php
 !api/public_html/img/uploads/index.php
+redux-blog/node_modules/*

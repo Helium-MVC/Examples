@@ -42,10 +42,11 @@ define ('SITE_PATH', dirname(dirname ( __FILE__ )).DS);
    /*** include the template class ***/
  include HELIUM .  'app.class.php';
  
- include SITE_PATH.'config/bootstrap.php';
- 
 
 prodigyview\helium\He2App::addObserver('prodigyview\helium\He2App::_initRegistry', 'read_closure', function() {
+  
+  //Include your bootstrap to to load the site
+  include SITE_PATH.'config/bootstrap.php';
   
   //Set the model used in Authentication
   app\services\AuthenticationService::init('app\models\basic\Users');

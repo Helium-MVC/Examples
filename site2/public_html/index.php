@@ -40,12 +40,12 @@ define ('SITE_PATH', dirname(dirname ( __FILE__ )).DS);
  include HELIUM .  'model.class.php';
  
    /*** include the template class ***/
- include HELIUM .  'app.class.php';
- 
- include SITE_PATH.'config/bootstrap.php';
- 
+ include HELIUM .  'app.class.php'; 
 
 prodigyview\helium\He2App::addObserver('prodigyview\helium\He2App::_initRegistry', 'read_closure', function() {
+	
+  //Boot the required files
+  include SITE_PATH.'config/bootstrap.php';
   
   //Set the model used in Authentication
   app\services\AuthenticationService::init('app\models\uuid\Users');

@@ -45,10 +45,14 @@ define ('SITE_PATH', dirname ( __FILE__ ).DS);
  
  include HELIUM .  'console.class.php';
  
- include SITE_PATH.'config/bootstrap.php';
- 
-
 $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+
+prodigyview\helium\HeliumConsole::addObserver('prodigyview\helium\HeliumConsole::init', 'read_closure', function() {
+  
+  //Load the site boostrap
+  include SITE_PATH.'config/bootstrap.php';
+   
+}, array('type' => 'closure'));
 
 prodigyview\helium\HeliumConsole::init();
 

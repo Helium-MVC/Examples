@@ -41,17 +41,21 @@ define ('SITE_PATH', dirname(dirname ( __FILE__ )).DS);
  
    /*** include the template class ***/
  include HELIUM .  'app.class.php';
- 
- include SITE_PATH.'config/bootstrap.php';
- 
+  
 
 prodigyview\helium\He2App::addObserver('prodigyview\helium\He2App::_initRegistry', 'read_closure', function() {
+  
+  //Boot with the requires files
+  include SITE_PATH.'config/bootstrap.php';
   
   //Set the model used in Authentication
   app\services\AuthenticationService::init('app\models\mongo\Users');
   
   //Set the model used in logging
-  app\services\LoggingService::init('app\models\uuid\ActionLogger');
+  app\services\LoggingService::init('app\models\mongo\ActionLogger');
+  
+    //Set the model and service used for session handling
+  app\services\session\SessionService::initializeSession(app\services\session\WebSessionService::initializeSession(''), true);
   
 }, array('type' => 'closure'));
 

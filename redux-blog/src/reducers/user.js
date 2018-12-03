@@ -15,6 +15,11 @@ export default (state={users: []}, action) => {
         ...state,
         users: state.users.filter((user) => user.user_id !== action.user_id),
       };
+    case 'USER_REGISTER_ERROR':
+      return {
+        ...state,
+        users: ([action.data.user]).concat(state.user),
+      };
     default:
       return state;
   }

@@ -98,7 +98,12 @@ PVConfiguration::addConfiguration('mail', array(
 	'from_name' => '',
 ));
 
-//Set the mail arguments for the development site
+//Set firebase connection
 PVConfiguration::addConfiguration('firebase', array(
 	'jsonFile' => PV_ROOT.DS.'app/config/google-service-account.json', 
+));
+
+//Loggly API Key for HTTP Requests
+PVConfiguration::addConfiguration('loggly', array(
+	'key' => '', 
 ));

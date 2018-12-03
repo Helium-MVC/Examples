@@ -54,10 +54,12 @@ class baseController extends He2Controller {
 		
 		$validate = new ValidationFacade();
 		
-		if($type == 'user') {
+		if($type === 'user') {
 			return $validate -> checkUser($action, $data, $display);
-		} else if($type == 'post') {
+		} else if($type === 'post') {
 			return $validate -> checkPost($action, $data, $display);
+		} else if($type === 'contact') {
+			return $validate -> checkContact($action, $data, $display);
 		}
 		
 		return false;
@@ -83,11 +85,17 @@ class baseController extends He2Controller {
 		//Changes the view to 'pages' with error404.html.php
 		$this -> _renderView(array('view' => 'pages', 'prefix' => 'error404'));
 		
-		$controller = get_class($this);
-		$action = $this -> _getStateRoute();
-		$message = $this -> _formatLogMessage($message);
+		$data = array(
+			'controller' => get_class($this),
+			'action' => $this -> _getStateRoute(),
+			'message' => $this -> _formatLogMessage($message)
+		);
 		
-		LoggingService::logController($controller, $action, '404'.$message, $data);
+		$loggly_key = PVConfiguration::getConfiguration('loggly') -> key;
+		
+		//PVCommunicator sends CURL call to loggly
+		$communicator = new PVCommunicator();
+		$result = $communicator -> send('POST', 'http://logs-01.loggly.com/inputs/'.$loggly_key.'/tag/http/', $data);
 		
 		return array();
 	}
@@ -106,11 +114,17 @@ class baseController extends He2Controller {
 		//Changes the view to 'pages' with accessdenined.html.php
 		$this -> _renderView(array('view' => 'pages', 'prefix' => 'accessdenied'));
 		
-		$controller = get_class($this);
-		$action = $this -> _getStateRoute();
-		$message = $this -> _formatLogMessage($message);
+		$data = array(
+			'controller' => get_class($this),
+			'action' => $this -> _getStateRoute(),
+			'message' => $this -> _formatLogMessage($message)
+		);
 		
-		LoggingService::logController($controller, $action, 'Illegal Access'.$message, $data);
+		$loggly_key = PVConfiguration::getConfiguration('loggly') -> key;
+		
+		//PVCommunicator sends CURL call to loggly
+		$communicator = new PVCommunicator();
+		$result = $communicator -> send('POST', 'http://logs-01.loggly.com/inputs/'.$loggly_key.'/tag/http/', $data);
 		
 		return array();
 	}
@@ -124,10 +138,10 @@ class baseController extends He2Controller {
 	private function _getStateRoute() : string {
 		
 		$route = PVRouter::getRoute();
-		$action = $route['action'];
+		$action = (isset($route['action'])) ? $route['action'] : '';
 		
 		if(!$action ) {
-			$action = PVRouter::getRouteVariable('action');
+			$action = (PVRouter::getRouteVariable('action')) ?: '';
 		}
 		
 		return $action;

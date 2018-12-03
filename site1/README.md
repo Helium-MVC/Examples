@@ -1,6 +1,8 @@
 
 # Site 1 - VueJS, Mysql and The Basics
 
+#### Difficulty Rate: 2/10
+
 Welcome to Site 1! A basic example and use of He2MVC. The site is considered basic because many of the strategies used in its created will scale vertically (making server larger by adding more RAM, CPUs, and disk space), and is not very secure.
 
 ## Mysql

@@ -193,6 +193,31 @@ Coming over to our `site3/config/bootstrap/cache.php`, we have created an anonym
 
 And just like that, we are caching the output so our site should now load faster!
 
+## Microserver Logging Setup
+
+In our next example, we are going to use logging as a microservice. Start by going go Loggly.com and registering for a free account. After you do, find the http key. Afterwards go to `app/config/config.php` and enter the key into loggly api section:
+
+```php
+<?php
+//Loggly API Key for HTTP Requests
+PVConfiguration::addConfiguration('loggly', array(
+	'key' => '', 
+));
+?>
+```
+
+Now if we head over to `site3/controllers/baseController.php`, we will come across the sending of the logs to Loggly.
+```php
+<?php
+$loggly_key = PVConfiguration::getConfiguration('loggly') -> key;
+		
+//PVCommunicator sends CURL call to loggly
+$communicator = new PVCommunicator();
+$result = $communicator -> send('POST', 'http://logs-01.loggly.com/inputs/'.$loggly_key.'/tag/http/', $data);
+?>
+```
+PVCommunicator is a class that can send Curl request, SOAP requests and socket communication. In our example, we are using PVCommunicator to send information to another service, in this case Loggly. Think of this as when building your apps, and easy way to communicate with other services.
+
 ## Queueing System
 
 We are trying to keep this site to work with microservices. With that, we have a messaging system! Messaging systems can come in a variety of different formats from sending Restful Requests to a service to services like Gearman. We are going to keep it simples with a Redis Queue system.

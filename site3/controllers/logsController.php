@@ -24,9 +24,7 @@ class logsController extends baseController {
 		
 		//Notice in this example, we are caching
 		//the query results
-		$logs = ActionLogger::findAll(array(
-			'order_by' => 'date_recoded DESC'
-		), array('cache' => true));
+		$logs = $this -> _models -> queryLogs();
 		
 		return array('logs' => $logs);
 	}

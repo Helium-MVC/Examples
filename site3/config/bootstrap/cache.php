@@ -21,7 +21,7 @@ PVCache::init(array());
  prodigyview\helium\He2Router::addAdapter('prodigyview\helium\He2Router', 'executeControllerAction', function($controller, $action) {
  	
 	//Create a cache key from the controller and action
-	$cache_name = get_class($controller).''. $action;
+	$cache_name = md5(get_class($controller).''. $action.''.PVRouter::getRouteVariables()[0]);
 	
 	//Create a new cache if cache does not exist
 	if(PVCache::hasExpired($cache_name)) {

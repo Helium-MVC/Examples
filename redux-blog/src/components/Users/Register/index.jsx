@@ -34,11 +34,14 @@ class Register extends React.Component {
       })
         .then((res) => onSubmit(res.data))
         .then(() => this.setState({ first_name: '', last_name: '', email: '', password: '' }))
-        .catch((resp, msg) => { 
-        		console.log('Error');
-        		console.log(resp);
-        		console.log(msg)
-        });
+        .catch(err => {
+        		// Dispatch specific "some resources failed" if needed...
+        		dispatch({type: FETCH_RESOURCES_FAIL});
+
+	        // Dispatch the generic "global errors" action
+	        // This is what makes its way into state.errors
+	        dispatch({type: USER_REGISTER_ERROR, error: err});
+      });
         
     } else {
       return axios.patch(`http://api.he2examples.local/users${userToEdit._id}`, {

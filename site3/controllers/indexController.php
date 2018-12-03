@@ -22,9 +22,11 @@ class indexController extends baseController {
 	
 	public function contact() : array {
 		
-		$contact = new ContactSubmissions();
+		$contact = new PVCollection($this -> registry -> post);
 		
-		if($this -> registry -> post && $contact -> create($this -> registry -> post)) {
+		if($this -> registry -> post && $this -> validate('contact', 'create', $this -> registry -> post)) {
+			$contact = $this -> _models -> createContact($this -> registry -> post);
+			
 			PVTemplate::successMessage('Contact form has been succesfully submited');
 		}
 		

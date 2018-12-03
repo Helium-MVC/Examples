@@ -1,5 +1,7 @@
 # Site 2 With Angular, UUIDs and Advanced Concepts
 
+#### Difficulty Rate: 5/10
+
 Welcome to Site 2. Unlike the first site, this is implemented with a few advanced features and designed to scale vertically.
 
 ## Postgresql
@@ -60,7 +62,7 @@ The RedisCache is loaded in the libraries during the bootstrap. You can view thi
 PVLibraries::addLibrary('RedisCache', array('explicit_load' => true));
 ?>
 ```
-In site2\config\libraries.php, look around to see other libraries loaded for Site 2.
+In `site2\config\libraries.php`, look around to see other libraries loaded for Site 2.
 
 ## AngularJS
 

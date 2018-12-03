@@ -112,6 +112,47 @@ class ValidationFacade {
 	}
 	
 	/**
+	 * Validate a contact object before attempting to create or update it.
+	 * 
+	 * @param string $action. Normally either create or update, but custom validation rules can be added
+	 * @param array $data And array of values to validate against
+	 * @param boolean $display If set to true, will write the errors out to the template
+	 * 
+	 * @return boolean Etierh returns true or false
+	 */
+	public function checkContact($action, array $data, bool $display = true) : bool {
+		$valid = true;
+		
+		//Reset the errors array
+		$this -> _errors = array();
+		
+		if($action == 'create' || $action == 'update') {
+			if(!\PVValidator::check('notempty', $data['name'])) {
+				$this -> _errors[] = 'Name is required.';
+			}
+
+			if(!\PVValidator::check('notempty', $data['email'])) {
+				$valid = false;
+				$this -> _errors[] = 'Email is required';
+			}
+			
+			if(!\PVValidator::check('notempty', $data['message'])) {
+				$valid = false;
+				$this -> _errors[] = 'Message is required';
+			}
+		}
+		
+		
+		$this -> _isValid = $valid;
+		
+		if($display) {
+			$this -> _displayErrors();
+		}
+		
+		return $valid;
+	}
+	
+	/**
 	 * Return the errors that have been found
 	 * 
 	 * @return array

@@ -25,22 +25,27 @@ PVCache::init(array());
 	
 	//Create a new cache if cache does not exist
 	if(PVCache::hasExpired($cache_name)) {
+			
 		//Call the controller and get the data
 		$data = $controller -> $action();
 		
 		//Check if redirect was sent
 		if($data instanceof prodigyview\helium\Redirect) {
+				
 			$data -> executeRedirect();
 		}else if(isset($data['disable_cache'])) {
+				
 			//Returned if cache is distabled
 			return $data;
 		} else {
+				
 			//Write the data to a cache file
 			PVCache::writeCache($cache_name, $data);
 		}
 		
 		return $data;
 	} else {
+			
 		//Return cached data
 		//Never has to call the controller
 		return PVCache::readCache($cache_name);

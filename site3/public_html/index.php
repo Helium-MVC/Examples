@@ -49,8 +49,11 @@ prodigyview\helium\He2App::addObserver('prodigyview\helium\He2App::_initRegistry
   //Load the site boostrap
   include SITE_PATH.'config/bootstrap.php';
    
+   $redis = new \Redis();
+   $redis->connect(\PVConfiguration::getConfiguration('redis') -> host, \PVConfiguration::getConfiguration('redis') -> port);
+   
   //Set the model and service used for session handling
-  app\services\session\SessionService::initializeSession(app\services\session\WebSessionService::initializeSession('app\models\basic\Sessions'), $write_to_cookie = true);
+  app\services\session\SessionService::initializeSession(app\services\session\RedisSessionService::initializeSession($redis));
   
 }, array('type' => 'closure'));
 

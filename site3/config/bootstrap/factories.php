@@ -3,7 +3,7 @@ use app\factories\ServiceFactory;
 
 /**
  * In this secion we are going to add servives to our ServiceFactory. To review, the Factory Design Pattern
- * is creates an object you want to use.
+ * creates an object you want to use with a single and simplified call.
  * 
  * We include this file in the bootstrap.php to activate it and then we can use it throughout this site.
  */

@@ -94,7 +94,7 @@ class usersController extends baseController {
 	
 	public function account() : array  {
 		
-		$user = $this -> _models -> retrieveUser($this -> registry -> route['id']);
+		$user = $this -> _models -> retrieveUser($this -> _session -> read('id'));
 		
 		if(!$user) {
 			return $this -> error404(array('post_id' => $this -> registry -> route['id']),  'User Not Found');

@@ -193,7 +193,7 @@ Coming over to our `site3/config/bootstrap/cache.php`, we have created an anonym
 
 And just like that, we are caching the output so our site should now load faster!
 
-## Microserver Logging Setup
+## Microservice Logging Setup
 
 In our next example, we are going to use logging as a microservice. Start by going go Loggly.com and registering for a free account. After you do, find the http key. Afterwards go to `app/config/config.php` and enter the key into loggly api section:
 

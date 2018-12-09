@@ -87,6 +87,40 @@ new Vue({
 			});
 		},
 		//Executes when a user registers
+		login : function() {
+			
+			//Save the scope
+			let that = this;
+
+			//Get the data
+			let data = {
+				email : this.email,
+				password : this.password,
+			};
+
+			//Attempt to register user
+			axios.post('/api/loginUser', data).then(function(res) {
+				that.successMessage = '<div class="alert alert-success" role="alert">Information successfully updated</div>';
+				
+				window.location = '/users/profile/' + res.data.user_id;
+				
+				setTimeout(function() {
+					that.generalSuccessMessage = '';
+				}, 6000);
+
+			}).catch(function(err) {
+				
+				if (err && err.response) {
+					
+					that.errorMessage = '<div class="alert alert-danger" role="alert">' + err.response.data + '</div>';
+
+					setTimeout(function() {
+						that.errorMessage = '';
+					}, 6000);
+				}
+			});
+		},
+		//Executes when a user registers
 		register : function() {
 			
 			//Save the scope

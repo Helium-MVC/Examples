@@ -15,6 +15,22 @@ include('baseController.php');
  */
 class apiController extends baseController {
 	
+	
+	public function __construct($registry, $configurtion = array()) {
+		parent::__construct($registry, $configurtion );
+		
+		//Create our own customer error handler to ensure a 200 in not returned
+		/*set_error_handler(function($errno, $errstr, $errfile, $errline ) {
+			$message = $errstr. ' in '. $errfile . ' at ' . $errline;
+		   
+			echo PVResponse::createResponse(400,   $message);
+			xdebug_print_function_stack($message,XDEBUG_STACK_NO_DESC);
+		   
+			exit();
+		});*/
+		
+	}
+	
 	public function index() : array  {
 		
 		
@@ -148,7 +164,7 @@ class apiController extends baseController {
 			));
 			
 			$this -> _jsonResponse($model -> getIterator() -> getData());
-		} else if($this -> registry -> post) {
+		} else {
 			echo PVResponse::createResponse(404, 'Invalid Username/Password' );
 		}
 		

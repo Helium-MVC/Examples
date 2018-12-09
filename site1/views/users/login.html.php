@@ -13,18 +13,18 @@ PVLibraries::enqueueJavascript('components/accounts.js');
 				
 				<div class="form-group">
 					<label>Email Address</label>
-					<input type="email" class="form-control" maxlength="255" name="email" v-model="title" value="<?= $user -> email; ?>" />
+					<input type="email" class="form-control" maxlength="255" name="email" v-model="email" value="<?= $user -> email; ?>" />
 				</div>
 				
 				<div class="form-group">
 					<label>Password</label>
-					<input type="password" class="form-control" maxlength="255" name="password" v-model="title" value="" />
+					<input type="password" class="form-control" maxlength="255" name="password" v-model="password" value="" />
 				</div>
 				<?php if($failed_login_attempts): ?>
 					<p><strong>Failed Login Attempts:</strong> <?= $failed_login_attempts; ?></p>
 				<?php endif; ?>
 				<br>
-				<div id="success"></div>
+				<span v-html="errorMessage"></span>
 				<div class="form-group text-center">
 					<button type="submit" class="btn btn-primary" id="sendMessageButton">
 						Login

@@ -1,4 +1,4 @@
-export default (state={users: []}, action) => {
+export default (state={}, action) => {
   switch(action.type) {
     case 'HOME_PAGE_LOADED':
       return {
@@ -6,10 +6,7 @@ export default (state={users: []}, action) => {
         users: action.data.users,
       };
     case 'USER_REGISTER':
-      return {
-        ...state,
-        users: ([action.data.user]).concat(state.user),
-      };
+      return action.res.data;
     case 'USER LOGIN':
       return {
         ...state,

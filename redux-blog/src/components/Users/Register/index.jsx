@@ -11,6 +11,7 @@ class Register extends React.Component {
       last_name: '',
       email: '',
       password: '',
+      errorMessage: '',
     }
 
     this.handleChangeField = this.handleChangeField.bind(this);
@@ -22,10 +23,11 @@ class Register extends React.Component {
   }
 
   handleSubmit(){
-    const { onSubmit, userToEdit, onEdit } = this.props;
-    const { first_name, last_name, email, password } = this.state;
+    const { onSubmit, userToEdit, onEdit} = this.props;
+    const { first_name, last_name, email, password, errorMessage } = this.state;
 
     if(!userToEdit) {
+    		console.log('Post');
       return axios.post('http://api.he2examples.local/users', {
         first_name,
         last_name,
@@ -33,17 +35,17 @@ class Register extends React.Component {
         password,
       })
         .then((res) => onSubmit(res.data))
-        .then(() => this.setState({ first_name: '', last_name: '', email: '', password: '' }))
-        .catch(err => {
-        		// Dispatch specific "some resources failed" if needed...
-        		dispatch({type: FETCH_RESOURCES_FAIL});
-
-	        // Dispatch the generic "global errors" action
-	        // This is what makes its way into state.errors
-	        dispatch({type: USER_REGISTER_ERROR, error: err});
+        //.then(() => this.setState({ first_name: '', last_name: '', email: '', password: '' }))
+        .catch(error => {
+        		
+        		if (error.response) {
+        			this.setState({ errorMessage : error.response.data})
+        		}
+        		
       });
         
     } else {
+    		console.log('Patchas');
       return axios.patch(`http://api.he2examples.local/users${userToEdit._id}`, {
         first_name,
         last_name,
@@ -63,11 +65,12 @@ class Register extends React.Component {
 
   render() {
     const { userToEdit } = this.props;
-    const { first_name, last_name, email, password } = this.state;
+    const { first_name, last_name, email, password, errorMessage } = this.state;
 
     return (
       <div className="col-12 col-lg-6 offset-lg-3">
       	<h1>Register To The Site</h1>
+      	
         <input
           onChange={(ev) => this.handleChangeField('first_name', ev)}
           value={first_name}
@@ -93,6 +96,7 @@ class Register extends React.Component {
           className="form-control my-3"
           placeholder="Enter Your Password"
         />
+        <div className="alert alert-danger">{errorMessage}</div>
         <button onClick={this.handleSubmit} className="btn btn-primary float-right">{userToEdit ? 'Update' : 'Submit'}</button>
       </div>
     )

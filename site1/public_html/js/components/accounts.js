@@ -22,6 +22,7 @@ new Vue({
 		bio : '',
 		github_profile : '',
 		password : '',
+		csrf_token : '',
 		//TinyMCE Config
 		tinymceConfig : {
 			theme : 'modern',
@@ -96,6 +97,7 @@ new Vue({
 			let data = {
 				email : this.email,
 				password : this.password,
+				csrf_token : this.csrf_token
 			};
 
 			//Attempt to register user
@@ -132,6 +134,7 @@ new Vue({
 				last_name : this.last_name,
 				email : this.email,
 				password : this.password,
+				csrf_token : this.csrf_token
 			};
 
 			//Attempt to register user
@@ -168,6 +171,7 @@ new Vue({
 				last_name : this.last_name,
 				bio : this.bio,
 				github_profile : this.github_profile,
+				csrf_token : this.csrf_token
 				
 			};
 
@@ -232,6 +236,7 @@ new Vue({
 			let data = {
 				user_id : this.user_id,
 				email : this.email,
+				csrf_token : this.csrf_token
 			};
 
 			//Attempt to update the user

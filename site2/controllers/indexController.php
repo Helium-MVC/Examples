@@ -25,7 +25,7 @@ class indexController extends baseController {
 		
 		$contact = new ContactSubmissions();
 		
-		if($this -> registry -> post && $contact -> create($this -> registry -> post)) {
+		if($this -> registry -> post && $this->Token->check($this -> registry -> post) && $contact -> create($this -> registry -> post)) {
 			PVTemplate::successMessage('Contact form has been succesfully submited');
 		}
 		

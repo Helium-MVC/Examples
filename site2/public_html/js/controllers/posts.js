@@ -13,7 +13,7 @@ function($scope, Posts, $timeout, messageTimeout, $sce) {
 		}, function(response) {
 
 			//Assign the post data to a scope
-			$scope.data = response;
+			$scope.data = Object.assign($scope.data, response);
 		});
 	};
 

@@ -15,6 +15,9 @@
 						No
 					</button>
 				</div>
+				
+				<!-- CSFR Token For Security -->
+				<input type="hidden" name="delete_token" value="<?= $this -> CSRF -> getCSRFTokenInput('post_token'); ?>" />
 			</form>
 		</div>
 	</div>

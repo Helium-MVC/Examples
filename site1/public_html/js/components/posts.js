@@ -15,6 +15,7 @@ new Vue({
 		content : '',
 		user_id : 0,
 		is_published : 1,
+		csrf_token : '',
 		tinymceConfig : {
 			theme : 'modern',
 			menubar : false,
@@ -58,6 +59,7 @@ new Vue({
 				title : this.title,
 				content : this.content,
 				is_published : this.is_published,
+				csrf_token : this.csrf_token
 			};
 
 			//save the scope
@@ -105,7 +107,8 @@ new Vue({
 				title : this.title,
 				content : this.content,
 				is_published : this.is_published,
-				post_id : this.post_id
+				post_id : this.post_id,
+				csrf_token : this.csrf_token
 			};
 
 			//Save the scpoe

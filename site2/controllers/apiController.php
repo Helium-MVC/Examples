@@ -15,6 +15,24 @@ include('baseController.php');
  */
 class apiController extends baseController {
 	
+	//Store the data recieved in in the request
+	private $_data = array();
+	
+	public function __construct($registry, $configurtion = array()) {
+		parent::__construct($registry, $configurtion );
+		
+		//Get the request. PVRequest is a ProdigyView method
+		$request = new PVRequest();
+		$this-> _data = $request->getRequestData('array');
+		
+		//Deny any request that has an invalid CSRF Token
+		if($request->getRequestMethod() === 'post' && !$this ->Token->check($this -> _data)) {
+			echo PVResponse::createResponse('400', 'CSRF Tokens Are Invalud');
+			exit();
+		}
+		
+	}
+	
 	public function index() : array  {
 		
 		
@@ -28,10 +46,7 @@ class apiController extends baseController {
 		
 		$model = new Users();
 		
-		$data = file_get_contents("php://input");
-		$data = $this -> _formatInput($data);
-		
-		if($model -> create($data, array('validate_options' => array('display' => false, 'event' => 'create')))) {
+		if($model -> create($this->_data, array('validate_options' => array('display' => false, 'event' => 'create')))) {
 			AuthenticationService::forceLogin($model -> email);
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else {
@@ -46,14 +61,11 @@ class apiController extends baseController {
 	 */
 	public function updateUser() : array {
 		
-		$data = file_get_contents("php://input");
-		$data = $this -> _formatInput($data);
-		
 		$model = Users::findOne(array(
-			'conditions' => array('user_id' => $data['user_id'])
+			'conditions' => array('user_id' => $this->_data['user_id'])
 		));
 		
-		if($model && $model -> update($data, array('validate_options' => array('display' => false, 'event' => 'update')))) {
+		if($model && $model -> update($this->_data, array('validate_options' => array('display' => false, 'event' => 'update')))) {
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else if(!$model) {
 			echo PVResponse::createResponse(404, 'User Not Found' );
@@ -69,19 +81,18 @@ class apiController extends baseController {
 	 */
 	public function updateEmail() : array {
 		
-		$data = file_get_contents("php://input");
-		$data = $this -> _formatInput($data);
+		
 		
 		$model = Users::findOne(array(
-			'conditions' => array('user_id' => $data['user_id'])
+			'conditions' => array('user_id' => $this->_data['user_id'])
 		));
 		
 		$tmp_user = Users::findOne(array(
-			'conditions' => array('email' => $data['email'] )
+			'conditions' => array('email' => $this->_data['email'] )
 		));
 				
 		if(!$tmp_user || $tmp_user -> user_id = SessionService::read('user_id')) {
-			if($model -> update(array('email' => $data['email']), array('validate_options' => array('display' => false, 'event' => 'update')))){
+			if($model -> update(array('email' => $this->_data['email']), array('validate_options' => array('display' => false, 'event' => 'update')))){
 				$this -> _jsonResponse($model -> getIterator() -> getData());
 			} else {
 				$this -> _errorResponse($model);
@@ -98,14 +109,13 @@ class apiController extends baseController {
 	 */
 	public function updatePassword() : array {
 		
-		$data = file_get_contents("php://input");
-		$data = $this -> _formatInput($data);
+		
 		
 		$model = UserPasswords::findOne(array(
-			'conditions' => array('user_id' => $data['user_id'])
+			'conditions' => array('user_id' => $this->_data['user_id'])
 		));
 		
-		if($model && $model -> update($data, array('validate_options' => array('display' => false, 'event' => 'update')))) {
+		if($model && $model -> update($this->_data, array('validate_options' => array('display' => false, 'event' => 'update')))) {
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else if(!$model) {
 			echo PVResponse::createResponse(404, 'User Not Found' );
@@ -139,12 +149,11 @@ class apiController extends baseController {
 	 */
 	public function login() {
 		
-		$data = file_get_contents("php://input");
-		$data = $this -> _formatInput($data);
 		
-		if($data && AuthenticationService::authenticate($data['email'], $data['password'])) {
+		
+		if($this->_data && AuthenticationService::authenticate($this->_data['email'], $this->_data['password'])) {
 			$model = Users::findOne(array(
-				'conditions' => array('email' => $data['email'])
+				'conditions' => array('email' => $this->_data['email'])
 			));
 			
 			$this -> _jsonResponse($model -> getIterator() -> getData());
@@ -162,10 +171,9 @@ class apiController extends baseController {
 		
 		$model = new Posts();
 		
-		$data = file_get_contents("php://input");
-		$data = $this -> _formatInput($data);
 		
-		if($model -> create($data, array('validate_options' => array('display' => false, 'event' => 'create')))) {
+		
+		if($model -> create($this->_data, array('validate_options' => array('display' => false, 'event' => 'create')))) {
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else {
 			$this -> _errorResponse($model);
@@ -179,14 +187,11 @@ class apiController extends baseController {
 	 */
 	public function updatePost() : array {
 		
-		$data = file_get_contents("php://input");
-		$data = $this -> _formatInput($data);
-		
 		$model = Posts::findOne(array(
-			'conditions' => array('post_id' => $data['post_id'])
+			'conditions' => array('post_id' => $this->_data['post_id'])
 		));
 		
-		if($model && $model -> update($data, array('validate_options' => array('display' => false, 'event' => 'update')))) {
+		if($model && $model -> update($this->_data, array('validate_options' => array('display' => false, 'event' => 'update')))) {
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else if(!$model) {
 			echo PVResponse::createResponse(404, 'Post Not Found' );
@@ -230,16 +235,6 @@ class apiController extends baseController {
 		
 	}
 	
-	/**
-	 * Formats the input to be ingested by the mosted
-	 */
-	protected function _formatInput($data) {
-		if(is_string($data)){
-			$data = json_decode($data,true);
-		}
-		
-		return $data;
-	}
 	
 	/**
 	 * Creates a JSON Response
@@ -272,7 +267,7 @@ class apiController extends baseController {
 
 		foreach ($errors as $error) {
 			foreach($error as $suberror) {
-				$string .= '<div class="alert alert danger">' . $suberror . '</div>';
+				$string .= '<div class="alert alert-danger">' . $suberror . '</div>';
 			}
 		}
 		

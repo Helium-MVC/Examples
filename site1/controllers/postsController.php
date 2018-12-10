@@ -49,7 +49,7 @@ class postsController extends baseController {
 		
 		$post = new Posts();
 		
-		if($this -> registry -> post && $post -> create($this -> registry -> post)) {
+		if($this -> registry -> post && $this->Token->check('post_token', $this -> registry -> post['csrf_token']) && $post -> create($this -> registry -> post)) {
 				
 			if(isset($this -> registry -> files['header_image'] ) && $this -> registry -> files['header_image']['error'] == 0 && PVValidator::isImageFile(PVFileManager::getFileMimeType($this -> registry -> files['header_image']['tmp_name'])) ) {	
 				$image = Images::uploadImage($this -> registry -> files['header_image']['tmp_name']);
@@ -81,7 +81,7 @@ class postsController extends baseController {
 			return$this-> accessdenied(array('post_id' => $this -> registry -> route['id'], 'user_id' =>SessionService::read('user_id') ));
 		}
 		
-		if($this -> registry -> post && $post -> update($this -> registry -> post)) {
+		if($this -> registry -> post && $this->Token->check('post_token', $this -> registry -> post['csrf_token']) && $post -> update($this -> registry -> post)) {
 			
 			if(isset($this -> registry -> files['header_image'] ) && $this -> registry -> files['header_image']['error'] == 0 && PVValidator::isImageFile(PVFileManager::getFileMimeType($this -> registry -> files['header_image']['tmp_name'])) ) {	
 				$image = Images::uploadImage($this -> registry -> files['header_image']['tmp_name']);
@@ -111,7 +111,7 @@ class postsController extends baseController {
 		
 		$comment = new Comments();
 		
-		if($this -> registry -> post && $comment -> create($this -> registry -> post)) {
+		if($this -> registry -> post && $this->Token->check('comment_token', $this -> registry -> post['csrf_token']) && $comment -> create($this -> registry -> post)) {
 			PVTemplate::successMessage('Comment successfully created');
 		}
 		
@@ -138,7 +138,7 @@ class postsController extends baseController {
 			return$this-> accessdenied(array('post_id' => $this -> registry -> route['id'], 'user_id' =>SessionService::read('user_id') ));
 		}
 		
-		if($this -> registry -> post) {
+		if($this -> registry -> post && $this->Token->check('delete_token', $this -> registry -> post['csrf_token'])) {
 			if(isset($this -> registry -> post['yes']) && $post -> update(array('is_deleted' => 1))) {
 				PVTemplate::successMessage('Post successfully deleted.');
 			}

@@ -73,6 +73,8 @@ PVTemplate::appendSiteMetaTags('<meta name="twitter:description" content="'. $th
 										Submit
 									</button>
 								</div>
+								<!-- CSFR Token For Security -->
+								<input type="hidden" name="csrf_token" value="<?= $this -> CSRF -> getCSRFTokenInput('comment_token'); ?>" />
 							</form>
 						</div>
 					</div>

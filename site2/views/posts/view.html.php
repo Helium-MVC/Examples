@@ -68,6 +68,8 @@ PVTemplate::appendSiteMetaTags('<meta name="twitter:description" content="'. $th
 								<br>
 								<input type="hidden" name="post_id" value="<?= $post -> post_id; ?>" />
 								<input type="hidden" name="user_id" value="<?= $this -> Session -> get('user_id'); ?>" />
+								<!--Create CSRF Token For Security -->
+								<?= $this->CSRF->getCSRFTokenInput(); ?>
 								<div class="form-group text-center">
 									<button type="submit" name="update_email" class="btn btn-primary" id="sendMessageButton">
 										Submit

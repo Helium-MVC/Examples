@@ -103,6 +103,8 @@
 					</form>
 				</div>
 			</div>
+			<!--Create CSRF Token For Security -->
+			<?= $this->CSRF->getCSRFTokenInput(); ?>
 		</div>
 	</div>
 </div>

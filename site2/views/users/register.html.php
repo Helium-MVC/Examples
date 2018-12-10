@@ -33,6 +33,8 @@
 				</div>
 				<br>
 				<div ng-bind-html="validationMessage"></div>
+				<!--Create CSRF Token For Security -->
+				<?= $this->CSRF->getCSRFTokenInput(); ?>
 				<div class="form-group text-center">
 					<button type="submit" class="btn btn-primary" id="sendMessageButton" ng-click="register($event)">
 						Create Account

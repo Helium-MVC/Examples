@@ -28,7 +28,7 @@ class usersController extends baseController {
 		
 		$failed_login_attempts = false;
 		
-		if($this -> registry -> post && AuthenticationService::authenticate($this -> registry -> post['email'], $this -> registry -> post['password'])) {
+		if($this -> registry -> post && $this->Token->check($this -> registry -> post) && AuthenticationService::authenticate($this -> registry -> post['email'], $this -> registry -> post['password'])) {
 			PVTemplate::successMessage('Login Successful!');
 			return $this -> redirect('/profile/'. SessionService::read('user_id'));
 		} else if($this -> registry -> post) {
@@ -44,7 +44,7 @@ class usersController extends baseController {
 		
 		$user = new Users();
 		
-		if($this -> registry -> post && $user -> create($this -> registry -> post)) {
+		if($this -> registry -> post && $this->Token->check($this -> registry -> post) && $user -> create($this -> registry -> post)) {
 			PVTemplate::successMessage('Account successfully created!');
 			AuthenticationService::forceLogin($user -> email);
 			return $this -> redirect('/profile/'. SessionService::read('user_id'));
@@ -84,7 +84,7 @@ class usersController extends baseController {
 			return $this -> error404(array('post_id' => $this -> registry -> route['id']),  'User Not Found');
 		}
 		
-		if($this -> registry -> post) {
+		if($this -> registry -> post && $this->Token->check($this -> registry -> post)) {
 			
 			if(isset($this -> registry -> post['update_profile']) && $user -> update($this -> registry -> post)) {
 				

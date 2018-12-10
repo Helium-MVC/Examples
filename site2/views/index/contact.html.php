@@ -36,6 +36,8 @@
 				</div>
 				<br>
 				<div id="success"></div>
+				<!--Create CSRF Token For Security -->
+				<?= $this->CSRF->getCSRFTokenInput(); ?>
 				<div class="form-group">
 					<button type="submit" class="btn btn-primary" id="sendMessageButton">
 						Send

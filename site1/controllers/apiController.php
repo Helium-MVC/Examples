@@ -288,7 +288,7 @@ class apiController extends baseController {
 
 		foreach ($errors as $error) {
 			foreach($error as $suberror) {
-				$string .= '<div class="alert alert danger">' . $suberror . '</div>';
+				$string .= '<div class="alert alert-danger">' . $suberror . '</div>';
 			}
 		}
 		

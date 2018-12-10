@@ -18,3 +18,6 @@
 <div class="form-group">
 	<input type="checkbox" name="is_published" v-model="is_published" value="1" <?= ($post -> is_published || !$post -> post_id) ? 'checked' : ''; ?> /> Is Published
 </div>
+
+<!-- CSFR Token For Security -->
+<input type="hidden" name="csrf_token" v-model="csrf_token" value="<?= $this -> CSRF -> getCSRFTokenInput('post_token'); ?>" />

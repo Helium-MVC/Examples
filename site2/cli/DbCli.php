@@ -19,11 +19,14 @@ class DbCli {
 	 */
 	public function schemacheck() {
 		foreach(PVFileManager::getFilesInDirectory(PV_ROOT. DS. 'app/models/uuid'.DS) as $key => $value) {
-			$class_name = "app\models\uuid\\".str_replace('.php', '', $value);
-			
-			echo $class_name. "\n";
-			$object = new $class_name();
-			$object -> checkSchema(true);
+				
+			if($value !== 'PGModel.php') {
+				$class_name = "app\models\uuid\\".str_replace('.php', '', $value);
+				
+				echo $class_name. "\n";
+				$object = new $class_name();
+				$object -> checkSchema(true);
+			}
 			
 		}
 	}

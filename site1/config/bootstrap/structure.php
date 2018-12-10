@@ -5,13 +5,6 @@
  */
 
 //Define Template Directory
-define('PV_LIBRARIES', SITE_PATH.DS.'libraries'.DS);
-//Define Template Directory
-define('PV_TEMPLATES', SITE_PATH.DS.'templates'.DS);
-
-define('PUBLIC_HTML', SITE_PATH.DS.'public_html'.DS);
-
-define('PV_TMP', PUBLIC_HTML.'tmp'.DS);
 
 /**
  * Javascript & CSS File Locations
@@ -37,26 +30,3 @@ define('PV_CSS', '/assets/css/');
 //Define CSS Root
 define('PV_ADMIN_CSS', '/assets/css/');
 
-/**
- * Media Files Locations
- */
-//Define Image Directory
-define('PV_IMAGE', '/media/images/');
-//Define Video Directory
-define('PV_VIDEO', '/media/video/');
-//Define Audio Directory
-define('PV_AUDIO', '/media/audio/');
-//Define Audio Directory
-define('PV_FILE', '/media/files/');
-
-/**
- * Applications and Plugin Locations
- */
-//Define Applications Directory
-define('PV_APPLICATIONS', SITE_PATH.DS.'apps'.DS.'front'.DS);
-//Define Applications Admin Directory
-define('PV_ADMIN_APPLICATIONS', SITE_PATH.DS.'apps'.DS.'admin'.DS);
-//Define Plugins Directory
-define('PV_PLUGINS',  SITE_PATH.DS.'plugins'.DS);
-//Define is Admin
-define('PV_IS_ADMIN', TRUE);

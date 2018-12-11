@@ -1,19 +1,20 @@
 # He2MVC - Minimalist Framework For Rapid Prototyping
-### What is Helium, why does it exist and who is it for?
 
-Welcome to the Helium Examples! This examples are designed to help you learn the many capabilits of not only framework but of many programming concepts.
+Welcome to the Helium Examples! These examples are designed to help you learn the many capabilits of not only framework but of many programming concepts as well.
 One of Heliums goals is to create the freedom of choice, and allow developers and teams to come up with their own "right way" for building their products.
 
 The example sites can be a beneficial learning lesson for both new and experienced developers.
 #### Topics, technologies and skills include:
 - Browser Sessions and Database Sessions
-- AngularJS and VueJS implementation
+- AngularJS, VueJS, React implementations
 - Microservices
 - Design Patterns: Dependency Injection, Adapters, Filters, Observers
 - Functional Programming
 - Mysql, Postgresql, MongoDB, Firebase
 - UUID for databases
 - Nginx Virtual Hosts
+- Protopying API
+- Security Features - CSFR Tokens, API, Authentication
 - and more
 
 ## Getting Started

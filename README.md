@@ -18,7 +18,7 @@ The example sites can be a beneficial learning lesson for both new and experienc
 - and more
 
 ## Getting Started
-Wow, you're still reading!? I must have caught your attention. Getting started is relatively quickly. We use docker to get setup promptly. To begin.
+Getting started is relatively quickly. We use docker to get setup promptly. To begin, follow the steps below.
 
 **1) Download Docker**
 

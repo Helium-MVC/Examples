@@ -29,25 +29,8 @@ define('HELIUM', PV_ROOT.DS.'vendor'.DS.'prodigyview'.DS.'helium'.DS );
 
 include(PV_ROOT.DS.'vendor'.DS. 'autoload.php');
 
- /*** include the controller class ***/
- include HELIUM .  'controller.class.php';
 
- /*** include the registry class ***/
- include HELIUM .  'registry.class.php';
-
- /*** include the router class ***/
- include HELIUM . 'router.class.php';
-
- /*** include the template class ***/
- include HELIUM. 'template.class.php';
- 
-  /*** include the template class ***/
- include HELIUM .  'model.class.php';
- 
-   /*** include the template class ***/
- include HELIUM .  'app.class.php'; 
-
-prodigyview\helium\He2App::addObserver('prodigyview\helium\He2App::_initRegistry', 'read_closure', function() {
+\prodigyview\helium\He2App::addObserver('prodigyview\helium\He2App::_initRegistry', 'read_closure', function() {
 	
   //Boot the required files
   include SITE_PATH.'config/bootstrap.php';

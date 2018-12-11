@@ -29,26 +29,6 @@ define('PV_TMP', PUBLIC_HTML.'tmp'.DS);
 
 include(PV_ROOT.DS.'vendor'.DS. 'autoload.php');
 
- /*** include the controller class ***/
- include HELIUM .  'controller.class.php';
-
- /*** include the registry class ***/
- include HELIUM .  'registry.class.php';
-
- /*** include the router class ***/
- include HELIUM . 'router.class.php';
-
- /*** include the template class ***/
- include HELIUM. 'template.class.php';
- 
-  /*** include the template class ***/
- include HELIUM .  'model.class.php';
- 
-   /*** include the template class ***/
- include HELIUM .  'app.class.php';
- 
- include HELIUM .  'console.class.php';
-
 $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 
 prodigyview\helium\HeliumConsole::addObserver('prodigyview\helium\HeliumConsole::init', 'read_closure', function() {

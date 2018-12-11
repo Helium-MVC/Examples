@@ -11,7 +11,7 @@
     "minimum-stability" : "dev",
     "prefer-stable": true,
     "require": {
-        "prodigyview/helium": "^0.1.3",
+        "prodigyview/helium": "^0.1.6",
         "prodigyview/prodigyview": "dev-master",
         "mongodb/mongodb": "1.1.*",
         "phpmailer/phpmailer": "^6.0",

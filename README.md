@@ -1,20 +1,8 @@
 # He2MVC - Minimalist Framework For Rapid Prototyping
 ### What is Helium, why does it exist and who is it for?
 
-Development for startups involves rapid prototyping and MVPs in very short time periods to deliver production-ready solutions within a week to a month. If done incorrectly, it will create very high technical debt and make a business harder to scale.
-
-In response, I wanted to develop a solution with enough structure to make code easy to maintain, flexibility to respond to crazy demands quickly, while allowing the freedom and creativity to do things your way. Competing interests.
-
-If you want to install a few packages to create a product quickly in a cookie cutter approach, **this framework is NOT for you**. Helium (He2MVC) is a minimalist framework that focuses on giving the developer a few guidelines and the freedom to explore and "innovate" (for better or for worse). This means it is your choice if you want to use Factories, Facades, Dependency Injection or which ever approach you like. 
-
-#### The developers that I hope consider this framework are:
-- Developers that learn rules and conventions, only to break them
-- Developers that want sites to load in 100ms to 500ms without cache(my record is 93ms)
-- Developers that like to try new technologies and want to explore
-- Developers that are bored of doing what everyone else does
-- Developers that want to develop quickly with almost no safety nets
-- Developers that like Dragon Ball, Dragon Ball Z, Dragon Ball Super or Dragon Ball TFS Abridged
-- Developers with a sense of humor
+Welcome to the Helium Examples! This examples are designed to help you learn the many capabilits of not only framework but of many programming concepts.
+One of Heliums goals is to create the freedom of choice, and allow developers and teams to come up with their own "right way" for building their products.
 
 The example sites can be a beneficial learning lesson for both new and experienced developers.
 #### Topics, technologies and skills include:

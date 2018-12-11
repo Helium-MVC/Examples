@@ -8,7 +8,7 @@ if(isset($_SERVER['ENV']) && $_SERVER['ENV'] == 'production'){
 	ini_set('display_errors','On');
 }
 
-error_reporting(E_ALL  & ~E_DEPRECATED ); 
+error_reporting(E_ALL ); 
 
 //Define Directory Seperator
 define('DS', DIRECTORY_SEPARATOR);

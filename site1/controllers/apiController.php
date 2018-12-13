@@ -19,6 +19,18 @@ class apiController extends baseController {
 	public function __construct($registry, $configurtion = array()) {
 		parent::__construct($registry, $configurtion );
 		
+		/**
+		 * A simple check that ensures the request is coming from someone that has an
+		 * access token and is the same session as the current session
+		 */
+		 $request = new PVRequest();
+		 $authorization = $request -> getHeader('Authorization');
+		 
+		 if($authorization != SessionService::read('api_token')) {
+		 	echo PVResponse::createResponse(400,  'Invalid Token Sent');
+			exit();
+		 }
+		
 		//Create our own customer error handler to ensure a 200 in not returned
 		/*set_error_handler(function($errno, $errstr, $errfile, $errline ) {
 			$message = $errstr. ' in '. $errfile . ' at ' . $errline;

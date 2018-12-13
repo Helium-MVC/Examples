@@ -96,9 +96,8 @@
 				</div>
 			</div>
 		</footer>
-
+		<?= $this-> Session -> generateApiToken(); ?>
 		<?php include('_javascript.html.php'); ?>
-
 	</body>
 
 </html>

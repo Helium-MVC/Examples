@@ -1,10 +1,11 @@
 <?php
 namespace app\models\basic;
 
+use app\models\HModel;
 use app\services\EmailService;
 use app\services\LoggingService;
 
-class ContactSubmissions extends PGModel {
+class ContactSubmissions extends HModel {
 	
 	//Virtual Schema
 	protected $_schema = array(

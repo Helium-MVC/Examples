@@ -21,13 +21,35 @@ class apiController extends baseController {
 	public function __construct($registry, $configurtion = array()) {
 		parent::__construct($registry, $configurtion );
 		
+		/**
+		 * In the first part of the controller, we are going to validate the CSFR token for POST
+		 * request 
+		 */
+		 
 		//Get the request. PVRequest is a ProdigyView method
 		$request = new PVRequest();
 		$this-> _data = $request->getRequestData('array');
 		
 		//Deny any request that has an invalid CSRF Token
 		if($request->getRequestMethod() === 'post' && !$this ->Token->check($this -> _data)) {
-			echo PVResponse::createResponse('400', 'CSRF Tokens Are Invalud');
+			echo PVResponse::createResponse('400', 'CSRF Tokens Are Invalid');
+			exit();
+		}
+		
+		/**
+		 * In the part,we are going to validate the api key to ensure
+		 * the user has access to the api.
+		 */
+		$public_key = $this -> registry -> get['api_key'];
+		
+		$signature = $this -> registry -> get['sig'];
+		
+		$private_key = SessionService::read('api_token');
+		
+		$session_signature = PVSecurity::encodeHmacSignature($public_key, $private_key);
+		
+		if($signature != $session_signature) {
+			echo PVResponse::createResponse('400', 'Invalid API Verification');
 			exit();
 		}
 		

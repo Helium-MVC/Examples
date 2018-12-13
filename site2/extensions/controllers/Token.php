@@ -29,6 +29,10 @@ class Token {
 		
 		$stored_token = $redis -> get($token_name);
 		
+		if(!$stored_token) {
+			return false;
+		}
+		
 		return hash_equals($token_value, $stored_token);
 		
 	}

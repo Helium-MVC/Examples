@@ -23,6 +23,8 @@
 	<script type="text/javascript" src="/js/libs/tinymce/tinymce.min.js"></script>
 	<!-- Vue Library -->
 	<script type="text/javascript" src="/js/libs/vue/vue.js"></script>
+	<!-- Vue Library -->
+	<script type="text/javascript" src="/js/libs/vue/vue-resource.js"></script>
 	
 	<!-- Image Cropper for Vue -->
 	<script type="text/javascript" src="/js/libs/vue-croppa.min.js"></script>

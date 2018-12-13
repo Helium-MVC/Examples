@@ -5,6 +5,8 @@ var AngularApp = angular.module('Site2App', ['ngResource', 'ngSanitize', 'ngRout
 //Set contants to be used across the app
 AngularApp.value('api_domain', '/api');
 AngularApp.value('messageTimeout', 20000);
+AngularApp.value('api_public_key', angular.element(document.getElementById('api_public_key')).val());
+AngularApp.value('api_signature', angular.element(document.getElementById('api_signature')).val());
 
 //Make other js/node libraries as null
 var exports = undefined;

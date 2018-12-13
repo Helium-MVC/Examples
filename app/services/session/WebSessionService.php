@@ -19,6 +19,11 @@ class WebSessionService implements SessionInterface {
 	public static function initializeSession($model = null, $write_to_cookie = true) {
 		
 		self::$_write_to_cookie= $write_to_cookie;
+		
+		if(!self::read('api_token')) {
+			self::write('api_token', \PVSecurity::generateToken(20));
+		}
+		
 		return get_class();
 	}
 	

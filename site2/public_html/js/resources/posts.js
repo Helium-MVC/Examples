@@ -1,9 +1,9 @@
-AngularApp.factory('Posts', ['$resource', 'api_domain', function($resource, api_domain ) {
-return $resource( api_domain + '/gs/:id', null,
+AngularApp.factory('Posts', ['$resource', 'api_domain', 'api_public_key', 'api_signature', function($resource, api_domain, api_public_key, api_signature) {
+return $resource( api_domain + '/posts/:id', null,
     {
-        'save': { method:'POST', url: '/api/createPost' },
-        'update': { method:'POST', url: '/api/updatePost' },
-        'get': {method : 'GET', url : '/api/findPost'}
+        'save': { method:'POST', url: '/api/createPost?api_key='+ api_public_key +'&sig=' + api_signature },
+        'update': { method:'POST', url: '/api/updatePost?api_key='+ api_public_key +'&sig=' + api_signature },
+        'get': {method : 'GET', url : '/api/findPost?api_key='+ api_public_key +'&sig=' + api_signature}
         
     });
 }]);

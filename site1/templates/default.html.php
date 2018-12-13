@@ -97,7 +97,7 @@
 				</div>
 			</div>
 		</footer>
-
+		<input type="hidden" name="api_token" value="<?= $this -> Session -> get('api_token'); ?>" id="api_token" />
 		<?php include('_javascript.html.php'); ?>
 		<!-- Replaces with appended javascript -->
 		{HEADER_ADDITION}

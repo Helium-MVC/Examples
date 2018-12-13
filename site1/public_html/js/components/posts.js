@@ -2,6 +2,17 @@ Vue.use(axios);
 Vue.use(Croppa);
 Vue.use(VueMce);
 
+let HTTP = axios.create({
+  baseURL: '/api',
+  transformRequest: [function (data, headers) {
+    headers['Authorization'] = document.getElementById('api_token').value;
+    return JSON.stringify(data)
+  }],
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
 new Vue({
 	el : "#app",
 	data : {

@@ -1,6 +1,6 @@
 # He2MVC - Minimalist Framework For Rapid Prototyping
 
-Welcome to the Helium Examples! These examples are designed to help you learn the many capabilits of not only framework but of many programming concepts as well.
+Welcome to the Helium Examples! These examples are designed to help you learn the many capabilits of not only the framework but of many core programming concepts as well.
 One of Heliums goals is to create the freedom of choice, and allow developers and teams to come up with their own "right way" for building their products.
 
 The example sites can be a beneficial learning lesson for both new and experienced developers.
@@ -18,7 +18,7 @@ The example sites can be a beneficial learning lesson for both new and experienc
 - and more
 
 ## Getting Started
-Getting started is relatively quickly. We use docker to get setup promptly. To begin, follow the steps below.
+Getting started is relatively quickly. We use docker to get setup promptly. To begin.
 
 **1) Download Docker**
 
@@ -47,7 +47,7 @@ A quick way to do this:
 echo '127.0.0.1       site1.he2examples.local' | sudo tee -a /etc/hosts
 echo '127.0.0.1       site2.he2examples.local' | sudo tee -a /etc/hosts
 echo '127.0.0.1       site3.he2examples.local' | sudo tee -a /etc/hosts
-echo '127.0.0.1       site4.he2examples.local' | sudo tee -a /etc/hosts
+echo '127.0.0.1       api.he2examples.local' | sudo tee -a /etc/hosts
 ```
 
 ##### 4) Setup Your Config File
@@ -92,19 +92,23 @@ There are 3 example sites provided for you to play around with and understand. T
 
 A break down:
 
-#### api
+#### API - Restful CRUD
+##### Difficulty - 8/10
 The is the api site. This api is special because it was designed for rapid development and creating a CRUD implementation for any model with only a few lines of code.
 
 #### app
-This where the meat of the application lives. This includes modes, libraries, services, email templates, the config, etc.
+This where the meat of the application lives. This includes models, libraries, services, email templates, the config, etc.
 
-#### site1
+#### Site 1 - Mysql, VueJs, Basic MVC Concepts
+##### Difficulty - 2/10
 Site 1 is a beginner example site. It uses MySQL, incremental IDs, cookie sessions, file cache, and VueJS - without NPM. This site will not scale well but services as a good starting point.
 
-#### site2
+#### Site 2 - Postgresql, AngularJS, Advanced MVC Concepts
+##### Difficulty - 5/10
 Site 2 is more advanced than site one with Postgresql, UUID using Instagram's approach, database session, Redis caching, AngularJS - without NPM, and improved access control.
 
-#### site3
+#### Site 3 - Firebase, Microsevices Concept
+##### Difficulty - 8/10
 Site 3 is more of the advanced site. It focuses on uses a microservice approach, assuming that your site will interact with other services. The sessions are in Redis, and starts to take a beginning approach to more functional programming.
 
 ## Special Thanks

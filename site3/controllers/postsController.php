@@ -99,6 +99,28 @@ class postsController extends baseController {
 			PVTemplate::successMessage('Comment successfully created');
 		}
 		
+		
+		//Set the meta data here instead of in tempalte
+		PVTemplate::setSiteTitle($post -> title);
+ 
+		PVTemplate::appendSiteMetaTags('<meta name="description" content="'. $this -> Format -> ogTag(PVTools::truncateText($post -> content, 100)) .'" />');
+		
+		PVTemplate::appendSiteMetaTags('<meta property="og:title" content="'. $this -> Format -> ogTag($post -> title).' "/>');
+		PVTemplate::appendSiteMetaTags('<meta property="og:description" content="'. $this -> Format -> ogTag(PVTools::truncateText($post -> content, 100)) .'">');
+		PVTemplate::appendSiteMetaTags('<meta property="og:url" content="' . PVTools::getCurrentUrl() .'"/>');
+		PVTemplate::appendSiteMetaTags('<meta property="og:site_name" content="Helium MVC"/>');
+		PVTemplate::appendSiteMetaTags('<meta property="og:type" content="website"/>');
+		if($post -> image_id):
+			PVTemplate::appendSiteMetaTags('<meta property="og:image" content="'. $this -> Format -> parseImage($post -> image_large_url) .'" />');
+		 endif;
+		
+		PVTemplate::appendSiteMetaTags('<meta name="twitter:card" content="summary">');
+		PVTemplate::appendSiteMetaTags('<meta name="twitter:site" content="@he2mvc">');
+		PVTemplate::appendSiteMetaTags('<meta name="twitter:creator" content="@he2mvc">');
+		PVTemplate::appendSiteMetaTags('<meta name="twitter:url" content="' . PVTools::getCurrentUrl()  . '">');
+		PVTemplate::appendSiteMetaTags('<meta name="twitter:title" content="'. $this -> Format -> ogTag($post -> title).'">');
+		PVTemplate::appendSiteMetaTags('<meta name="twitter:description" content="'. $this -> Format -> ogTag(PVTools::truncateText($post -> content, 100)) .'">');
+		
 		return array('post' => $post);
 	}
 

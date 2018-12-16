@@ -89,12 +89,32 @@ class usersController extends baseController {
 		
 		$posts = new PVCollection();
 		
-		return array('user' => $user, 'posts' => $posts);
+		//Set The Meta here instead of the view
+		PVTemplate::setSiteTitle($user -> first_name . ' ' . $user -> last_name);
+		PVTemplate::appendSiteMetaTags('<meta name="description" content="'. $this -> Format -> ogTag(PVTools::truncateText($user -> bio, 100)) .'" />');
+		
+		PVTemplate::appendSiteMetaTags('<meta property="og:title" content="'. $this -> Format -> ogTag($user -> first_name . ' ' . $user -> last_name).' "/>');
+		PVTemplate::appendSiteMetaTags('<meta property="og:description" content="'. $this -> Format -> ogTag(PVTools::truncateText($user -> bio, 100)) .'">');
+		PVTemplate::appendSiteMetaTags('<meta property="og:url" content="' . PVTools::getCurrentUrl() .'"/>');
+		PVTemplate::appendSiteMetaTags('<meta property="og:site_name" content="Helium MVC"/>');
+		PVTemplate::appendSiteMetaTags('<meta property="og:type" content="website"/>');
+		if($user -> image_id):
+			PVTemplate::appendSiteMetaTags('<meta property="og:image" content="'. $this -> Format -> parseImage($user -> image_large_url) .'" />');
+		 endif;
+		
+		PVTemplate::appendSiteMetaTags('<meta name="twitter:card" content="summary">');
+		PVTemplate::appendSiteMetaTags('<meta name="twitter:site" content="@he2mvc">');
+		PVTemplate::appendSiteMetaTags('<meta name="twitter:creator" content="@he2mvc">');
+		PVTemplate::appendSiteMetaTags('<meta name="twitter:url" content="' . PVTools::getCurrentUrl()  . '">');
+		PVTemplate::appendSiteMetaTags('<meta name="twitter:title" content="'. $this -> Format -> ogTag($user -> first_name . ' ' . $user -> last_name).'">');
+		PVTemplate::appendSiteMetaTags('<meta name="twitter:description" content="'. $this -> Format -> ogTag(PVTools::truncateText($user -> bio, 100)) .'">');
+		
+		return array('user' => $user, 'posts' => $posts, 'disable_cache' => true);
 	}
 	
 	public function account() : array  {
 		
-		$user = $this -> _models -> retrieveUser($this -> _session -> read('id'));
+		$user = $this -> _models -> retrieveUser($this -> _session -> read('user_id'));
 		
 		if(!$user) {
 			return $this -> error404(array('post_id' => $this -> registry -> route['id']),  'User Not Found');

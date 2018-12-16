@@ -31,7 +31,7 @@ class FirebaseModelFacade {
 	public function createUser(array $data) {
 		
 		//Create Document ID
-		$id = $uuid5 = Uuid::uuid4();
+		$id = $uuid5 = Uuid::uuid4() -> toString();
 				
 		//Assign Values
 		$data['user_id'] = $id;

@@ -1,4 +1,4 @@
-# He2MVC - Minimalist Framework For Rapid Prototyping
+# He2MVC - Minimalist Framework For Startups
 
 Welcome to the Helium Examples! These examples are designed to help you learn the many capabilits of not only the framework but of many core programming concepts 
 used to extend the framework.

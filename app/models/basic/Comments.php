@@ -84,13 +84,15 @@ class Comments extends HModel {
 			$mailer->Body = \MailLoader::loadHtml('post_comment', array('comment' => $this, 'post' => $post, 'poster' => $original_poster, 'commenter' => $commenter));
 			$mailer->AltBody = \MailLoader::loadText('post_comment', array('comment' => $this, 'post' => $post, 'poster' => $original_poster, 'commenter' => $commenter));  
 			
+			$sent_status = true;
+			
 			if(!$mailer ->send()) {
-				LoggingService::logsServiceAction($this, $mailer ->ErrorInfo, $options);
+				LoggingService::logsServiceAction($this, $mailer ->ErrorInfo, array());
 				
-				$status = false;  
+				$sent_status = false;  
 			} 
 			
-			LoggingService::logEmail($mailer, $status, $options);
+			LoggingService::logEmail($mailer, $sent_status, array());
 			
 		}
 		

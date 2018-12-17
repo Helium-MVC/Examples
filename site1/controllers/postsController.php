@@ -77,7 +77,7 @@ class postsController extends baseController {
 			return $this -> error404(array('post_id' => $this -> registry -> route['id']),  'Post Not Found');
 		}
 		
-		if($post -> user_id != SessionService::read('user_id')) {
+		if($post->hasAccess(SessionService::read('user_id'))) {
 			return$this-> accessdenied(array('post_id' => $this -> registry -> route['id'], 'user_id' =>SessionService::read('user_id') ));
 		}
 		
@@ -134,7 +134,7 @@ class postsController extends baseController {
 			return $this -> error404(array('post_id' => $this -> registry -> route['id']),  'Post Not Found');
 		}
 		
-		if($post -> user_id != SessionService::read('user_id')) {
+		if($post->hasAccess(SessionService::read('user_id'))) {
 			return$this-> accessdenied(array('post_id' => $this -> registry -> route['id'], 'user_id' =>SessionService::read('user_id') ));
 		}
 		

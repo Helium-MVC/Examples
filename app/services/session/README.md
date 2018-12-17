@@ -48,3 +48,10 @@ In our example we are using dependency inject to easily swap out what kind of se
 Both examples are using the SessionService, but one is receiving  WebSessionService while the other is receiving  DBSessionService.
 
 Dive into those classes to see how they differ in their implementation.
+
+
+## Static Classes
+
+You will notice that each of our session classes utlizes the use of static methods with dependency injection. The benefit to this approach with sessions it
+creation of a global session that is unchanging through the execution of the application. There is no use case where a user should change a session and this
+approach all classes interact with the same session data.

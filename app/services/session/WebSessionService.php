@@ -20,6 +20,25 @@ class WebSessionService implements SessionInterface {
 		
 		self::$_write_to_cookie= $write_to_cookie;
 		
+		//Get the current session id
+		$id = self::getID();
+		
+		//Execute if no session id
+		if(!$id) {
+			//Get Session id
+			$session_id = session_id();
+			
+			//Generate a new session id if none
+			if(!$session_id) {
+				$session_id = \PVTools::generateRandomString(20);
+				session_id( session_id);
+				session_start();
+			}
+			
+			\PVSession::writeCookie('session_id', $session_id);
+			\PVSession::writeSession('session_id', $session_id);
+		}
+		
 		if(!self::read('api_token')) {
 			self::write('api_token', \PVSecurity::generateToken(20));
 		}

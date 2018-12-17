@@ -50,7 +50,10 @@ class usersController extends baseController {
 		if($this -> registry -> post) {
 			try {
 				
-				$this -> _models -> loginUser($this -> registry -> post['email'], $this -> registry -> post['password']);
+				$user_id = $this -> _models -> loginUser($this -> registry -> post['email'], $this -> registry -> post['password']);
+				
+				$this -> _session::write('user_id', $user_id);
+				$this -> _session::write('is_loggedin', 1);
 				
 				PVTemplate::successMessage('Login Successful!');
 				return $this -> redirect('/profile/'. $this -> _session::read('user_id'));

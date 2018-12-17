@@ -132,7 +132,7 @@ The tokens are generated in `site1/extensions/template/CSRF.php` and injected in
 <input type="hidden" name="csrf_token" v-model="csrf_token" value="<?= $this -> CSRF -> getCSRFTokenInput('token_name'); ?>" />
 ```
 
-Afterwards on a POST operation to a controller,the token generated in the html is checked:
+Afterwards on a POST operation to a controller,the token generated in the html is checked in with the helper `site2/extensions/controllers/Token.php` such as below:
 
 ```php
 if($this -> registry -> post && $this->Token->check('post_token', $this -> registry -> post['csrf_token'])) {
@@ -177,3 +177,8 @@ if($authorization != SessionService::read('api_token')) {
 }
 ```
 If it matches, access is allow. If not, access is denied. This is a very basic approach to API authentication.
+
+## Business Logic In The Models
+
+The final note on Site 1 is the location of the business logic. This site uses "Fat Models", in which the majority of the business logic is kept in an
+associated model. For example, send emails related to the model and access control is all executed from the model.

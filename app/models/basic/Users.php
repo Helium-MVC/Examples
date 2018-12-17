@@ -69,6 +69,22 @@ class Users extends HModel {
 		'image_left' => array('type' => 'left', 'model' => 'app\models\basic\Images', 'on' => 'users.user_id = images.entity_id AND entity_type=\'user\' ')
 	);
 	
+	/**
+	 * Checks to see if the user accessing this account has the permissions
+	 * to edit the account.
+	 * 
+	 * @param string $user_id
+	 * 
+	 * @return boolean
+	 */
+	public function canEdit($user_id) {
+		
+		if($user_id == $this -> user_id) {
+			return true;
+		}
+		
+		return false;
+	}
 	
 	/**
 	 * sendWelcomeEmail
@@ -76,10 +92,45 @@ class Users extends HModel {
 	 * Sends the welcome email after the user has completed their registration.
 	 */
 	public function sendWelcomeEmail() {
-			
-		$email_service = new EmailService();
-		$email_service -> sendActivationEmail($this, \PVConfiguration::getConfiguration('sites') -> site1);
 		
+		$mailer = new PHPMailer;
+			
+		$mailer->isSMTP();  
+		$mailer->Host = \PVConfiguration::getConfiguration('mail') -> host;
+		$mailer->Port = \PVConfiguration::getConfiguration('mail') -> port;
+		$mailer ->isHTML(true);
+		$mailer->SMTPSecure = 'tls';
+		
+		//Default Sending Information
+		$mailer->From = \PVConfiguration::getConfiguration('mail') -> from_address;
+		$mailer->FromName = \PVConfiguration::getConfiguration('mail') -> from_name; 
+			
+		//Set Login Credentials
+		$mailer->SMTPAuth = true; 
+		$mailer->Username = \PVConfiguration::getConfiguration('mail') -> login;
+		$mailer->Password = \PVConfiguration::getConfiguration('mail') -> password;
+		
+		$mailer->AddAddress($account->email, $account->first_name . ' ' . $account->last_name);
+
+		$mailer->Subject = 'Account Activation Required';
+		
+		$mailer->Body = \MailLoader::loadHtml('activation_email', array(
+			'account' => $this,
+			'site_url' => \PVConfiguration::getConfiguration('sites') -> site1
+		));
+		
+		$mailer->AltBody = \MailLoader::loadText('activation_email', array(
+			'account' => $this,
+			'site_url' => \PVConfiguration::getConfiguration('sites') -> site1
+		));
+			
+		if(!$mailer ->send()) {
+			LoggingService::logsServiceAction($this, $mailer ->ErrorInfo, $options);
+				
+			$status = false;  
+		} 
+			
+		LoggingService::logEmail($mailer, $status, $options);
 	}
 	
 }//end class

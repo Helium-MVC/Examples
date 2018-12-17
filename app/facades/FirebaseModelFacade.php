@@ -33,15 +33,21 @@ class FirebaseModelFacade {
 	 */
 	public function createUser(array $data) {
 		
-		//Create Document ID
-		$id = $uuid5 = Uuid::uuid4() -> toString();
+		//Add To Firebase Authentication
+		$auth_properties = array(
+			'email' => $data['email'],
+    			'emailVerified' => true,
+    			'displayName' => $data['first_name'] .' ' .$data['last_name'] ,
+    			'password' => $data['password'],
+    			'disabled' => false,
+		);
 		
-		//Save unhased password for auth
-		$password_unhashed = $data['password'];
+		$createdUser = $this -> _auth ->createUser($auth_properties);
+		
+		$id = $createdUser->uid;
 		
 		//Assign Values
 		$data['user_id'] = $id;
-		$data['password'] = \PVSecurity::hash($data['password']);
 		$data['activation_token'] = \PVTools::generateRandomString();
 		$data['preferences'] = array(
 			'email_weekly_updates' =>true,
@@ -63,19 +69,23 @@ class FirebaseModelFacade {
 		//Messenging service for processing emails
 		$queue -> add('sendWelcomeEmail', $email_data);
 		
-		//Add To Firebase Authentication
-		$auth_properties = array(
-			'email' => $data['email'],
-    			'emailVerified' => true,
-    			'displayName' => $data['first_name'] .' ' .$data['last_name'] ,
-    			'password' => $password_unhashed,
-    			'disabled' => false,
-		);
-		
-		$createdUser = $this -> _auth ->createUser($auth_properties);
-		
 		//Return new user
 		return new \PVCollection($data);
+	}
+
+	/**
+	 * Logs in the user using the Firebase authentication service.
+	 * 
+	 * @param string $email
+	 * @param string $password
+	 * 
+	 * @return mixed Either returns the id of the user or false if the login failed
+	 */
+	public function loginUser($email, $password) {
+		
+		$user = $this -> _auth ->verifyPassword($email, $password);
+		
+		return $user->uid;
 	}
 	
 	/**
@@ -178,17 +188,6 @@ class FirebaseModelFacade {
 		
 		return false;
 	}
-	
-	public function loginUser($email, $password) {
-		
-		$user = $this -> _auth ->verifyPassword($email, $password);
-		
-		print_r($user);
-		exit();
-		
-	}
-	
-	
 	
 	/**
 	 * Retrieves a single user based on that users id

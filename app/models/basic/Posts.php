@@ -39,6 +39,19 @@ class Posts extends HModel {
 		
 	);
 	
+	/**
+	 * Checks to see if the user accessing this post has the ability
+	 * to update or delete it.
+	 */
+	public function hasAccess($user_id) {
+		
+		if($user_id == $this->user_id) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 }
 
 //Data to filter on the creation of the user.

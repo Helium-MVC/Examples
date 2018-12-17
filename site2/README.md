@@ -130,5 +130,73 @@ It is not perfect functional programming, but a step to making Helium a framewor
 
 ## CSRF Tokens
 
-Site 2 implements a more robust version of CSRF tokens than Site 1. It allows for multiple randonmly generated token that are stored in Redis.
+Site 2 implements a more robust version of CSRF tokens than Site 1. It allows for multiple randonmly generated token that are stored in Redis. The tokens are
+generated in `site2/extensions/CSRF.php` and injected into the forms using a helper:
+
+```html
+<?= $this->CSRF->getCSRFTokenInput(); ?>
+```
+The CSFR Token is then checked in all POST requests in `site2/extensions/controllers/Token.php` like so:
+
+```php
+if($this -> registry -> post && $this->Token->check($this -> registry -> post)) {
+	//Execute code
+}
+```
+
+In comparison to Site 1, each form entry generates a unique token that is stored in a database. With this approach, we can implement single-use tokens
+that expire
+
+## JSON-Like Web Token For API Access
+
+Site 2 also improves the access to the api through JSON-Like Web Tokens. The tokens are generated in `site2/extensions/template/Session.php`
+by creating a public key and signature:
+
+```php
+public function generateApiToken() {
+		
+	$private_key = SessionService::read('api_token');
+		
+	$public_key = PVSecurity::generateToken(20);
+		
+	$signature = PVSecurity::encodeHmacSignature($public_key, $private_key);
+		
+	return '
+		<input type="hidden" name="api_public_key" value="' . $public_key . '" id="api_public_key"  />
+		<input type="hidden" name="api_signature" value="' . $signature . '"  id="api_signature" />
+	';
+		
+}
+```
+The public key and signature is then outputted into the html using the helper:
+
+```html
+<?= $this-> Session -> generateApiToken(); ?>
+```
+
+AngularJS then sends the key and signature over in each request. The signature must then be regenerated using the public key must then be regenerated and
+compared to allow access to the api in `site2/controllers/apiController.php`L:
+
+```php
+$public_key = $this -> registry -> get['api_key'];
+		
+$signature = $this -> registry -> get['sig'];
+		
+$private_key = SessionService::read('api_token');
+		
+$session_signature = PVSecurity::encodeHmacSignature($public_key, $private_key);
+		
+if($signature != $session_signature) {
+	echo PVResponse::createResponse('400', 'Invalid API Verification');
+	exit();
+}
+
+```
+
+On each page a new public key and signature is created to improve security.
+
+## Business Logic In Services
+
+In comparison to Site 1, Site 2 keeps the models skinny and puts the business logic in the services. With this approach, the business logic is accessible
+independent of the model.
 

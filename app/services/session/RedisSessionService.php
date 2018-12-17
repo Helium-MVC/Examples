@@ -24,6 +24,30 @@ class RedisSessionService implements SessionInterface {
 	public static function initializeSession($redis, $write_to_cookie = true) {
 		self::$_redis = $redis;
 		
+		//Get the current session id
+		$id = self::getID();
+		
+		//Execute if no session id
+		if(!$id) {
+			//Get Session id
+			$session_id = session_id();
+			
+			//Generate a new session id if none
+			if(!$session_id) {
+				$session_id = \PVTools::generateRandomString(20);
+				session_id( session_id);
+				session_start();
+			}
+			
+			//Write session to cookie and session
+			\PVSession::writeCookie('session_id', $session_id);
+			\PVSession::writeSession('session_id', $session_id);
+			
+			//Create API Token
+			self::write('api_token', \PVSecurity::generateToken(20));
+		}
+		
+		
 		return get_class();
 	}
 	

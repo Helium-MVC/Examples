@@ -47,6 +47,7 @@
 						
 						<br>
 						<div ng-bind-html="updateInfoMessage"></div>
+						<?= $this->CSRF->getCSRFTokenInput(); ?>
 						<div class="form-group text-center">
 							<button type="submit" name="update_profile" class="btn btn-primary" ng-click="updateInfo($event)" >
 								Update Info
@@ -76,6 +77,7 @@
 								Update Email
 							</button>
 						</div>
+						<?= $this->CSRF->getCSRFTokenInput(); ?>
 					</form>
 				</div>
 			</div>
@@ -95,6 +97,7 @@
 						
 						<br>
 						<div ng-bind-html="updatePasswordMessage"></div>
+						<?= $this->CSRF->getCSRFTokenInput(); ?>
 						<div class="form-group text-center">
 							<button type="submit" name="update_password" class="btn btn-primary" ng-click="updatePassword($event)" >
 								Update Password

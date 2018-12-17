@@ -9,7 +9,7 @@
 
 		<title>{{ SITE_TITLE }}</title>
 		
-		{{ SITE_META }}
+		{{ SITE_META|raw }}
 
 		{% include '_css.html.php' %}
 
@@ -95,7 +95,7 @@
 
 		{% include '_javascript.html.php' %}
 		<!-- Replaces with appended javascript -->
-		{{ HEADER_ADDITION }}
+		{{ HEADER_ADDITION|raw }}
 	</body>
 
 </html>

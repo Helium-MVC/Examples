@@ -34,9 +34,9 @@ class baseController extends He2Controller {
 		$serviceAccount = ServiceAccount::fromJsonFile(PVConfiguration::getConfiguration('firebase') -> jsonFile);
 		$firebase = (new Factory)->withServiceAccount($serviceAccount)->create();
 		$this -> _firebase = $firebase->getDatabase();
-		
+		$auth = $firebase->getAuth();
 		//Call the FirebaseModelFacade created in app/facades folder
-		$this-> _models = new FirebaseModelFacade($this -> _firebase);
+		$this-> _models = new FirebaseModelFacade($this -> _firebase, $auth);
 		
 	}
 	

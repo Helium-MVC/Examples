@@ -47,13 +47,21 @@ class usersController extends baseController {
 		
 		$failed_login_attempts = false;
 		
-		if($this -> registry -> post && AuthenticationService::authenticate($this -> registry -> post['email'], $this -> registry -> post['password'])) {
-			PVTemplate::successMessage('Login Successful!');
-			return $this -> redirect('/profile/'. $this -> _session::read('user_id'));
-		} else if($this -> registry -> post) {
-			PVTemplate::errorMessage('Invalid Username/Password');
+		if($this -> registry -> post) {
+			try {
+				
+				$this -> _models -> loginUser($this -> registry -> post['email'], $this -> registry -> post['password']);
+				
+				PVTemplate::successMessage('Login Successful!');
+				return $this -> redirect('/profile/'. $this -> _session::read('user_id'));
+			} catch (Kreait\Firebase\Exception\Auth\InvalidPassword $e) {
+			    PVTemplate::errorMessage('Invalid Username/Password');
 			
-			$failed_login_attempts = $this -> _session::read('failed_login_attempts');
+				$failed_login_attempts = $this -> _session::read('failed_login_attempts');
+			}
+			
+		} else if($this -> registry -> post) {
+			
 		}
 		
 		return array('user' => $user, 'failed_login_attempts' => $failed_login_attempts, 'disable_cache' => true);

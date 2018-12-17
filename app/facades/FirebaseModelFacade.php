@@ -17,8 +17,11 @@ class FirebaseModelFacade {
 	
 	private $_firebase = null;
 	
-	public function __construct($database) {
+	private $_auth = null;
+	
+	public function __construct($database, $auth) {
 		$this -> _firebase = $database;
+		$this -> _auth = $auth;
 	}
 	
 	/**
@@ -32,7 +35,10 @@ class FirebaseModelFacade {
 		
 		//Create Document ID
 		$id = $uuid5 = Uuid::uuid4() -> toString();
-				
+		
+		//Save unhased password for auth
+		$password_unhashed = $data['password'];
+		
 		//Assign Values
 		$data['user_id'] = $id;
 		$data['password'] = \PVSecurity::hash($data['password']);
@@ -54,7 +60,19 @@ class FirebaseModelFacade {
 			'site_url' => \PVConfiguration::getConfiguration('sites') -> site3
 		);
 		
+		//Messenging service for processing emails
 		$queue -> add('sendWelcomeEmail', $email_data);
+		
+		//Add To Firebase Authentication
+		$auth_properties = array(
+			'email' => $data['email'],
+    			'emailVerified' => true,
+    			'displayName' => $data['first_name'] .' ' .$data['last_name'] ,
+    			'password' => $password_unhashed,
+    			'disabled' => false,
+		);
+		
+		$createdUser = $this -> _auth ->createUser($auth_properties);
 		
 		//Return new user
 		return new \PVCollection($data);
@@ -159,6 +177,15 @@ class FirebaseModelFacade {
 		}
 		
 		return false;
+	}
+	
+	public function loginUser($email, $password) {
+		
+		$user = $this -> _auth ->verifyPassword($email, $password);
+		
+		print_r($user);
+		exit();
+		
 	}
 	
 	

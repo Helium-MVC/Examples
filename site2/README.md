@@ -37,6 +37,22 @@ Commented out is also traditional UUIDs. These kinds of UUID are usable in Postg
 
 The last advance feature we use is hstore, which is a key => value store within a column. In our examples, we can have multiple preferences defined for a user without the need to add extra columns.
 
+## Multiple Database
+
+Site 2 also contains two database with the addition of Mongo. Going into `site2/config/bootstrap/database.php` you will notice a sql and mongo connection are passed in.
+Remember the original database options are set in `app/config/config.php`.
+
+To set models to use a different connection, you can see how this executed in `app/models/uuid/ContactSubmission.php` . The connection details for this model is set like so:
+
+```php
+protected $_config = array(
+	'create_table' => false,  		//Do not check for the table exist
+	'column_check' => false,  		//Do not check if the columns exist
+	'table_name' => 'submissions',	//Manually set the table vs automatic table creation 
+	'connection' => 'mongo'		//Set the database connection explicity, does not use the default
+);
+```
+
 ## Database Session
 
 In site 2, we use a database session. Database sessions work by having a session ID assigned to a user and stored in a cookie for reference. The cookie then correlates with a record in the database that has all the information about the session. Using this approach, we can more securely store data, save the data after the session expires, scale vertically, and keep more substantial amounts of data.

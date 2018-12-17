@@ -23,6 +23,8 @@ PVRouter::addObserver('PVRouter::setRoute', 'access_closure', function($final_ro
 		'/login',
 		'/api/login',
 		'/api/register',
+		'/index/contact',
+		'/contact'
 	);
 	
 	$non_recorded_routes = array(

@@ -64,10 +64,10 @@ ContactSubmissions::addObserver('app\models\uuid\ContactSubmissions::update', 'r
 	//Checks to make sure the update was a success
 	if($result){
 		//Log successfull update	
-		LoggingService::logModelAction($model, ActionLogger::ACTION_UPDATED_SUCCESS, $model -> contact_id);
+		LoggingService::logModelAction($model, ActionLogger::ACTION_UPDATED_SUCCESS, $model -> _id);
 	} else {
 		//Log failure to update
-		LoggingService::logModelAction($model, ActionLogger::ACTION_UPDATED_FAILED, $model -> contact_id);
+		LoggingService::logModelAction($model, ActionLogger::ACTION_UPDATED_FAILED, $model -> _id);
 	}
 	
 }, array('type' => 'closure'));

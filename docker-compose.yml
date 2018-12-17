@@ -18,10 +18,7 @@ services:
       - ./nginx_custom_settings.conf:/etc/nginx/conf.d/nginx_custom_settings.conf
     links: ['php']
   php:
-    container_name: "he2_php"
-    build:
-      context : ./
-      dockerfile : Dockerfile
+    image: blackmage989/base-image-1
     volumes:
       - ./:/code
       - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini

@@ -16,7 +16,7 @@
 </div>
 
 <div class="form-group">
-	<input type="checkbox" name="is_published" ng-model="data.is_published" value="1" <?= ($post -> is_published || !$post -> post_id) ? 'checked' : ''; ?> cb-true-value="1" cb-false-value="0" ng-true-value="1" ng-false-value="0"  ng-checked="<?= ($post -> is_published || !$post -> post_id) ? 1 : 0; ?>" /> Is Published
+	<input type="checkbox" name="is_published" ng-model="data.is_published" value="1" <?= ($post -> is_published || !$post -> post_id) ? 'checked' : ''; ?> cb-true-value="1" cb-false-value="0" ng-true-value="1" ng-false-value="0"  ng-checked="<?= ($post -> is_published || !$post -> post_id) ? 1 : 0; ?>" ng-init="data.is_published='<?= ($post -> is_published || !$post -> post_id) ? 1 : 0; ?>'" /> Is Published
 </div>
 
 <!--Create CSRF Token For Security -->

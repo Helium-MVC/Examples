@@ -46,9 +46,9 @@ class apiController extends baseController {
 		
 		$private_key = SessionService::read('api_token');
 		
-		$session_signature = PVSecurity::encodeHmacSignature($public_key, $private_key);
+		$session_signature = PVSecurity::encodeHmacSignature($public_key, $private_key, 'sha1', false);
 		
-		if($signature != $session_signature) {
+		if(!hash_equals($signature, $session_signature)) {
 			echo PVResponse::createResponse('400', 'Invalid API Verification');
 			exit();
 		}

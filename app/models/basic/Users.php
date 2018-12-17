@@ -3,8 +3,10 @@ namespace app\models\basic;
 
 use app\models\HModel;
 use app\models\basic\UserPassowrds;
-use app\services\EmailService;
 use app\services\LoggingService;
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 /**
  * Users
@@ -110,7 +112,7 @@ class Users extends HModel {
 		$mailer->Username = \PVConfiguration::getConfiguration('mail') -> login;
 		$mailer->Password = \PVConfiguration::getConfiguration('mail') -> password;
 		
-		$mailer->AddAddress($account->email, $account->first_name . ' ' . $account->last_name);
+		$mailer->AddAddress($this->email, $this->first_name . ' ' . $this->last_name);
 
 		$mailer->Subject = 'Account Activation Required';
 		
@@ -123,14 +125,16 @@ class Users extends HModel {
 			'account' => $this,
 			'site_url' => \PVConfiguration::getConfiguration('sites') -> site1
 		));
-			
+		
+		$sent_status = true;
+		
 		if(!$mailer ->send()) {
-			LoggingService::logsServiceAction($this, $mailer ->ErrorInfo, $options);
+			LoggingService::logsServiceAction($this, $mailer ->ErrorInfo, array());
 				
-			$status = false;  
+			$sent_status = false;  
 		} 
 			
-		LoggingService::logEmail($mailer, $status, $options);
+		LoggingService::logEmail($mailer, $sent_status, array());
 	}
 	
 }//end class

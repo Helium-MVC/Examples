@@ -6,6 +6,9 @@ use app\models\HModel;
 use app\services\EmailService;
 use app\services\LoggingService;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 class Comments extends HModel {
 	
 	protected $_schema = array(
@@ -36,7 +39,8 @@ class Comments extends HModel {
 	);
 	
 	/**
-	 * Notify the post creator that a comment has been left on their post.
+	 * Notify the post creator that a comment has been left on their post. This an example of what
+	 * business logic looks like in the model, aka Fat Models
 	 * 
 	 * @return void
 	 */
@@ -56,8 +60,37 @@ class Comments extends HModel {
 				'conditions' => array('user_id' => $this -> user_id)
 			));
 			
-			$email = new EmailService();
-			$email -> sendPostComment($this, $post, $original_poster, $commenter);
+			$mailer = new PHPMailer;
+			
+			$mailer->isSMTP();  
+			$mailer->Host = \PVConfiguration::getConfiguration('mail') -> host;
+			$mailer->Port = \PVConfiguration::getConfiguration('mail') -> port;
+			$mailer ->isHTML(true);
+			$mailer->SMTPSecure = 'tls';
+		
+			//Default Sending Information
+			$mailer->From = \PVConfiguration::getConfiguration('mail') -> from_address;
+			$mailer->FromName = \PVConfiguration::getConfiguration('mail') -> from_name; 
+			
+			//Set Login Credentials
+			$mailer->SMTPAuth = true; 
+			$mailer->Username = \PVConfiguration::getConfiguration('mail') -> login;
+			$mailer->Password = \PVConfiguration::getConfiguration('mail') -> password;
+			
+			
+			$mailer->AddAddress($original_poster -> email, $original_poster -> first_name . ' ' . $original_poster -> last_name);
+			
+			$mailer->Subject = $commenter -> first_name . ' has commented on your post ' . $post -> title;
+			$mailer->Body = \MailLoader::loadHtml('post_comment', array('comment' => $this, 'post' => $post, 'poster' => $original_poster, 'commenter' => $commenter));
+			$mailer->AltBody = \MailLoader::loadText('post_comment', array('comment' => $this, 'post' => $post, 'poster' => $original_poster, 'commenter' => $commenter));  
+			
+			if(!$mailer ->send()) {
+				LoggingService::logsServiceAction($this, $mailer ->ErrorInfo, $options);
+				
+				$status = false;  
+			} 
+			
+			LoggingService::logEmail($mailer, $status, $options);
 			
 		}
 		

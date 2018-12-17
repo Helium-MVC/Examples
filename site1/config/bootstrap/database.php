@@ -28,7 +28,7 @@
 	
 	/**
 	 * The connect below is based upon the configuration in
-	 * the environments.php file
+	 * the app/config/config.php
 	 */
 	$database = PVConfiguration::getConfiguration('mysql');
 	

@@ -28,9 +28,24 @@
 	
 	/**
 	 * The connect below is based upon the configuration in
-	 * the environments.php file
+	 * the app/config/config.php
 	 */
 	$database = PVConfiguration::getConfiguration('postgres');
+	
+	//Add The Connection
+	PVDatabase::addConnection('sql', array(
+		'dbhost' => $database -> dbhost,
+		'dbuser' => $database -> dbuser,
+		'dbpass' => $database -> dbpass,
+		'dbtype' => $database -> dbtype,
+		'dbname' => $database -> dbname,
+		'dbport' => $database -> dbport,
+		'dbschema' => $database -> dbschema,
+		'dbprefix' => $database -> dbprefix
+	));
+	
+	//Get MongoDB as a secondary connection
+	$database = PVConfiguration::getConfiguration('mongo');
 	
 	//Add The Connection
 	PVDatabase::addConnection('sql', array(

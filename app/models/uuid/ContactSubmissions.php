@@ -6,6 +6,14 @@ use app\services\LoggingService;
 
 class ContactSubmissions extends PGModel {
 	
+	//Override the model config with our own
+	protected $_config = array(
+		'create_table' => false,  		//Do not check for the table exist
+		'column_check' => false,  		//Do not check if the columns exist
+		'table_name' => 'submissions',	//Manually set the table vs automatic table creation 
+		'connection' => 'mongo'		//Set the database connection explicity, does not use the default
+	);
+	
 	//Virtual Schema
 	protected $_schema = array(
 		'contact_id' => array('type' => 'bigint', 'primary_key' => true, 'default' => 'shard_1.id_generator()' , 'execute_default' => true, 'auto_increment' => true),

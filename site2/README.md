@@ -6,13 +6,14 @@ Welcome to Site 2. Unlike the first site, this is implemented with a few advance
 
 ## Postgresql
 Postgresql is an awesome database to use for two reasons.
+
 ##### 1) MIT Licensing
 Unlike Mysql which requires the purchase of a commercial license if your code is not open sourced, PostgreSQL has the less restrictive MIT license, which means it can be used in proprietary products.
 
 ##### 2) Advanced Features
-Postgres has many advanced features such as its data types with arrays, hstore, cidr, and event user-defined types. Their full-text search which uses features like search vectors is far more advanced than MySQL. PostresSQL also has table inheritance, multiple index types and a lot more.
+Postgres has many advanced features such as its data types with arrays, hstore, cidr, and event user-defined types. There are other advanced features like full-text search which uses vectors and dictionaries, table inheritance, multiple index types and a lot more.
 ##### UUID and HSTORE
-In our example site, we use UUID and hstore. We can start by looking at the virtual schema defined in app\models\uuid\Users.php Pulling out a portion of the schema in to use an example.
+In our example site, we use UUID and hstore. We can start by looking at the virtual schema defined in `app\models\uuid\Users.php`. Referencing a portion of the schema to use in an example.
 ```php
 <?php
 //Virtual Schema
@@ -27,15 +28,20 @@ In our example site, we use UUID and hstore. We can start by looking at the virt
 
 The first part is we are using a custom defined id generator created by Instagram! The ids are random numbers determined by time and are quite long. This is an example of an ID generated `'1920736220380398685'`.  A user cannot hack this kind of id to figure out how large your site is.
 
-Commented out is also UUIDs. The kinds of UUID are usable in Postgres and look like this:` '6f1bba18-8f7c-4ed8-8f03-a094468ca90a'`
+Commented out is also traditional UUIDs. These kinds of UUID are usable in Postgres and look like this:` '6f1bba18-8f7c-4ed8-8f03-a094468ca90a'`. There are many differents between these types of uuid:
+
+1. Instagrams can be sorted in an asceending or descending order, tradional UUID have no order.
+2. Instagrams is 4 bytes in memory, traditional UUID are 16 bytes.
+
+*Important Note:*: UUID have two drawbacks. The first being their write time can be slower than serial, and they take up more room when indexing. There have been instances where UUID indexs are larger than the data length of the table.
 
 The last advance feature we use is hstore, which is a key => value store within a column. In our examples, we can have multiple preferences defined for a user without the need to add extra columns.
 
 ## Database Session
 
-In site 2, we use a database session. Database sessions work by having a session ID assigned to a user in something like a cookie. The cookie then correlates with a record in the database that has all the information about the session. Using this approach, we can more securely store data, save the data after the session expires, scale vertically, and keep more substantial amounts of data.
+In site 2, we use a database session. Database sessions work by having a session ID assigned to a user and stored in a cookie for reference. The cookie then correlates with a record in the database that has all the information about the session. Using this approach, we can more securely store data, save the data after the session expires, scale vertically, and keep more substantial amounts of data.
 
-The session service being used is `app/services/session/DBSessionService.php` The session utilizes a model in our database in app/models/uuid/Sessions.php for storing the data.  Both of the classes are called in the entry point in `sites2/public_html/index.php` at:
+The session service being used is `app/services/session/DBSessionService.php` The session utilizes a model in our database in `app/models/uuid/Sessions.php` for storing the data.  Both of the classes are called in the entry point in `sites2/public_html/index.php` at:
 
 ```php
  //Set the model and service used for session handling
@@ -44,16 +50,16 @@ The session service being used is `app/services/session/DBSessionService.php` Th
 
 ## Caching and Adapter Design Pattern
 
-The site uses a more advanced version of caching that Site 1. The cache is using Redis and also uses one of the unique properties of Helium, the adapter pattern. In this pattern, we can override another classes function by creating an adapter for you.
+The site uses a more advanced version of caching that Site 1. The cache is using Redis and also uses one of the unique properties of Helium, the adapter pattern. In this pattern, we can override another classes function by creating an adapter for it.
 
-To view, the adapter created, go to site2/libraries/RedisCache . In here the are two classes: RedisCache and the RedisAdapter. The cache class is a class that uses Redis as a handler, go through the source code to read. The RedisAdapter function to replace the default PVCache function that the models utilize. For example:
+To view, the adapter created, go to `site2/libraries/RedisCache`. In here the are two classes: `RedisCache` and the `RedisAdapter`. The cache class is a class that uses Redis as a handler, go through the source code to read. The RedisAdapter function to replace the default PVCache function that the models utilize. For example:
 
 ```php
 <?php
 PVCache::addAdapter('PVCache', 'writeCache', 'RedisCache');
 ?>
 ```
-This line says everytime the function PVCache::writeCache is called, we are going to call RedisCache::writeCache instead. Its part of the magic in Helium! And we can replace the functionality of entire classes!
+This line says that every time the function PVCache::writeCache is called, we are going to call RedisCache::writeCache instead. Its part of the magic in Helium! And we can replace the functionality of entire classes with this approach.
 
 The RedisCache is loaded in the libraries during the bootstrap. You can view this at `site2/config/bootstrap/libraries.php` . The line that loads it is:
 ```php
@@ -62,18 +68,19 @@ The RedisCache is loaded in the libraries during the bootstrap. You can view thi
 PVLibraries::addLibrary('RedisCache', array('explicit_load' => true));
 ?>
 ```
-In `site2\config\libraries.php`, look around to see other libraries loaded for Site 2.
+In `site2/config/bootstrap/libraries.php`, look around to see other libraries loaded for Site 2.
 
 ## AngularJS
 
-Site 2 uses Angular 1 in a decoupled way for its frontend framework. Similar to VueJS in Site 1, we are not using node, npm or webpack. You will notice the libraries located in site2/public_html/js/. It is important to focus on the resources and controller that have the javascript CRUD resources.
+Site 2 uses Angular 1 in a decoupled way for its frontend framework. Similar to VueJS in Site 1, we are not using node, npm or webpack. You will notice the libraries located in `site2/public_html/js/`. It is important to focus on the resources and controller that have the javascript CRUD resources.
 
-The angular application is loaded by having the ng-app which is located at the beginning of the HTML file found it site2/templates/default.html.php here:
+The angular application is initialized by having the ng-app which is located at the beginning of the HTML file found it `site2/templates/default.html.php` here:
+
 ```html
 <html lang="en" ng-app="Site2App">
 ```
 
-Without this tag, angular will not activate. The ng-controller is used to set the scopes in which AngularJS is active or not. For example, if we go the user register in site2/views/users/register.html.php, we will see this defining the scope Angular has based on the HTML:
+Without this tag, angular will not activate. The ng-controller is used to set the scopes in which AngularJS is active or not. For example, if we go the user register in `site2/views/users/register.html.php`, we will see this defining the scope Angular has based on the HTML:
 
 ```html
 <!-- Set everything in the form tag to this ng-controller -->
@@ -81,12 +88,13 @@ Without this tag, angular will not activate. The ng-controller is used to set th
 ```
 
 This has an effect on the input fields below with ng-model like this:
-                    ```html
-    <input type="text" class="form-control" maxlength="255" name="first_name" ng-model="data.first_name" value="" />```
+```html
+    <input type="text" class="form-control" maxlength="255" name="first_name" ng-model="data.first_name" value="" />
+```
 
 ## Access Control & Functional Programming
 
-Access control for this site is defined at the earliest place when the application is made aware of the current route, via PVRouter. We can go to `site2/config/bootstrap/access.php` to see the access control in action. This is also another example of anonymous functions working in the observer pattern.
+Access control for this site is defined at the earliest place when the application is made aware of the current route, via PVRouter. We can go to `site2/config/bootstrap/access.php` to see the access control in action. This is another example of anonymous functions working in the observer pattern.
 
 This also represents one of Heliums approach to functional programming. If we go over the ProdigyViews PVRouter.php class at https://github.com/ProdigyView/ProdigyView-Core/blob/master/network/PVRouter.php#L277, we will this observer being set:
 
@@ -119,4 +127,8 @@ PVRouter::addObserver('PVRouter::setRoute', 'access_closure', $myRouteListenerFu
 ```
 
 It is not perfect functional programming, but a step to making Helium a framework that accepts functional programming.
+
+## CSRF Tokens
+
+Site 2 implements a more robust version of CSRF tokens than Site 1. It allows for multiple randonmly generated token that are stored in Redis.
 

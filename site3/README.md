@@ -33,6 +33,9 @@ And then the file is used to call your firebase database in `site3/controllers/b
 ?>
 ```
 
+SUPER IMPORTANT. For authentication, please ensure that the Email Login is enabled in your Firebase Authentication preferences. You must login to
+the firebase console to do.
+
 ## Facades
 
 This will be our first site to dive into Facades. Facades is a design pattern that hides complex operations that uses multiple components in a single call.
@@ -119,6 +122,12 @@ ServiceFactory::add('email', 'app\services\EmailService');
 ?>
 
 ```
+## Twig Templating
+
+Unlike the other sites that used HTML for basic templating, this site used Symphones templating engine called Twig. It accomplishes
+this through the Adapter Pattern which can be viewed in `site3/config/bootstrap/template.php`. In there you will find the twig
+implementation.
+
 ## Controller Level Caching
 
 In Site 1 we explored view level caching, Site 2 we did query level caching, now we are going to explore controller level caching. Services like Firebase can create slow response times for our website, sometimes causing an additional 1 to 10 seconds of additional wait for an operation to complete, which is based for the user.

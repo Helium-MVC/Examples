@@ -55,7 +55,7 @@ new Vue({
 			this.user_id = user_id;
 			
 			//Assigns the found user to the scope
-			axios.get('/findUser/' + user_id).then(function(response) {
+			HTTP.get('/findUser/' + user_id).then(function(response) {
 				that.first_name = response.data.first_name;
 				that.last_name = response.data.last_name;
 				that.bio = response.data.bio;
@@ -74,7 +74,7 @@ new Vue({
 
 			let that = this;
 
-			axios.get('/members/session').then(function(response) {
+			HTTP.get('/members/session').then(function(response) {
 				let user_id = response['data']['user_id'];
 
 				if (user_id) {
@@ -86,7 +86,7 @@ new Vue({
 						fd.append('transfer_id', user_id);
 						fd.append('transfer', 'user');
 
-						axios.post('/uploadImage', fd).then(function(res) {
+						HTTP.post('/uploadImage', fd).then(function(res) {
 							location.reload();
 						}).catch(function(err) {
 							console.log(err.response.data)
@@ -113,7 +113,7 @@ new Vue({
 			};
 
 			//Attempt to register user
-			axios.post('/loginUser', data).then(function(res) {
+			HTTP.post('/loginUser', data).then(function(res) {
 				that.successMessage = '<div class="alert alert-success" role="alert">Information successfully updated</div>';
 				
 				window.location = '/users/profile/' + res.data.user_id;
@@ -188,7 +188,7 @@ new Vue({
 			};
 
 			//Attempt to update the user
-			axios.post('/updateUser/' + this.user_id, data).then(function(res) {
+			HTTP.post('/updateUser/' + this.user_id, data).then(function(res) {
 				that.updateInfoMessage = '<div class="alert alert-success" role="alert">Information successfully updated</div>';
 				
 				setTimeout(function() {
@@ -220,7 +220,7 @@ new Vue({
 			};
 
 			//Attempt to update the user
-			axios.post('/updatePassword/' + this.user_id, data).then(function(res) {
+			HTTP.post('/updatePassword/' + this.user_id, data).then(function(res) {
 				that.updatePasswordMessage = '<div class="alert alert-success" role="alert">Password successfully updated</div>';
 				
 				setTimeout(function() {
@@ -252,7 +252,7 @@ new Vue({
 			};
 
 			//Attempt to update the user
-			axios.post('/updateEmail/' + this.user_id, data).then(function(res) {
+			HTTP.post('/updateEmail/' + this.user_id, data).then(function(res) {
 				that.updateEmailMessage = '<div class="alert alert-success" role="alert">Email successfully updated</div>';
 				
 				setTimeout(function() {

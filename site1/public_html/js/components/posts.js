@@ -48,7 +48,7 @@ new Vue({
 
 			this.post_id = post_id;
 
-			axios.get('/api/findPost/' + post_id).then(function(response) {
+			HTTP.get('/findPost/' + post_id).then(function(response) {
 				that.title = response.data.title;
 				that.content = response.data.content;
 				that.is_published = response.data.is_published;
@@ -77,7 +77,7 @@ new Vue({
 			let that = this;
 
 			//First call gets the session info
-			axios.get('/api/session').then(function(response) {
+			HTTP.get('/session').then(function(response) {
 				
 				let user_id = response['data']['user_id'];
 
@@ -87,7 +87,7 @@ new Vue({
 					data['user_id'] = user_id;
 
 					//Attempt to create the post
-					axios.post('/api/createPost', data).then(function(res) {
+					HTTP.post('/createPost', data).then(function(res) {
 						
 						window.location = '/posts/view/' + res.data.post_id;
 						
@@ -125,7 +125,7 @@ new Vue({
 			//Save the scpoe
 			let that = this;
 
-			axios.get('/api/session').then(function(response) {
+			HTTP.get('/session').then(function(response) {
 				
 				let user_id = response['data']['user_id'];
 
@@ -133,7 +133,7 @@ new Vue({
 				if (user_id) {
 
 					//Update this post
-					axios.put('/api/updatePost/' + that.post_id, data).then(function(res) {
+					HTTP.put('/updatePost/' + that.post_id, data).then(function(res) {
 						
 						window.location = '/posts/view/' + res.data.post_id;
 						

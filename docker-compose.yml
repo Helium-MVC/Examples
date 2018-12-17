@@ -19,6 +19,7 @@ services:
     links: ['php']
   php:
     image: blackmage989/base-image-1
+    container_name: "he2_php"
     volumes:
       - ./:/code
       - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini

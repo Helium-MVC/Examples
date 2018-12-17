@@ -35,13 +35,13 @@ will no longer function.
 
 The sessions for Site 1 are stored in the browser. This is a very easy and fast way of storing session data, but it does not scale vertically and makes data susceptible to attack.
 
-##### Scaling Vertically
+#### Scaling Vertically
 Let us say we do not use cookies but the session in PHP. This means the data stored in the /tmp folder on a server. If your site is behind a load balancer that has 3 servers, a users data could only be on one server at a time. Meaning if they log in on one server, and the load balancer then flips them to another server, they are no longer logged because the session data is on the first server.
 
-##### Susceptible Data
+#### Susceptible Data
 If we want to scale vertically with this approach, we have to make sure to utilize cookie data and not the sessions. Storing data in a cookie is readable by third parties, which can lead to security vulnerabilities and exposing the user. In our solution, we encrypt and decrypt the data as a measure.
 
-##### Session Info
+#### Session Info
 
 For this site, you can look at the WebSessionService located at
 `app/services/session/WebSessionService`.

@@ -28,24 +28,24 @@
 				<div class="collapse navbar-collapse" id="navbarResponsive">
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item">
-							<a class="nav-link" href="/">Home</a>
+							<a class="nav-link <?= ($this -> Navigation -> match('index','index')) ? 'active' : ''; ?>" href="/">Home</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/posts">Posts</a>
+							<a class="nav-link <?= ($this -> Navigation -> match('posts')) ? 'active' : ''; ?>" href="/posts">Posts</a>
 						</li>
 						<?php if(!$this -> Session -> get('is_loggedin')): ?>
 							<li class="nav-item">
-								<a class="nav-link" href="/contact">Contact</a>
+								<a class="nav-link <?= ($this -> Navigation -> match('index','contact')) ? 'active' : ''; ?>" href="/contact">Contact</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="/login">Login</a>
+								<a class="nav-link <?= ($this -> Navigation -> match('users','login')) ? 'active' : ''; ?>" href="/login">Login</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="/register">Register</a>
+								<a class="nav-link <?= ($this -> Navigation -> match('users','register')) ? 'active' : ''; ?>" href="/register">Register</a>
 							</li>
 						<?php else: ?>
 							<li class="nav-item">
-								<a class="nav-link" href="/logs">Activity Logs</a>
+								<a class="nav-link <?= ($this -> Navigation -> match('logs')) ? 'active' : ''; ?>" href="/logs" >Activity Logs</a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="/posts/create"><i class="fas fa-pencil-alt"></i> <span class="d-md-none">Write</span></a>

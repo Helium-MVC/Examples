@@ -16,9 +16,7 @@ class ContactSubmissions extends PGModel {
 	
 	//Virtual Schema
 	protected $_schema = array(
-		'contact_id' => array('type' => 'bigint', 'primary_key' => true, 'default' => 'shard_1.id_generator()' , 'execute_default' => true, 'auto_increment' => true),
-		//Optional UUID using built-in Postgres OSSP features
-		//'contact_id' => array('type' => 'uuid', 'primary_key' => true, 'default' => 'uuid_generate_v4()' , 'execute_default' => true, 'auto_increment' => true),
+		'_id' => array('type' => '_id', 'primary_key' => true, 'auto_increment' => true,),
 		'name' => array('type' => 'string', 'precision' =>255, 'default' => '', 'cast' => 'sanitize'),
 		'email' => array('type' => 'string', 'precision' =>255, 'default' => '', 'cast' => 'sanitize'),
 		'phone' => array('type' => 'string', 'precision' =>255, 'default' => '', 'cast' => 'sanitize'),

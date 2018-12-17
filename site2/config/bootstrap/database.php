@@ -48,7 +48,7 @@
 	$database = PVConfiguration::getConfiguration('mongo');
 	
 	//Add The Connection
-	PVDatabase::addConnection('sql', array(
+	PVDatabase::addConnection('mongo', array(
 		'dbhost' => $database -> dbhost,
 		'dbuser' => $database -> dbuser,
 		'dbpass' => $database -> dbpass,

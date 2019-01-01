@@ -5,6 +5,13 @@ use app\models\basic\Posts;
 use app\models\basic\Images;
 use app\services\session\SessionService;
 
+use prodigyview\template\Template;
+use prodigyview\network\Router;
+use prodigyview\network\Request;
+use prodigyview\network\Response;
+use prodigyview\util\Validator;
+use prodigyview\util\FileManager;
+
 include('baseController.php');
 
 class postsController extends baseController {
@@ -22,8 +29,8 @@ class postsController extends baseController {
 		);
 		
 		if(!SessionService::read('is_loggedin') && in_array($this->registry -> route[0], $restricted_routes)) {
-			PVTemplate::errorMessage('The section is restricted to members. Please login.');
-			PVRouter::redirect('/login');
+			Template::errorMessage('The section is restricted to members. Please login.');
+			Router::redirect('/login');
 		}
 		
 	}
@@ -51,7 +58,7 @@ class postsController extends baseController {
 		
 		if($this -> registry -> post && $this->Token->check('post_token', $this -> registry -> post['csrf_token']) && $post -> create($this -> registry -> post)) {
 				
-			if(isset($this -> registry -> files['header_image'] ) && $this -> registry -> files['header_image']['error'] == 0 && PVValidator::isImageFile(PVFileManager::getFileMimeType($this -> registry -> files['header_image']['tmp_name'])) ) {	
+			if(isset($this -> registry -> files['header_image'] ) && $this -> registry -> files['header_image']['error'] == 0 && Validator::isImageFile(FileManager::getFileMimeType($this -> registry -> files['header_image']['tmp_name'])) ) {	
 				$image = Images::uploadImage($this -> registry -> files['header_image']['tmp_name']);
 				
 				if($image) {
@@ -59,7 +66,7 @@ class postsController extends baseController {
 				}
 			}
 			
-			PVTemplate::successMessage('Post successfully created.');
+			Template::successMessage('Post successfully created.');
 			return $this -> redirect('/posts/view/' . $post -> post_id);
 		}
 		
@@ -83,7 +90,7 @@ class postsController extends baseController {
 		
 		if($this -> registry -> post && $this->Token->check('post_token', $this -> registry -> post['csrf_token']) && $post -> update($this -> registry -> post)) {
 			
-			if(isset($this -> registry -> files['header_image'] ) && $this -> registry -> files['header_image']['error'] == 0 && PVValidator::isImageFile(PVFileManager::getFileMimeType($this -> registry -> files['header_image']['tmp_name'])) ) {	
+			if(isset($this -> registry -> files['header_image'] ) && $this -> registry -> files['header_image']['error'] == 0 && Validator::isImageFile(FileManager::getFileMimeType($this -> registry -> files['header_image']['tmp_name'])) ) {	
 				$image = Images::uploadImage($this -> registry -> files['header_image']['tmp_name']);
 				
 				if($image) {
@@ -91,7 +98,7 @@ class postsController extends baseController {
 				}
 			}
 			
-			PVTemplate::successMessage('Post successfully updated.');
+			Template::successMessage('Post successfully updated.');
 			return $this -> redirect('/posts/view/' . $post -> post_id);
 		}
 		
@@ -112,7 +119,7 @@ class postsController extends baseController {
 		$comment = new Comments();
 		
 		if($this -> registry -> post && $this->Token->check('comment_token', $this -> registry -> post['csrf_token']) && $comment -> create($this -> registry -> post)) {
-			PVTemplate::successMessage('Comment successfully created');
+			Template::successMessage('Comment successfully created');
 		}
 		
 		$comments = Comments::findAll(array(
@@ -140,7 +147,7 @@ class postsController extends baseController {
 		
 		if($this -> registry -> post && $this->Token->check('delete_token', $this -> registry -> post['csrf_token'])) {
 			if(isset($this -> registry -> post['yes']) && $post -> update(array('is_deleted' => 1))) {
-				PVTemplate::successMessage('Post successfully deleted.');
+				Template::successMessage('Post successfully deleted.');
 			}
 			
 			return $this -> redirect('/posts');

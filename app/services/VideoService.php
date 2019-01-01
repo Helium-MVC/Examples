@@ -3,6 +3,8 @@ namespace app\services;
 
 use app\services\LoggingService;
 
+use prodigyview\media\Video;
+
 class VideoService {
 	
 	/**
@@ -16,7 +18,7 @@ class VideoService {
 	 */
 	public static function transcodeMedia($original_file, $output_file, $options = array()) {
 		try {	
-			return \PVVideo::convertVideoFile($original_file, $output_file, $options);
+			return Video::convertVideoFile($original_file, $output_file, $options);
 		} catch(Exception $e) {
 			$data = array(
 				'original_file' => $original_file,

@@ -7,6 +7,11 @@ use app\models\basic\ActionLogger;
 use app\services\AuthenticationService;
 use app\services\Session\SessionService;
 
+use prodigyview\template\Template;
+use prodigyview\network\Router;
+use prodigyview\network\Request;
+use prodigyview\network\Response;
+
 include('baseController.php');
 
 /**
@@ -23,11 +28,11 @@ class apiController extends baseController {
 		 * A simple check that ensures the request is coming from someone that has an
 		 * access token and is the same session as the current session
 		 */
-		 $request = new PVRequest();
+		 $request = new Request();
 		 $authorization = $request -> getHeader('Authorization');
 		 
 		 if($authorization != SessionService::read('api_token')) {
-		 	echo PVResponse::createResponse(400,  'Invalid Token Sent');
+		 	echo Response::createResponse(400,  'Invalid Token Sent');
 			exit();
 		 }
 		
@@ -35,7 +40,7 @@ class apiController extends baseController {
 		/*set_error_handler(function($errno, $errstr, $errfile, $errline ) {
 			$message = $errstr. ' in '. $errfile . ' at ' . $errline;
 		   
-			echo PVResponse::createResponse(400,   $message);
+			echo Response::createResponse(400,   $message);
 			xdebug_print_function_stack($message,XDEBUG_STACK_NO_DESC);
 		   
 			exit();
@@ -84,7 +89,7 @@ class apiController extends baseController {
 		if($model && $model -> update($data, array('validate_options' => array('display' => false, 'event' => 'update')))) {
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else if(!$model) {
-			echo PVResponse::createResponse(404, 'User Not Found' );
+			echo Response::createResponse(404, 'User Not Found' );
 		} else {
 			$this -> _errorResponse($model);
 		}
@@ -115,7 +120,7 @@ class apiController extends baseController {
 				$this -> _errorResponse($model);
 			}
 		} else {
-			echo PVResponse::createResponse(404, 'Another user has that email');
+			echo Response::createResponse(404, 'Another user has that email');
 		}
 		
 		exit();
@@ -136,7 +141,7 @@ class apiController extends baseController {
 		if($model && $model -> update($data, array('validate_options' => array('display' => false, 'event' => 'update')))) {
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else if(!$model) {
-			echo PVResponse::createResponse(404, 'User Not Found' );
+			echo Response::createResponse(404, 'User Not Found' );
 		} else {
 			$this -> _errorResponse($model);
 		}
@@ -156,7 +161,7 @@ class apiController extends baseController {
 		if($model) {
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else {
-			echo PVResponse::createResponse(404, 'User Not Found' );
+			echo Response::createResponse(404, 'User Not Found' );
 		}
 		
 		exit();
@@ -177,7 +182,7 @@ class apiController extends baseController {
 			
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else {
-			echo PVResponse::createResponse(404, 'Invalid Username/Password' );
+			echo Response::createResponse(404, 'Invalid Username/Password' );
 		}
 		
 		exit();
@@ -217,7 +222,7 @@ class apiController extends baseController {
 		if($model && $model -> update($data, array('validate_options' => array('display' => false, 'event' => 'update')))) {
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else if(!$model) {
-			echo PVResponse::createResponse(404, 'Post Not Found' );
+			echo Response::createResponse(404, 'Post Not Found' );
 		} else {
 			$this -> _errorResponse($model);
 		}
@@ -237,7 +242,7 @@ class apiController extends baseController {
 		if($model) {
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else {
-			echo PVResponse::createResponse(404, 'Post Not Found' );
+			echo Response::createResponse(404, 'Post Not Found' );
 		}
 		
 		exit();
@@ -304,7 +309,7 @@ class apiController extends baseController {
 			}
 		}
 		
-		echo PVResponse::createResponse(425, $string  );
+		echo Response::createResponse(425, $string  );
 	}
 	
 	

@@ -5,40 +5,41 @@
  * be used in standalone validation.
  * 
  */
+use prodigyview\util\Validator;
 
 //Initialize validation class
-PVValidator::init(array());
+Validator::init(array());
 
 /**
  * Compares what should be passed is an of a user and compares it the id of the user
  * that currently has a session in the cookie
  */
 $differentUser = function($value) {
-	return !($value == PVSession::readCookie('user_id'));
+	return !($value == Session::readCookie('user_id'));
 };
 
-PVValidator::addRule('differentUser', array('function' => $differentUser));
+Validator::addRule('differentUser', array('function' => $differentUser));
 
 
 /**
  * Cast the passed value to an array if it is not already one, and the checks to make
  * sure that the array is not empty.
  */
-PVValidator::addRule('notEmptyArray', array('function' => function(array $value) {
+Validator::addRule('notEmptyArray', array('function' => function(array $value) {
 	return !empty($value);
 }));
 
 
 /**
  * Validation rule that checks to make sure the uploaded image is an image. Retrieves the mime type
- * of the image using PVFileManager::getMimeType, and uses PVValidator::isImageFile that checks
+ * of the image using FileManager::getMimeType, and uses Validator::isImageFile that checks
  * mime types.
  */
-PVValidator::addRule('checkImageUpload', array('function' => function($file){
+Validator::addRule('checkImageUpload', array('function' => function($file){
 	
 	$validation = false;
 	
-	if($file['size'] > 0 && PVValidator::isImageFile(PVFileManager::getFileMimeType($file['tmp_name'])))
+	if($file['size'] > 0 && Validator::isImageFile(FileManager::getFileMimeType($file['tmp_name'])))
 		$validation = true;
 	
 	return $validation;
@@ -48,7 +49,7 @@ PVValidator::addRule('checkImageUpload', array('function' => function($file){
  * In the lengthCheck example, the validation is defined directly in the 'addRule' method.
  * This validation takes in options that would be sent from the model if specified.
  */
-PVValidator::addRule('lenghtCheck', array('function' => function($string, $options) {
+Validator::addRule('lenghtCheck', array('function' => function($string, $options) {
 	$valid = true;
 	
 	if(isset($options['min']) && strlen($string) < $options['min'])
@@ -65,7 +66,7 @@ PVValidator::addRule('lenghtCheck', array('function' => function($string, $optio
  * Add a rule to ensure that the passed value does not equal zero. Used to different the
  * difference between empty and zero
  */
-PVValidator::addRule('notzero', array('function' => function($value) {
+Validator::addRule('notzero', array('function' => function($value) {
 	if($value != 0)
 		return true;
 	
@@ -76,14 +77,14 @@ PVValidator::addRule('notzero', array('function' => function($value) {
 /**
  * Checks to see if the file has an image extension.
  */
-PVValidator::addRule('is_image_file', array('function' => function($file) {
+Validator::addRule('is_image_file', array('function' => function($file) {
 	
 	if(!file_exists($file))
 		return false;
 	
-	$mime_type = PVFileManager::getFileMimeType($file);
+	$mime_type = FileManager::getFileMimeType($file);
 	
-	return PVValidator::isImageFile($mime_type);
+	return Validator::isImageFile($mime_type);
 }));
 
 

@@ -1,15 +1,16 @@
 <?php
 /**
  * Initialize the template class. This class is responsible for messages displayed to the user, displaying
- * javascript and css, and the overall process of the view. 'Template' uses aspects of 'PVTemplate' but they
+ * javascript and css, and the overall process of the view. 'Template' uses aspects of 'Template' but they
  * are seperate classes,
  */
+use prodigyview\template\Template;
 
 $template_options = array();
-PVTemplate::init($template_options);
+Template::init($template_options);
 
 //**Set the Default Site Title
-PVTemplate::setSiteTitle('Site 1');
+Template::setSiteTitle('Site 1');
 
 /**
  * Adds an adapter to overrwrite the default method Template::_titleCheck and
@@ -17,9 +18,9 @@ PVTemplate::setSiteTitle('Site 1');
  * 
  * Adapters are an example of aspect oritented programming and an alternative to dependency injection 
  */
-PVTemplate::addAdapter('prodigyview\helium\He2Template', '_titleCheck', function($view) {
+Template::addAdapter('prodigyview\helium\He2Template', '_titleCheck', function($view) {
 	
-	$title = PVTemplate::getSiteTitle();
+	$title = Template::getSiteTitle();
 	
 	if($title == 'Site 1' && !($view['view'] == 'index' && $view['prefix'] == 'index')) {
 			
@@ -29,6 +30,6 @@ PVTemplate::addAdapter('prodigyview\helium\He2Template', '_titleCheck', function
 		$view['prefix'] = ucwords($view['prefix']); 
 		$view['view'] = ucwords($view['view']); 
 		
-		PVTemplate::setSiteTitle('Site 1 - ' . $view['view']. ' - '. $view['prefix'] );
+		Template::setSiteTitle('Site 1 - ' . $view['view']. ' - '. $view['prefix'] );
 	}
 } , array('type' => 'closure'));

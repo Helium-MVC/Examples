@@ -1,24 +1,24 @@
 <?php
 
-PVTemplate::setSiteTitle($user -> first_name . ' ' . $user -> last_name);
+$this->Meta->setTitle($user -> first_name . ' ' . $user -> last_name);
  
-PVTemplate::appendSiteMetaTags('<meta name="description" content="'. $this -> Format -> ogTag(PVTools::truncateText($user -> bio, 100)) .'" />');
+$this->Meta->appendTags('<meta name="description" content="'. $this -> Format -> ogTag(prodigyview\util\Tools::truncateText($user -> bio, 100)) .'" />');
 
-PVTemplate::appendSiteMetaTags('<meta property="og:title" content="'. $this -> Format -> ogTag($user -> first_name . ' ' . $user -> last_name).' "/>');
-PVTemplate::appendSiteMetaTags('<meta property="og:description" content="'. $this -> Format -> ogTag(PVTools::truncateText($user -> bio, 100)) .'">');
-PVTemplate::appendSiteMetaTags('<meta property="og:url" content="' . PVTools::getCurrentUrl() .'"/>');
-PVTemplate::appendSiteMetaTags('<meta property="og:site_name" content="Helium MVC"/>');
-PVTemplate::appendSiteMetaTags('<meta property="og:type" content="website"/>');
+$this->Meta->appendTags('<meta property="og:title" content="'. $this -> Format -> ogTag($user -> first_name . ' ' . $user -> last_name).' "/>');
+$this->Meta->appendTags('<meta property="og:description" content="'. $this -> Format -> ogTag(prodigyview\util\Tools::truncateText($user -> bio, 100)) .'">');
+$this->Meta->appendTags('<meta property="og:url" content="' . $this->Navigation->getUrl() .'"/>');
+$this->Meta->appendTags('<meta property="og:site_name" content="Helium MVC"/>');
+$this->Meta->appendTags('<meta property="og:type" content="website"/>');
 if($user -> image_id):
-	PVTemplate::appendSiteMetaTags('<meta property="og:image" content="'. $this -> Format -> parseImage($user -> image_large_url) .'" />');
+	$this->Meta->appendTags('<meta property="og:image" content="'. $this -> Format -> parseImage($user -> image_large_url) .'" />');
  endif;
 
-PVTemplate::appendSiteMetaTags('<meta name="twitter:card" content="summary">');
-PVTemplate::appendSiteMetaTags('<meta name="twitter:site" content="@he2mvc">');
-PVTemplate::appendSiteMetaTags('<meta name="twitter:creator" content="@he2mvc">');
-PVTemplate::appendSiteMetaTags('<meta name="twitter:url" content="' . PVTools::getCurrentUrl()  . '">');
-PVTemplate::appendSiteMetaTags('<meta name="twitter:title" content="'. $this -> Format -> ogTag($user -> first_name . ' ' . $user -> last_name).'">');
-PVTemplate::appendSiteMetaTags('<meta name="twitter:description" content="'. $this -> Format -> ogTag(PVTools::truncateText($user -> bio, 100)) .'">');
+$this->Meta->appendTags('<meta name="twitter:card" content="summary">');
+$this->Meta->appendTags('<meta name="twitter:site" content="@he2mvc">');
+$this->Meta->appendTags('<meta name="twitter:creator" content="@he2mvc">');
+$this->Meta->appendTags('<meta name="twitter:url" content="' . $this->Navigation->getUrl()  . '">');
+$this->Meta->appendTags('<meta name="twitter:title" content="'. $this -> Format -> ogTag($user -> first_name . ' ' . $user -> last_name).'">');
+$this->Meta->appendTags('<meta name="twitter:description" content="'. $this -> Format -> ogTag(prodigyview\util\Tools::truncateText($user -> bio, 100)) .'">');
 
 ?>
 

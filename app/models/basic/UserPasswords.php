@@ -4,6 +4,9 @@ namespace app\models\basic;
 use app\models\HModel;
 use app\services\LoggingService;
 
+use prodigyview\util\Tools;
+use prodigyview\system\Security;
+
 /**
  * UserPasswords
  * 
@@ -41,11 +44,11 @@ class UserPasswords extends HModel {
 UserPasswords::addFilter('app\models\basic\UserPasswords', 'create','filter', function($data, $options) {
 	
 	//Generate a random salt
-	$data['data']['salt'] = \PVTools::generateRandomString();
+	$data['data']['salt'] = Tools::generateRandomString();
 	
 	//Encrypt the password from plain text
 	if(isset($data['data']['user_password']) && !empty($data['data']['user_password'])) {
-		$data['data']['user_password'] = \PVSecurity::hash(trim($data['data']['user_password']));
+		$data['data']['user_password'] = Security::hash(trim($data['data']['user_password']));
 	}
 	
 	return $data;
@@ -57,7 +60,7 @@ UserPasswords::addFilter('app\models\basic\UserPasswords', 'update','filter', fu
 	
 	//Encrypt the password from plain text
 	if(isset($data['data']['user_password']) && !empty($data['data']['user_password'])) {
-		$data['data']['user_password'] = \PVSecurity::hash(trim($data['data']['user_password']));
+		$data['data']['user_password'] = Security::hash(trim($data['data']['user_password']));
 	}
 	
 	return $data;

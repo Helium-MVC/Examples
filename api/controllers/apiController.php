@@ -1,6 +1,12 @@
 <?php
 use prodigyview\helium\He2Controller;
 
+use prodigyview\template\Template;
+use prodigyview\network\Router;
+use prodigyview\network\Request;
+use prodigyview\network\Response;
+use prodigyview\system\Configuration;
+
 class apiController extends He2Controller {
 
 	/**
@@ -29,23 +35,23 @@ class apiController extends He2Controller {
 		//Adds a header for windows
 		header('P3P: CP="NOI ADM DEV PSAi NAV OUR STP IND DEM HONK"');
 
-		$route = PVRouter::getRoute();
+		$route = Router::getRoute();
 		$controller = (isset($route['controller'])) ? $route['controller'] : null;
 
 		if (!$controller) {
-			$controller = PVRouter::getRouteVariable('controller');
+			$controller = Router::getRouteVariable('controller');
 		}
 
-		$route = PVRouter::getRoute();
+		$route = Router::getRoute();
 		$action = (isset($route['action'])) ? $route['action'] : null;
 
 		if (!$action) {
-			$action = PVRouter::getRouteVariable('action');
+			$action = Router::getRouteVariable('action');
 		}
 
 		$current_route = '/' . $controller . '/' . $action;
 
-		$sites = (array)PVConfiguration::getConfiguration('sites');
+		$sites = (array)Configuration::getConfiguration('sites');
 
 		if (isset($_SERVER['HTTP_X_FOWARDED_HOST']) && !empty($_SERVER['HTTP_X_FOWARDED_HOST'])) {
 			$origin = $_SERVER['HTTP_X_FOWARDED_HOST'];
@@ -65,7 +71,7 @@ class apiController extends He2Controller {
 				// http://stackoverflow.com/a/7605119/578667
 				header('Access-Control-Max-Age: 86400');
 			}
-			echo PVResponse::createResponse(200, 'Successful Connection');
+			echo Response::createResponse(200, 'Successful Connection');
 			exit();
 		}
 
@@ -206,7 +212,7 @@ class apiController extends He2Controller {
 			)))) {
 			return $this->_jsonResponse($model->getIterator()->getData());
 		} else {
-			echo PVResponse::createResponse(410, $model->getErrorsString());
+			echo Response::createResponse(410, $model->getErrorsString());
 		}
 
 		exit();
@@ -215,7 +221,7 @@ class apiController extends He2Controller {
 	public function update($data) {
 
 		if (!$this->_id) {
-			PVResponse::createResponse(410, 'An ID is required for updating. Set ID in controller');
+			Response::createResponse(410, 'An ID is required for updating. Set ID in controller');
 		}
 
 		$object = $this->_model;
@@ -246,7 +252,7 @@ class apiController extends He2Controller {
 
 			if (!empty($errors)) {
 				$message = json_encode($errors);
-				echo PVResponse::createResponse(425, $model->getErrorsString());
+				echo Response::createResponse(425, $model->getErrorsString());
 				exit();
 			} else {
 				$this->_jsonResponse($model->getIterator()->getData());
@@ -263,7 +269,7 @@ class apiController extends He2Controller {
 		foreach ($data as $key => $value) {
 
 			if (is_object($value)) {
-				$data[$key] = PVConversions::objectToArray($value);
+				$data[$key] = Conversions::objectToArray($value);
 			}
 
 			if ($this->_isJson($value)) {
@@ -275,7 +281,7 @@ class apiController extends He2Controller {
 		$predata = (isset($data['predata'])) ? $data['predata'] : array();
 
 		/*if(!isset($data['conditions']) || empty($data['conditions'])) {
-		 PVResponse::createResponse(470, 'Illegal arguements passed. Query logged.' );
+		 Response::createResponse(470, 'Illegal arguements passed. Query logged.' );
 		 exit();
 		 }*/
 
@@ -291,7 +297,7 @@ class apiController extends He2Controller {
 		foreach ($data as $key => $value) {
 
 			if (is_object($value)) {
-				$data[$key] = PVConversions::objectToArray($value);
+				$data[$key] = Conversions::objectToArray($value);
 			}
 
 			if ($this->_isJson($value)) {
@@ -325,7 +331,7 @@ class apiController extends He2Controller {
 		foreach ($data as $key => $value) {
 
 			if (is_object($value)) {
-				$data[$key] = PVConversions::objectToArray($value);
+				$data[$key] = Conversions::objectToArray($value);
 			}
 
 			if ($this->_isJson($value)) {

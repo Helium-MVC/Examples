@@ -1,10 +1,11 @@
 <?php
+use prodigyview\system\Session;
 
 /**
  * ShowAlert is a class that is callable in the template section because it exist in the template section
  * of the extensions. This means that this class is designed to be used in any of the views.
  */
-class ShowAlert extends PVObject {
+class ShowAlert {
 	
 	public function __construct(){
 		
@@ -18,7 +19,7 @@ class ShowAlert extends PVObject {
 	 */
 	public function showAlert() {
 		
-		$he2_alerts = PVSession::readSession('he2_alerts');
+		$he2_alerts = Session::readSession('he2_alerts');
 		
 		if(!empty($he2_alerts)) {
 			
@@ -26,7 +27,7 @@ class ShowAlert extends PVObject {
 				echo $alert;	
 		}
 		
-		PVSession::writeSession('he2_alerts', '' );
+		Session::writeSession('he2_alerts', '' );
 	}
 
 }

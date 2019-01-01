@@ -1,6 +1,8 @@
 <?php
 use app\services\session\SessionService;
 
+use prodigyview\system\Security;
+
 /**
  * Session
  * 
@@ -27,9 +29,9 @@ class Session {
 		
 		$private_key = SessionService::read('api_token');
 		
-		$public_key = base64_encode(PVSecurity::generateToken(20));
+		$public_key = base64_encode(Security::generateToken(20));
 		
-		$signature = PVSecurity::encodeHmacSignature($public_key, $private_key,'sha1', false);
+		$signature = Security::encodeHmacSignature($public_key, $private_key,'sha1', false);
 		
 		return '
 			<input type="hidden" name="api_public_key" value="' . $public_key . '" id="api_public_key"  />

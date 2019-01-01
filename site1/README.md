@@ -19,7 +19,7 @@ In our views, we have it completely decoupled with PHP . For example, if you go 
 ```php
 <?php 
 //We are injecting our js app into the html
-PVLibraries::enqueueJavascript('components/posts.js'); 
+Libraries::enqueueJavascript('components/posts.js'); 
 ?>
 ```
 
@@ -116,8 +116,8 @@ public function __construct($registry, $configurtion = array()) {
 		);
         
 	if(!SessionService::read('is_loggedin') && in_array($this->registry -> route[0], $restricted_routes)) {
-		PVTemplate::errorMessage('The section is restricted to members. Please login.');
-		PVRouter::redirect('/login');
+		Template::errorMessage('The section is restricted to members. Please login.');
+		Router::redirect('/login');
 	}
         
 }
@@ -168,11 +168,11 @@ The token is generated in the `site1/templates/default.html.php` by getting the 
 In the apiContoller.php construcuter, the Authorization taken is retrieved and checked again the current session token like so:
 
 ```php
-$request = new PVRequest();
+$request = new Request();
 $authorization = $request -> getHeader('Authorization');
 		 
 if($authorization != SessionService::read('api_token')) {
-	echo PVResponse::createResponse(400,  'Invalid Token Sent');
+	echo Response::createResponse(400,  'Invalid Token Sent');
 	exit();
 }
 ```

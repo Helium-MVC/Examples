@@ -1,4 +1,7 @@
 <?php
+use prodigyview\util\Tools;
+use prodigyview\system\Configuration;
+
 /**
  * Generate a CSFR token to validate forms.
  * 
@@ -11,11 +14,11 @@ class CSRF  {
 	 * into the form.
 	 */
 	public function getCSRFTokenInput() {
-		$token_name = PVTools::generateRandomString().uniqid();
+		$token_name = Tools::generateRandomString().uniqid();
 		$token_value = bin2hex(random_bytes(32));
 		
 		$redis = new Redis();
-		$redis -> connect(PVConfiguration::getConfiguration('redis') -> host, PVConfiguration::getConfiguration('redis') -> port);
+		$redis -> connect(Configuration::getConfiguration('redis') -> host, Configuration::getConfiguration('redis') -> port);
 		$redis -> setex($token_name , 3600, $token_value); 
 		
 		return '

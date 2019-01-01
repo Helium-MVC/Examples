@@ -32,8 +32,8 @@ The Facade Design Pattern is heavily used in Site 3 because of the absence of th
                 
         //Assign Values
         $data['user_id'] = $id;
-        $data['password'] = \PVSecurity::hash($data['password']);
-        $data['activation_token'] = \PVTools::generateRandomString();
+        $data['password'] = \Security::hash($data['password']);
+        $data['activation_token'] = \Tools::generateRandomString();
         $data['preferences'] = array(
             'email_weekly_updates' =>true,
             'email_comment_responses' => true
@@ -47,8 +47,8 @@ The Facade Design Pattern is heavily used in Site 3 because of the absence of th
         $queue = ServiceFactory::get('queue');
         
         $email_data = array(
-            'user' => \PVConversions::arrayToObject($data),
-            'site_url' => \PVConfiguration::getConfiguration('sites') -> site3
+            'user' => \Conversions::arrayToObject($data),
+            'site_url' => \Configuration::getConfiguration('sites') -> site3
         );
         
         $queue -> add('sendWelcomeEmail', $email_data);

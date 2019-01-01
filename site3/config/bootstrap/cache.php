@@ -2,13 +2,16 @@
 /**
  * Important Explanation
  * 
- * All the models in Helium use PVCache when the caching is enabled. PVCache by default
+ * All the models in Helium use Cache when the caching is enabled. Cache by default
  * used the file system - which has limitations.
  * 
  * For this basic site, we are just goign to stick with file cache.
  */
+ 
+use prodigyview\util\Cache;
+use prodigyview\network\Router;
 
-PVCache::init(array());
+Cache::init(array());
 
 /*
  * Specailized Controller Adapter
@@ -21,10 +24,10 @@ PVCache::init(array());
  prodigyview\helium\He2Router::addAdapter('prodigyview\helium\He2Router', 'executeControllerAction', function($controller, $action) {
  	
 	//Create a cache key from the controller and action
-	$cache_name = md5(get_class($controller).''. $action.''.PVRouter::getRouteVariables()[0]);
+	$cache_name = md5(get_class($controller).''. $action.''.Router::getRouteVariables()[0]);
 	
 	//Create a new cache if cache does not exist
-	if(PVCache::hasExpired($cache_name)) {
+	if(Cache::hasExpired($cache_name)) {
 			
 		//Call the controller and get the data
 		$data = $controller -> $action();
@@ -40,7 +43,7 @@ PVCache::init(array());
 		} else {
 				
 			//Write the data to a cache file
-			PVCache::writeCache($cache_name, $data);
+			Cache::writeCache($cache_name, $data);
 		}
 		
 		return $data;
@@ -48,7 +51,7 @@ PVCache::init(array());
 			
 		//Return cached data
 		//Never has to call the controller
-		return PVCache::readCache($cache_name);
+		return Cache::readCache($cache_name);
 	}
 	
  }, array('type' => 'closure'));

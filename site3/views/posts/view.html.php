@@ -1,24 +1,24 @@
 <?php
 
-PVTemplate::setSiteTitle($post -> title);
+Template::setSiteTitle($post -> title);
  
-PVTemplate::appendSiteMetaTags('<meta name="description" content="'. $this -> Format -> ogTag(PVTools::truncateText($post -> content, 100)) .'" />');
+Template::appendSiteMetaTags('<meta name="description" content="'. $this -> Format -> ogTag(prodigyview\util\Tools::truncateText($post -> content, 100)) .'" />');
 
-PVTemplate::appendSiteMetaTags('<meta property="og:title" content="'. $this -> Format -> ogTag($post -> title).' "/>');
-PVTemplate::appendSiteMetaTags('<meta property="og:description" content="'. $this -> Format -> ogTag(PVTools::truncateText($post -> content, 100)) .'">');
-PVTemplate::appendSiteMetaTags('<meta property="og:url" content="' . PVTools::getCurrentUrl() .'"/>');
-PVTemplate::appendSiteMetaTags('<meta property="og:site_name" content="Helium MVC"/>');
-PVTemplate::appendSiteMetaTags('<meta property="og:type" content="website"/>');
+Template::appendSiteMetaTags('<meta property="og:title" content="'. $this -> Format -> ogTag($post -> title).' "/>');
+Template::appendSiteMetaTags('<meta property="og:description" content="'. $this -> Format -> ogTag(prodigyview\util\Tools::truncateText($post -> content, 100)) .'">');
+Template::appendSiteMetaTags('<meta property="og:url" content="' . Router::getCurrentUrl() .'"/>');
+Template::appendSiteMetaTags('<meta property="og:site_name" content="Helium MVC"/>');
+Template::appendSiteMetaTags('<meta property="og:type" content="website"/>');
 if($post -> image_id):
-	PVTemplate::appendSiteMetaTags('<meta property="og:image" content="'. $this -> Format -> parseImage($post -> image_large_url) .'" />');
+	Template::appendSiteMetaTags('<meta property="og:image" content="'. $this -> Format -> parseImage($post -> image_large_url) .'" />');
  endif;
 
-PVTemplate::appendSiteMetaTags('<meta name="twitter:card" content="summary">');
-PVTemplate::appendSiteMetaTags('<meta name="twitter:site" content="@he2mvc">');
-PVTemplate::appendSiteMetaTags('<meta name="twitter:creator" content="@he2mvc">');
-PVTemplate::appendSiteMetaTags('<meta name="twitter:url" content="' . PVTools::getCurrentUrl()  . '">');
-PVTemplate::appendSiteMetaTags('<meta name="twitter:title" content="'. $this -> Format -> ogTag($post -> title).'">');
-PVTemplate::appendSiteMetaTags('<meta name="twitter:description" content="'. $this -> Format -> ogTag(PVTools::truncateText($post -> content, 100)) .'">');
+Template::appendSiteMetaTags('<meta name="twitter:card" content="summary">');
+Template::appendSiteMetaTags('<meta name="twitter:site" content="@he2mvc">');
+Template::appendSiteMetaTags('<meta name="twitter:creator" content="@he2mvc">');
+Template::appendSiteMetaTags('<meta name="twitter:url" content="' . Router::getCurrentUrl()  . '">');
+Template::appendSiteMetaTags('<meta name="twitter:title" content="'. $this -> Format -> ogTag($post -> title).'">');
+Template::appendSiteMetaTags('<meta name="twitter:description" content="'. $this -> Format -> ogTag(prodigyview\util\Tools::truncateText($post -> content, 100)) .'">');
 
 ?>
 
@@ -61,7 +61,7 @@ PVTemplate::appendSiteMetaTags('<meta name="twitter:description" content="'. $th
 		    					Leave A Comment
 		  				</div>
 		  				<div class="card-body">
-							<form  id="leaveComment"method="post" action="<?= PVTools::getCurrentUrl(); ?>">
+							<form  id="leaveComment"method="post" action="<?= prodigyview\network\Router::getCurrentUrl(); ?>">
 								
 								<div class="form-group">
 									<textarea name="comment" class="form-control" rows="7"></textarea>

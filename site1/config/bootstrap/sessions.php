@@ -5,7 +5,10 @@
  */
 
 //Get the configuration set for the session. Configuration is set in the environments.php file
-$session = PVConfiguration::getConfiguration('session');
+use prodigyview\system\Configuration;
+use prodigyview\system\Session;
+
+$session = Configuration::getConfiguration('session');
 
 $session_configuration = array(
 	'cookie_lifetime' => $session -> cookie_lifetime,
@@ -17,5 +20,5 @@ $session_configuration = array(
 );
 
 
-PVSession::init($session_configuration);
+Session::init($session_configuration);
 

@@ -43,7 +43,7 @@ class Format extends Twig_Extension implements Twig_ExtensionInterface {
 			}
 			
 			return $timestamp -> toDateTime() -> format($format); 
-		} else if(PVValidator::isInteger($timestamp)) {
+		} else if(Validator::isInteger($timestamp)) {
 		
 			return date($format, $timestamp/1000);
 

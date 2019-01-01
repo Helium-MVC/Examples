@@ -2,6 +2,11 @@
 
 namespace app\facades;
 
+use prodigyview\util\Collection;
+use prodigyview\system\Configuration;
+use prodigyview\util\Tools;
+use prodigyview\util\Conversions;
+
 use app\factories\ServiceFactory;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
@@ -29,7 +34,7 @@ class FirebaseModelFacade {
 	 * 
 	 * @param array $data The data to save
 	 * 
-	 * @return PVCollection
+	 * @return Collection
 	 */
 	public function createUser(array $data) {
 		
@@ -48,7 +53,7 @@ class FirebaseModelFacade {
 		
 		//Assign Values
 		$data['user_id'] = $id;
-		$data['activation_token'] = \PVTools::generateRandomString();
+		$data['activation_token'] = Tools::generateRandomString();
 		$data['preferences'] = array(
 			'email_weekly_updates' =>true,
 			'email_comment_responses' => true
@@ -62,15 +67,15 @@ class FirebaseModelFacade {
 		$queue = ServiceFactory::get('queue');
 		
 		$email_data = array(
-			'user' => \PVConversions::arrayToObject($data),
-			'site_url' => \PVConfiguration::getConfiguration('sites') -> site3
+			'user' => Conversions::arrayToObject($data),
+			'site_url' => Configuration::getConfiguration('sites') -> site3
 		);
 		
 		//Messenging service for processing emails
 		$queue -> add('sendWelcomeEmail', $email_data);
 		
 		//Return new user
-		return new \PVCollection($data);
+		return new Collection($data);
 	}
 
 	/**
@@ -93,7 +98,7 @@ class FirebaseModelFacade {
 	 * 
 	 * @param array $data The data to save
 	 * 
-	 * @return PVCollection
+	 * @return Collection
 	 */
 	public function createPost(array $data) {
 		
@@ -114,7 +119,7 @@ class FirebaseModelFacade {
 		
 		$this -> _firebase->getReference('posts/'. $data['post_id'])->set($data);
 		
-		return new \PVCollection($data);
+		return new Collection($data);
 	}
 	
 	/**
@@ -122,7 +127,7 @@ class FirebaseModelFacade {
 	 * 
 	 * @param array $data The data to save
 	 * 
-	 * @return PVCollection
+	 * @return Collection
 	 */
 	public function createContact(array $data) {
 		
@@ -137,7 +142,7 @@ class FirebaseModelFacade {
 		
 		$this -> _firebase->getReference('contact/'. $data['contact_id'])->set($data);
 		
-		return new \PVCollection($data);
+		return new Collection($data);
 	}
 	
 	/**
@@ -145,7 +150,7 @@ class FirebaseModelFacade {
 	 * 
 	 * @param array $data The data to save
 	 * 
-	 * @return PVCollection
+	 * @return Collection
 	 */
 	public function createLog(array $data) {
 		
@@ -160,7 +165,7 @@ class FirebaseModelFacade {
 		
 		$this -> _firebase->getReference('contact/'. $data['contact_id'])->set($data);
 		
-		return new \PVCollection($data);
+		return new Collection($data);
 	}
 	
 	/**
@@ -169,7 +174,7 @@ class FirebaseModelFacade {
 	 * @param string $id The id of the user
 	 * @param string $format The format to return the data. Default is object, option value is an array
 	 * 
-	 * @return mixed Either returns a PVCollection, Array or false if the record was not found
+	 * @return mixed Either returns a Collection, Array or false if the record was not found
 	 */
 	public function retrieveUser($id, $format = 'object') {
 		$reference  = $this -> _firebase -> getReference('users/' . $id);
@@ -183,7 +188,7 @@ class FirebaseModelFacade {
 				return $value;
 			}
 			
-			return new \PVCollection($value);
+			return new Collection($value);
 		}
 		
 		return false;
@@ -195,7 +200,7 @@ class FirebaseModelFacade {
 	 * @param string $id The id of the post
 	 * @param string $format The format to return the data. Default is object, option value is an array
 	 * 
-	 * @return mixed Either returns a PVCollection, Array or false if the record was not found
+	 * @return mixed Either returns a Collection, Array or false if the record was not found
 	 */
 	public function retrievePost($id, $format = 'object') {
 		$reference  = $this -> _firebase -> getReference('posts/' . $id);
@@ -208,7 +213,7 @@ class FirebaseModelFacade {
 				return $value;
 			}
 			
-			return new \PVCollection($value);
+			return new Collection($value);
 		}
 		
 		return false;
@@ -220,7 +225,7 @@ class FirebaseModelFacade {
 	 * @param string $id The id of the contact record
 	 * @param string $format The format to return the data. Default is object, option value is an array
 	 * 
-	 * @return mixed Either returns a PVCollection, Array or false if the record was not found
+	 * @return mixed Either returns a Collection, Array or false if the record was not found
 	 */
 	public function retrieveContact($id, $format = 'object') {
 		$reference  = $this -> _firebase -> getReference('contact/' . $id);
@@ -234,7 +239,7 @@ class FirebaseModelFacade {
 				return $value;
 			}
 			
-			return new \PVCollection($value);
+			return new Collection($value);
 		}
 		
 		return false;
@@ -324,7 +329,7 @@ class FirebaseModelFacade {
 
 		$value = $snapshot->getValue();
 		
-		return new \PVCollection($value);
+		return new Collection($value);
 		
 	}
 	
@@ -340,7 +345,7 @@ class FirebaseModelFacade {
 
 		$value = $snapshot->getValue();
 		
-		return new \PVCollection($value);
+		return new Collection($value);
 		
 	}
 	
@@ -356,7 +361,7 @@ class FirebaseModelFacade {
 
 		$value = $snapshot->getValue();
 		
-		return new \PVCollection($value);	
+		return new Collection($value);	
 	}
 	
 	public function queryLogs(array $queries = array()) {
@@ -371,7 +376,7 @@ class FirebaseModelFacade {
 
 		$value = $snapshot->getValue();
 		
-		return new \PVCollection($value);
+		return new Collection($value);
 		
 	}
 }

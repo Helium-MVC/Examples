@@ -1,4 +1,6 @@
 <?php
+use prodigyview\system\Configuration;
+
 /**
  * This class is designed to check the CSFR Token to ensure there is not an
  * attack on the system.
@@ -25,7 +27,7 @@ class Token {
 		$token_value = $data['csrf_value'];
 		
 		$redis = new Redis();
-		$redis -> connect(PVConfiguration::getConfiguration('redis') -> host, PVConfiguration::getConfiguration('redis') -> port);
+		$redis -> connect(Configuration::getConfiguration('redis') -> host, Configuration::getConfiguration('redis') -> port);
 		
 		$stored_token = $redis -> get($token_name);
 		

@@ -3,7 +3,7 @@
 		<div class="col-lg-8 col-md-10 mx-auto">
 			<h1>Update Post</h1>
 			
-			<form  id="postForm" enctype="multipart/form-data" method="post" ng-controller="PostsCtrl" ng-init="initSync('<?= $this -> Angular -> escape($post -> post_id); ?>')" action="<?= PVTools::getCurrentUrl(); ?>">
+			<form  id="postForm" enctype="multipart/form-data" method="post" ng-controller="PostsCtrl" ng-init="initSync('<?= $this -> Angular -> escape($post -> post_id); ?>')" action="<?= prodigyview\network\Router::getCurrentUrl(); ?>">
 				
 				<?php include('_form.html.php'); ?>
 				

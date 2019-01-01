@@ -2,6 +2,8 @@
 
 namespace app\services\session;
 
+use prodigyview\system\Session;
+
 class SessionService implements SessionInterface {
 	
 	private static $_hander = null;

@@ -1,6 +1,8 @@
 <?php
 namespace app\models\uuid;
 
+use prodigyview\system\Database;
+
 /**
  * class ActionLogger
  * 
@@ -71,7 +73,7 @@ class ActionLogger extends PGModel {
 		
 		$tablename = $this -> getTableName();
 		
-		$dbconn = \PVDatabase::getDatabaseLink();
+		$dbconn = Database::getDatabaseLink();
 		
 		$query = 'UPDATE ' . $tablename . ' SET entity_state = entity_state || hstore($1, $2) WHERE record_id=$3 ;';
 		
@@ -107,7 +109,7 @@ class ActionLogger extends PGModel {
 		
 		$tablename = $this -> getTableName();
 		
-		$dbconn = \PVDatabase::getDatabaseLink();
+		$dbconn = Database::getDatabaseLink();
 		
 		$query = 'UPDATE ' . $tablename . ' SET meta_data = meta_data || hstore($1, $2) WHERE record_id=$3 ;';
 		

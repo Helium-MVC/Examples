@@ -1,6 +1,8 @@
 <?php
 namespace app\services;
 
+use prodgiyview\system\Configuration;
+
 /**
  * QueueService
  * 
@@ -16,7 +18,7 @@ class QueueService {
 	 */
 	public function __construct() {
 		$this -> _service = new \Redis();
-		$this -> _service -> connect(\PVConfiguration::getConfiguration('redis') ->host , \PVConfiguration::getConfiguration('redis') ->port);
+		$this -> _service -> connect(Configuration::getConfiguration('redis') ->host , Configuration::getConfiguration('redis') ->port);
 		
 	}
 	

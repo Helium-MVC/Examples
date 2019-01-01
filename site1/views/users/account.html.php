@@ -1,6 +1,6 @@
 <?php 
 //We are injecting our js app into the html
-PVLibraries::enqueueJavascript('components/accounts.js'); 
+$this->Meta->addJavascript('/js/components/accounts.js'); 
 ?>
 <div class="container mt-5">
 	<div class="row">
@@ -14,7 +14,7 @@ PVLibraries::enqueueJavascript('components/accounts.js');
   				</div>
   				<div class="card-body">
   	
-					<form  id="updateInfoForm" enctype="multipart/form-data" method="post" v-on:submit.prevent="updateInfo" action="<?= PVTools::getCurrentUrl(); ?>">
+					<form  id="updateInfoForm" enctype="multipart/form-data" method="post" v-on:submit.prevent="updateInfo" action="<?= prodigyview\network\Router::getCurrentUrl(); ?>">
 						
 						<?php if($user -> image_id): ?>
 							<div class="text-center">
@@ -65,7 +65,7 @@ PVLibraries::enqueueJavascript('components/accounts.js');
     					Update Your Email
   				</div>
   				<div class="card-body">
-					<form  id="updateEmailForm"method="post" v-on:submit.prevent="updateEmail" action="<?= PVTools::getCurrentUrl(); ?>">
+					<form  id="updateEmailForm"method="post" v-on:submit.prevent="updateEmail" action="<?= prodigyview\network\Router::getCurrentUrl(); ?>">
 						
 						<p><strong>Current Email:</strong> <?= $user -> email; ?></p>
 						<div class="form-group">
@@ -90,7 +90,7 @@ PVLibraries::enqueueJavascript('components/accounts.js');
     					Update Your Password
   				</div>
   				<div class="card-body">
-					<form  id="updatePasswordForm" method="post" v-on:submit.prevent="updatePassword" action="<?= PVTools::getCurrentUrl(); ?>">
+					<form  id="updatePasswordForm" method="post" v-on:submit.prevent="updatePassword" action="<?= prodigyview\network\Router::getCurrentUrl(); ?>">
 						
 						<div class="form-group">
 							<label>New Password</label>

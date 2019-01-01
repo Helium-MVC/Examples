@@ -18,7 +18,7 @@ class DbCli {
 	 * it checks the schema defined in the model, and attempts to replicate inside the database.
 	 */
 	public function schemacheck() {
-		foreach(PVFileManager::getFilesInDirectory(PV_ROOT. DS. 'app/models/basic'.DS) as $key => $value) {
+		foreach(FileManager::getFilesInDirectory(PV_ROOT. DS. 'app/models/basic'.DS) as $key => $value) {
 			$class_name = "app\models\basic\\".str_replace('.php', '', $value);
 			
 			echo $class_name. "\n";

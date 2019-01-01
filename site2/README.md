@@ -68,20 +68,20 @@ The session service being used is `app/services/session/DBSessionService.php` Th
 
 The site uses a more advanced version of caching that Site 1. The cache is using Redis and also uses one of the unique properties of Helium, the adapter pattern. In this pattern, we can override another classes function by creating an adapter for it.
 
-To view, the adapter created, go to `site2/libraries/RedisCache`. In here the are two classes: `RedisCache` and the `RedisAdapter`. The cache class is a class that uses Redis as a handler, go through the source code to read. The RedisAdapter function to replace the default PVCache function that the models utilize. For example:
+To view, the adapter created, go to `site2/libraries/RedisCache`. In here the are two classes: `RedisCache` and the `RedisAdapter`. The cache class is a class that uses Redis as a handler, go through the source code to read. The RedisAdapter function to replace the default Cache function that the models utilize. For example:
 
 ```php
 <?php
-PVCache::addAdapter('PVCache', 'writeCache', 'RedisCache');
+Cache::addAdapter('Cache', 'writeCache', 'RedisCache');
 ?>
 ```
-This line says that every time the function PVCache::writeCache is called, we are going to call RedisCache::writeCache instead. Its part of the magic in Helium! And we can replace the functionality of entire classes with this approach.
+This line says that every time the function Cache::writeCache is called, we are going to call RedisCache::writeCache instead. Its part of the magic in Helium! And we can replace the functionality of entire classes with this approach.
 
 The RedisCache is loaded in the libraries during the bootstrap. You can view this at `site2/config/bootstrap/libraries.php` . The line that loads it is:
 ```php
 <?php
 //Load a library that is local only to the current site, inside the libraries folder
-PVLibraries::addLibrary('RedisCache', array('explicit_load' => true));
+Libraries::addLibrary('RedisCache', array('explicit_load' => true));
 ?>
 ```
 In `site2/config/bootstrap/libraries.php`, look around to see other libraries loaded for Site 2.
@@ -100,7 +100,7 @@ Without this tag, angular will not activate. The ng-controller is used to set th
 
 ```html
 <!-- Set everything in the form tag to this ng-controller -->
-<form  id="contactForm"method="post" ng-controller="UsersCtrl" action="<?= PVTools::getCurrentUrl(); ?>">
+<form  id="contactForm"method="post" ng-controller="UsersCtrl" action="<?= prodigyview\network\Router::getCurrentUrl(); ?>">
 ```
 
 This has an effect on the input fields below with ng-model like this:
@@ -110,9 +110,9 @@ This has an effect on the input fields below with ng-model like this:
 
 ## Access Control & Functional Programming
 
-Access control for this site is defined at the earliest place when the application is made aware of the current route, via PVRouter. We can go to `site2/config/bootstrap/access.php` to see the access control in action. This is another example of anonymous functions working in the observer pattern.
+Access control for this site is defined at the earliest place when the application is made aware of the current route, via Router. We can go to `site2/config/bootstrap/access.php` to see the access control in action. This is another example of anonymous functions working in the observer pattern.
 
-This also represents one of Heliums approach to functional programming. If we go over the ProdigyViews PVRouter.php class at https://github.com/ProdigyView/ProdigyView-Core/blob/master/network/PVRouter.php#L277, we will this observer being set:
+This also represents one of Heliums approach to functional programming. If we go over the ProdigyViews Router.php class at https://github.com/ProdigyView/ProdigyView-Core/blob/master/network/Router.php#L277, we will this observer being set:
 
 ```php
 <?php
@@ -120,7 +120,7 @@ This also represents one of Heliums approach to functional programming. If we go
 ?>
 ```
 
-This means that for every observer attached to PVRouter, they are going to receive two variables: $final_route and $route_options . We are going to create an anonymous function like so:
+This means that for every observer attached to Router, they are going to receive two variables: $final_route and $route_options . We are going to create an anonymous function like so:
 
 ```php
 <?php
@@ -138,7 +138,7 @@ $myRouteListenerFunction = function($final_route, $route_options) {
 //Do Functional Stuff
 }
 
-PVRouter::addObserver('PVRouter::setRoute', 'access_closure', $myRouteListenerFunction);
+Router::addObserver('Router::setRoute', 'access_closure', $myRouteListenerFunction);
 ?>
 ```
 
@@ -173,9 +173,9 @@ public function generateApiToken() {
 		
 	$private_key = SessionService::read('api_token');
 		
-	$public_key = PVSecurity::generateToken(20);
+	$public_key = Security::generateToken(20);
 		
-	$signature = PVSecurity::encodeHmacSignature($public_key, $private_key);
+	$signature = Security::encodeHmacSignature($public_key, $private_key);
 		
 	return '
 		<input type="hidden" name="api_public_key" value="' . $public_key . '" id="api_public_key"  />
@@ -200,10 +200,10 @@ $signature = $this -> registry -> get['sig'];
 		
 $private_key = SessionService::read('api_token');
 		
-$session_signature = PVSecurity::encodeHmacSignature($public_key, $private_key);
+$session_signature = Security::encodeHmacSignature($public_key, $private_key);
 		
 if($signature != $session_signature) {
-	echo PVResponse::createResponse('400', 'Invalid API Verification');
+	echo Response::createResponse('400', 'Invalid API Verification');
 	exit();
 }
 

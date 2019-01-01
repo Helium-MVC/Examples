@@ -2,6 +2,12 @@
 
 use app\factories\ServiceFactory;
 
+use prodigyview\util\Collection;
+use prodigyview\template\Template;
+use prodigyview\network\Router;
+use prodigyview\network\Request;
+use prodigyview\network\Response;
+
 include('baseController.php');
 
 class postsController extends baseController {
@@ -21,8 +27,8 @@ class postsController extends baseController {
 		$session  = ServiceFactory::getSessionService();
 		
 		if(!$session::read('is_loggedin') && in_array($this->registry -> route[0], $restricted_routes)) {
-			PVTemplate::errorMessage('The section is restricted to members. Please login.');
-			PVRouter::redirect('/login');
+			Template::errorMessage('The section is restricted to members. Please login.');
+			Router::redirect('/login');
 		}
 		
 	}
@@ -37,19 +43,19 @@ class postsController extends baseController {
 	
 	public function create()  {
 		
-		$post = new PVCollection($this -> registry -> post);
+		$post = new Collection($this -> registry -> post);
 		
 		if($this -> registry -> post && $this -> validate('post','create', $this -> registry -> post)) {
 			
 			$post = $this -> _models -> createPost($this -> registry -> post);
 			
-			if(isset($this -> registry -> files['header_image'] ) && $this -> registry -> files['header_image']['error'] == 0 && PVValidator::isImageFile(PVFileManager::getFileMimeType($this -> registry -> files['header_image']['tmp_name'])) ) {
+			if(isset($this -> registry -> files['header_image'] ) && $this -> registry -> files['header_image']['error'] == 0 && Validator::isImageFile(FileManager::getFileMimeType($this -> registry -> files['header_image']['tmp_name'])) ) {
 				//Get the storage factory to utlize the storage service	
 				$storage = ServiceFactory::getStorageService();
 				$storage -> upload($post -> post_id, $this -> registry -> files['header_image']['tmp_name']);
 			}
 			
-			PVTemplate::successMessage('Post successfully created.');
+			Template::successMessage('Post successfully created.');
 			return $this -> redirect('/posts/view/' . $post -> post_id);
 		}
 		
@@ -75,12 +81,12 @@ class postsController extends baseController {
 			
 			$this -> _models -> updatePost($post -> post_id, $this -> registry -> post);
 			
-			if(isset($this -> registry -> files['header_image'] ) && $this -> registry -> files['header_image']['error'] == 0 && PVValidator::isImageFile(PVFileManager::getFileMimeType($this -> registry -> files['header_image']['tmp_name'])) ) {	
+			if(isset($this -> registry -> files['header_image'] ) && $this -> registry -> files['header_image']['error'] == 0 && Validator::isImageFile(FileManager::getFileMimeType($this -> registry -> files['header_image']['tmp_name'])) ) {	
 				$storage = ServiceFactory::getStorageService();
 				$storage -> upload($post -> post_id, $this -> registry -> files['header_image']['tmp_name']);
 			}
 			
-			PVTemplate::successMessage('Post successfully updated.');
+			Template::successMessage('Post successfully updated.');
 			return $this -> redirect('/posts/view/' . $post -> post_id);
 		}
 		
@@ -96,30 +102,30 @@ class postsController extends baseController {
 		}
 		
 		if($this -> registry -> post && $comment -> create($this -> registry -> post)) {
-			PVTemplate::successMessage('Comment successfully created');
+			Template::successMessage('Comment successfully created');
 		}
 		
 		
 		//Set the meta data here instead of in tempalte
-		PVTemplate::setSiteTitle($post -> title);
+		Template::setSiteTitle($post -> title);
  
-		PVTemplate::appendSiteMetaTags('<meta name="description" content="'. $this -> Format -> ogTag(PVTools::truncateText($post -> content, 100)) .'" />');
+		Template::appendSiteMetaTags('<meta name="description" content="'. $this -> Format -> ogTag(prodigyview\util\Tools::truncateText($post -> content, 100)) .'" />');
 		
-		PVTemplate::appendSiteMetaTags('<meta property="og:title" content="'. $this -> Format -> ogTag($post -> title).' "/>');
-		PVTemplate::appendSiteMetaTags('<meta property="og:description" content="'. $this -> Format -> ogTag(PVTools::truncateText($post -> content, 100)) .'">');
-		PVTemplate::appendSiteMetaTags('<meta property="og:url" content="' . PVTools::getCurrentUrl() .'"/>');
-		PVTemplate::appendSiteMetaTags('<meta property="og:site_name" content="Helium MVC"/>');
-		PVTemplate::appendSiteMetaTags('<meta property="og:type" content="website"/>');
+		Template::appendSiteMetaTags('<meta property="og:title" content="'. $this -> Format -> ogTag($post -> title).' "/>');
+		Template::appendSiteMetaTags('<meta property="og:description" content="'. $this -> Format -> ogTag(prodigyview\util\Tools::truncateText($post -> content, 100)) .'">');
+		Template::appendSiteMetaTags('<meta property="og:url" content="' . Router::getCurrentUrl() .'"/>');
+		Template::appendSiteMetaTags('<meta property="og:site_name" content="Helium MVC"/>');
+		Template::appendSiteMetaTags('<meta property="og:type" content="website"/>');
 		if($post -> image_id):
-			PVTemplate::appendSiteMetaTags('<meta property="og:image" content="'. $this -> Format -> parseImage($post -> image_large_url) .'" />');
+			Template::appendSiteMetaTags('<meta property="og:image" content="'. $this -> Format -> parseImage($post -> image_large_url) .'" />');
 		 endif;
 		
-		PVTemplate::appendSiteMetaTags('<meta name="twitter:card" content="summary">');
-		PVTemplate::appendSiteMetaTags('<meta name="twitter:site" content="@he2mvc">');
-		PVTemplate::appendSiteMetaTags('<meta name="twitter:creator" content="@he2mvc">');
-		PVTemplate::appendSiteMetaTags('<meta name="twitter:url" content="' . PVTools::getCurrentUrl()  . '">');
-		PVTemplate::appendSiteMetaTags('<meta name="twitter:title" content="'. $this -> Format -> ogTag($post -> title).'">');
-		PVTemplate::appendSiteMetaTags('<meta name="twitter:description" content="'. $this -> Format -> ogTag(PVTools::truncateText($post -> content, 100)) .'">');
+		Template::appendSiteMetaTags('<meta name="twitter:card" content="summary">');
+		Template::appendSiteMetaTags('<meta name="twitter:site" content="@he2mvc">');
+		Template::appendSiteMetaTags('<meta name="twitter:creator" content="@he2mvc">');
+		Template::appendSiteMetaTags('<meta name="twitter:url" content="' . Router::getCurrentUrl()  . '">');
+		Template::appendSiteMetaTags('<meta name="twitter:title" content="'. $this -> Format -> ogTag($post -> title).'">');
+		Template::appendSiteMetaTags('<meta name="twitter:description" content="'. $this -> Format -> ogTag(prodigyview\util\Tools::truncateText($post -> content, 100)) .'">');
 		
 		return array('post' => $post);
 	}
@@ -143,7 +149,7 @@ class postsController extends baseController {
 		if($this -> registry -> post) {
 			if(isset($this -> registry -> post['yes'])) {
 				$this -> _models -> deleteUser($this -> registry -> route['id']);
-				PVTemplate::successMessage('Post successfully deleted.');
+				Template::successMessage('Post successfully deleted.');
 			}
 			
 			return $this -> redirect('/posts');

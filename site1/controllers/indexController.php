@@ -4,6 +4,11 @@ use app\models\basic\Posts;
 use app\models\basic\ContactSubmissions;
 use app\services\session\SessionService;
 
+use prodigyview\template\Template;
+use prodigyview\network\Router;
+use prodigyview\network\Request;
+use prodigyview\network\Response;
+
 include('baseController.php');
 
 class indexController extends baseController {
@@ -26,7 +31,7 @@ class indexController extends baseController {
 		$contact = new ContactSubmissions();
 		
 		if($this -> registry -> post && $contact -> create($this -> registry -> post)) {
-			PVTemplate::successMessage('Contact form has been succesfully submited');
+			Template::successMessage('Contact form has been succesfully submited');
 		}
 		
 		return array('contact' => $contact);

@@ -1,15 +1,17 @@
 <?php
 /**
  * Initialize the template class. This class is responsible for messages displayed to the user, displaying
- * javascript and css, and the overall process of the view. 'Template' uses aspects of 'PVTemplate' but they
+ * javascript and css, and the overall process of the view. 'Template' uses aspects of 'Template' but they
  * are seperate classes,
  */
+use prodigyview\template\Template;
+use prodigyview\network\Router;
 
 $template_options = array();
-PVTemplate::init($template_options);
+Template::init($template_options);
 
 //**Set the Default Site Title
-PVTemplate::setSiteTitle('Site 3');
+Template::setSiteTitle('Site 3');
 
 /**
  * Adds an adapter to overrwrite the default method Template::_titleCheck and
@@ -19,7 +21,7 @@ PVTemplate::setSiteTitle('Site 3');
  */
 prodigyview\helium\He2Template::addAdapter('prodigyview\helium\He2Template', '_titleCheck', function($view) {
 	
-	$title = PVTemplate::getSiteTitle();
+	$title = Template::getSiteTitle();
 	
 	if($title == 'Site 3' && !($view['view'] == 'index' && $view['prefix'] == 'index')) {
 			
@@ -29,7 +31,7 @@ prodigyview\helium\He2Template::addAdapter('prodigyview\helium\He2Template', '_t
 		$view['prefix'] = ucwords($view['prefix']); 
 		$view['view'] = ucwords($view['view']); 
 		
-		PVTemplate::setSiteTitle('Site 3 - ' . $view['view']. ' - '. $view['prefix'] );
+		Template::setSiteTitle('Site 3 - ' . $view['view']. ' - '. $view['prefix'] );
 	}
 } , array('type' => 'closure'));
 
@@ -40,8 +42,8 @@ prodigyview\helium\He2Template::addAdapter('prodigyview\helium\He2Template', '_t
 prodigyview\helium\He2Router::addAdapter('prodigyview\helium\He2Router', 'renderTemplate', function($controller, $vars = array()) {
 	
 	//Get the route to find the current action
-	$route = \PVRouter::getRoute();	
-	$action = (empty($route['action'])) ? \PVRouter::getRouteVariable('action') : $route['action'];
+	$route = Router::getRoute();	
+	$action = (empty($route['action'])) ? Router::getRouteVariable('action') : $route['action'];
 	
 	if(!$action) {
 		$action = 'index';
@@ -76,7 +78,7 @@ prodigyview\helium\He2Router::addAdapter('prodigyview\helium\He2Router', 'render
 	
 	//Convert Vars approrpiate twig values
 	foreach($vars as $key => $value) {
-		if($value instanceof \PVCollection) {
+		if($value instanceof \Collection) {
 			$vars[$key] = $value -> getData();
 		}
 	}
@@ -85,11 +87,11 @@ prodigyview\helium\He2Router::addAdapter('prodigyview\helium\He2Router', 'render
 	$vars['_twig_content'] = $view;
 	
 	//Set Meta Parameters
-	$vars['SITE_TITLE'] = PVTemplate::getSiteTitle();
-	$vars['SITE_KEYWORDS'] = PVTemplate::getSiteKeywords();
-	$vars['SITE_META'] = PVTemplate::getSiteMetaTags();
-	$vars['SITE_DESCRIPTION'] = PVTemplate::getSiteMetaDescription();
-	//$vars['HEADER_ADDITION'] = PVTemplate::getHeader(array());
+	$vars['SITE_TITLE'] = Template::getSiteTitle();
+	$vars['SITE_KEYWORDS'] = Template::getSiteKeywords();
+	$vars['SITE_META'] = Template::getSiteMetaTags();
+	$vars['SITE_DESCRIPTION'] = Template::getSiteMetaDescription();
+	//$vars['HEADER_ADDITION'] = Template::getHeader(array());
 	
 	//Display The Template
 	echo $twig->render($template, $vars);

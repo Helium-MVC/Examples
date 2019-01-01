@@ -1,6 +1,8 @@
 <?php
 namespace app\services\session;
 
+use prodigyview\system\Session;
+
 class DBSessionService implements SessionInterface {
 	
 	//The session class
@@ -85,7 +87,7 @@ class DBSessionService implements SessionInterface {
 			
 			//Attempt to retrieve the session id from the session
 			if(!$session_id) {
-				$session_id = \PVSession::readSession('session_id');
+				$session_id = Session::readSession('session_id');
 			}
 			
 			if($session_id) {
@@ -105,8 +107,8 @@ class DBSessionService implements SessionInterface {
 				
 				if($write_session) {
 				
-					\PVSession::writeCookie('session_id', (string)$session -> session_id );
-					\PVSession::writeSession('session_id', (string)$session -> session_id);
+					Session::writeCookie('session_id', (string)$session -> session_id );
+					Session::writeSession('session_id', (string)$session -> session_id);
 					
 					session_id((string)$session -> session_id );
 				}
@@ -122,8 +124,8 @@ class DBSessionService implements SessionInterface {
 				if(!$session)  {
 					$session = new Session();
 					if($session -> create(array())) {
-						\PVSession::writeCookie('session_id', (string)$session -> session_id );
-						\PVSession::writeSession('session_id', (string)$session -> session_id );
+						Session::writeCookie('session_id', (string)$session -> session_id );
+						Session::writeSession('session_id', (string)$session -> session_id );
 					} else {
 						echo 'No session';
 						exit();
@@ -139,7 +141,7 @@ class DBSessionService implements SessionInterface {
 					
 					if(!$account) {
 						self::endSession();
-						PVRouter::redirect('/');
+						Router::redirect('/');
 					}
 				}
 			}
@@ -154,10 +156,10 @@ class DBSessionService implements SessionInterface {
 	 * Will reload the session with new data
 	 */
 	public static function refresh() {
-		$session_id = \PVSession::readCookie('session_id');
+		$session_id = Session::readCookie('session_id');
 			
 		if(!$session_id) {
-			$session_id = \PVSession::readSession('session_id');
+			$session_id = Session::readSession('session_id');
 		}
 		
 		if($session_id) {
@@ -174,8 +176,8 @@ class DBSessionService implements SessionInterface {
 		//sets the session to inactive
 		self::write('is_loggedin', 0);
 		
-		\PVSession::deleteCookie('session_id');
-		\PVSession::deleteSession('session_id');
+		Session::deleteCookie('session_id');
+		Session::deleteSession('session_id');
 
 		setcookie('session_id', NULL, time() - 4800);
 	    session_unset();
@@ -227,10 +229,10 @@ class DBSessionService implements SessionInterface {
 	 * @return session_id
 	 */
 	public static function getID() {
-		$session_id = \PVSession::readCookie('session_id');
+		$session_id = Session::readCookie('session_id');
 		
 		if(!$session_id){
-			$session_id = \PVSession::readSession('session_id');
+			$session_id = Session::readSession('session_id');
 		}
 		
 		return $session_id;

@@ -1,6 +1,8 @@
 <?php
 namespace app\services;
 
+use prodigyview\system\Configuration;
+
 use Aws\S3\S3Client;
 use Aws\Common\Credentials\Credentials;
 use Aws\S3\MultipartUploader;
@@ -22,10 +24,10 @@ class StorageService implements StorageInterface {
 	protected $_acl = 'public-read';
 	
 	public function __construct($key = null, $secret = null, $bucket = null, $acl = 'public-read') {
-		$this -> _key = ($key) ?: \PVConfiguration::getConfiguration('s3') -> key;
-		$this -> _secret = ($secret) ?: \PVConfiguration::getConfiguration('s3') -> secret;
-		$this -> _bucket = ($bucket) ?: \PVConfiguration::getConfiguration('s3') -> bucket;
-		$this -> _acl = ($acl) ?: \PVConfiguration::getConfiguration('s3') -> acl;
+		$this -> _key = ($key) ?: Configuration::getConfiguration('s3') -> key;
+		$this -> _secret = ($secret) ?: Configuration::getConfiguration('s3') -> secret;
+		$this -> _bucket = ($bucket) ?: Configuration::getConfiguration('s3') -> bucket;
+		$this -> _acl = ($acl) ?: Configuration::getConfiguration('s3') -> acl;
 	}
 	
 	/**
@@ -42,7 +44,7 @@ class StorageService implements StorageInterface {
 	 */
 	public function upload($object, $body, $content_type = null) {
 		
-		//$credentials = new Aws\Credentials\Credentials(\PVConfiguration::getConfiguration('aws') -> access_id, \PVConfiguration::getConfiguration('aws') -> access_key);
+		//$credentials = new Aws\Credentials\Credentials(Configuration::getConfiguration('aws') -> access_id, Configuration::getConfiguration('aws') -> access_key);
 		
 		$s3 = S3Client::factory(array(
 			'credentials' => array(

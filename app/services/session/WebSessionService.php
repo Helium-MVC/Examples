@@ -2,6 +2,10 @@
 
 namespace app\services\session;
 
+use prodigyview\system\Session;
+use prodigyview\system\Security;
+use prodigyview\util\Tools;
+
 /**
  * WebSessionService
  * 
@@ -30,17 +34,17 @@ class WebSessionService implements SessionInterface {
 			
 			//Generate a new session id if none
 			if(!$session_id) {
-				$session_id = \PVTools::generateRandomString(20);
+				$session_id = Tools::generateRandomString(20);
 				session_id( session_id);
 				session_start();
 			}
 			
-			\PVSession::writeCookie('session_id', $session_id);
-			\PVSession::writeSession('session_id', $session_id);
+			Session::writeCookie('session_id', $session_id);
+			Session::writeSession('session_id', $session_id);
 		}
 		
 		if(!self::read('api_token')) {
-			self::write('api_token', \PVSecurity::generateToken(20));
+			self::write('api_token', Security::generateToken(20));
 		}
 		
 		return get_class();
@@ -55,13 +59,13 @@ class WebSessionService implements SessionInterface {
 	 */
 	public static function read($key) {
 		
-		$value = \PVSession::readCookie($key);
+		$value = Session::readCookie($key);
 		
 		if(!$value) {
-			$value = \PVSession::readSession($key);
+			$value = Session::readSession($key);
 		}
 		
-		return ($value) ? \PVSecurity::decrypt($value) : false;
+		return ($value) ? Security::decrypt($value) : false;
 	
 	}
 	
@@ -79,13 +83,13 @@ class WebSessionService implements SessionInterface {
 			return false;
 		}
 		
-		$value = \PVSecurity::encrypt($value);
+		$value = Security::encrypt($value);
 		
 		if(self::$_write_to_cookie) {
-			\PVSession::writeCookie($key, $value);
+			Session::writeCookie($key, $value);
 		}
 		
-		\PVSession::writeSession($key, $value);
+		Session::writeSession($key, $value);
 	}
 	
 	/**

@@ -40,11 +40,11 @@ class UserPasswords extends PGModel {
 UserPasswords::addFilter('app\models\uuid\UserPasswords', 'create','filter', function($data, $options) {
 	
 	//Generate a random salt
-	$data['data']['salt'] = \PVTools::generateRandomString();
+	$data['data']['salt'] = \Tools::generateRandomString();
 	
 	//Encrypt the password from plain text
 	if(isset($data['data']['user_password']) && !empty($data['data']['user_password'])) {
-		$data['data']['user_password'] = \PVSecurity::hash(trim($data['data']['user_password']));
+		$data['data']['user_password'] = \Security::hash(trim($data['data']['user_password']));
 	}
 	
 	return $data;
@@ -56,7 +56,7 @@ UserPasswords::addFilter('app\models\uuid\UserPasswords', 'update','filter', fun
 	
 	//Encrypt the password from plain text
 	if(isset($data['data']['user_password']) && !empty($data['data']['user_password'])) {
-		$data['data']['user_password'] = \PVSecurity::hash(trim($data['data']['user_password']));
+		$data['data']['user_password'] = \Security::hash(trim($data['data']['user_password']));
 	}
 	
 	return $data;

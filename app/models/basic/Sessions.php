@@ -30,7 +30,7 @@ class Sessions extends HModel {
 //Add a filter to execute on creation
 Sessions::addFilter('app\models\basic\Sessions', 'create','filter', function($data, $options) {
 	
-	$data['data']['api_token'] = \PVTools::generateRandomString();
+	$data['data']['api_token'] = \Tools::generateRandomString();
 
 	return $data;
 	

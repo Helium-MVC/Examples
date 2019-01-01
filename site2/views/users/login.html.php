@@ -5,7 +5,7 @@
 				Login
 			</p>
 			
-			<form  id="contactForm"method="post" action="<?= PVTools::getCurrentUrl(); ?>">
+			<form  id="contactForm"method="post" action="<?= prodigyview\network\Router::getCurrentUrl(); ?>">
 				
 				
 				<div class="form-group">

@@ -1,6 +1,9 @@
 <?php
 use app\services\session\SessionService;
 
+use prodigyview\network\Router;
+use prodigyview\template\Template;
+
 /**
  * Access control keeps users from accessing parts of the sites that requires credentials. Per the ProdigyView Toolkit,
  * we can modify parts of the framework actions through adapters and observers.
@@ -9,7 +12,7 @@ use app\services\session\SessionService;
  * are then going to check the current route and decide if the user has access.
  */
 
-PVRouter::addObserver('PVRouter::setRoute', 'access_closure', function($final_route, $route_options){
+Router::addObserver('prodigyview\network\Router::setRoute', 'access_closure', function($final_route, $route_options){
 	
 	$allowed_routes = array(
 		'',
@@ -40,7 +43,7 @@ PVRouter::addObserver('PVRouter::setRoute', 'access_closure', function($final_ro
 	
 	$current_route ='';
 	
-	//Get the route variables based on the PVRouter
+	//Get the route variables based on the Router
 	if(isset($final_route['route']) && !empty($final_route['route'])) {
 		$current_route = '/' . $final_route['route']['controller'];
 		$controller = $final_route['route']['controller'];
@@ -69,8 +72,8 @@ PVRouter::addObserver('PVRouter::setRoute', 'access_closure', function($final_ro
 	
 	//If the user is not logged andin an open route
 	if(!SessionService::read('is_loggedin') && !in_array($current_route, $allowed_routes)) {
-		PVTemplate::errorMessage('The part of the site is restricted to members. Please login.');
-		PVRouter::redirect('/login');
+		Template::errorMessage('The part of the site is restricted to members. Please login.');
+		Router::redirect('/login');
 	}
 	
 }, array('type' => 'closure'));

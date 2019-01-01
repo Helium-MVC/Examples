@@ -16,7 +16,7 @@ You are done! You notice the file is referenced in the app/config/config.php lik
 
 ```php
 <?php
-PVConfiguration::addConfiguration('firebase', array(
+Configuration::addConfiguration('firebase', array(
     'jsonFile' => PV_ROOT.DS.'app/config/google-service-account.json', 
 ));
 ?>
@@ -27,7 +27,7 @@ And then the file is used to call your firebase database in `site3/controllers/b
 ```php
 <?php
 //Setup the Firebase Connection
-        $serviceAccount = ServiceAccount::fromJsonFile(PVConfiguration::getConfiguration('firebase') -> jsonFile);
+        $serviceAccount = ServiceAccount::fromJsonFile(Configuration::getConfiguration('firebase') -> jsonFile);
         $firebase = (new Factory)->withServiceAccount($serviceAccount)->create();
         $this -> _firebase = $firebase->getDatabase();
 ?>
@@ -61,7 +61,7 @@ For example, because we are using Firebase and not using the models, we cannot r
         
         $this -> _firebase->getReference('posts/'. $data['post_id'])->set($data);
         
-        return new \PVCollection($data);
+        return new \Collection($data);
 ?>
 ```
 
@@ -177,7 +177,7 @@ Coming over to our `site3/config/bootstrap/cache.php`, we have created an anonym
     $cache_name = get_class($controller).''. $action;
     
     //Create a new cache if cache does not exist
-    if(PVCache::hasExpired($cache_name)) {
+    if(Cache::hasExpired($cache_name)) {
         //Call the controller and get the data
         $data = $controller -> $action();
         
@@ -186,14 +186,14 @@ Coming over to our `site3/config/bootstrap/cache.php`, we have created an anonym
             return $data;
         } else {
             //Write the data to a cache file
-            PVCache::writeCache($cache_name, $data);
+            Cache::writeCache($cache_name, $data);
         }
         
         return $data;
     } else {
         //Return cached data
         //Never has to call the controller
-        return PVCache::readCache($cache_name);
+        return Cache::readCache($cache_name);
     }
     
  }, array('type' => 'closure'));
@@ -209,7 +209,7 @@ In our next example, we are going to use logging as a microservice. Start by goi
 ```php
 <?php
 //Loggly API Key for HTTP Requests
-PVConfiguration::addConfiguration('loggly', array(
+Configuration::addConfiguration('loggly', array(
 	'key' => '', 
 ));
 ?>
@@ -218,7 +218,7 @@ PVConfiguration::addConfiguration('loggly', array(
 Now if we head over to `site3/controllers/baseController.php`, we will come across the sending of the logs to Loggly.
 ```php
 <?php
-$loggly_key = PVConfiguration::getConfiguration('loggly') -> key;
+$loggly_key = Configuration::getConfiguration('loggly') -> key;
 		
 //PVCommunicator sends CURL call to loggly
 $communicator = new PVCommunicator();
@@ -239,8 +239,8 @@ Start by looking at `app/services/QueueService.php` and you will notice is a sim
         $queue = ServiceFactory::get('queue');
         
         $email_data = array(
-            'user' => \PVConversions::arrayToObject($data),
-            'site_url' => \PVConfiguration::getConfiguration('sites') -> site3
+            'user' => \Conversions::arrayToObject($data),
+            'site_url' => \Configuration::getConfiguration('sites') -> site3
         );
         
         $queue -> add('sendWelcomeEmail', $email_data);

@@ -5,9 +5,12 @@
  */
 
 //Get the configuration set for the session. Configuration is set in the environments.php file
-$session = PVConfiguration::getConfiguration('session');
+use prodigyview\system\Configuration;
+use prodigyview\system\Session;
 
-if(@array_shift((explode('.',$_SERVER['HTTP_HOST']))) != parse_url ( PVConfiguration::getConfiguration('sites') -> main , PHP_URL_HOST)) {
+$session = Configuration::getConfiguration('session');
+
+if(@array_shift((explode('.',$_SERVER['HTTP_HOST']))) != parse_url ( Configuration::getConfiguration('sites') -> main , PHP_URL_HOST)) {
 	$session_configuration = array(
 		'cookie_lifetime' => $session -> cookie_lifetime,
 		'session_lifetime' => $session -> cookie_lifetime,
@@ -27,5 +30,5 @@ if(@array_shift((explode('.',$_SERVER['HTTP_HOST']))) != parse_url ( PVConfigura
 	);
 }
 
-PVSession::init($session_configuration);
+Session::init($session_configuration);
 

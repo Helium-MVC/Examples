@@ -18,7 +18,7 @@ class DbCli {
 	 * it checks the schema defined in the model, and attempts to replicate inside the database.
 	 */
 	public function schemacheck() {
-		foreach(PVFileManager::getFilesInDirectory(PV_ROOT. DS. 'app/models/uuid'.DS) as $key => $value) {
+		foreach(FileManager::getFilesInDirectory(PV_ROOT. DS. 'app/models/uuid'.DS) as $key => $value) {
 			$class_name = "app\models\uuid\\".str_replace('.php', '', $value);
 			
 			echo $class_name. "\n";
@@ -33,8 +33,8 @@ class DbCli {
      */
     public function activateExtensions() {
 
-        PVDatabase::query('CREATE EXTENSION hstore;');
-        PVDatabase::query('CREATE EXTENSION "uuid-ossp";');
+        Database::query('CREATE EXTENSION hstore;');
+        Database::query('CREATE EXTENSION "uuid-ossp";');
 		
 		$query = '
 			create schema shard_1;
@@ -61,7 +61,7 @@ class DbCli {
 			select shard_1.id_generator();
 		';
 		
-		PVDatabase::query($query);
+		Database::query($query);
     }
 	
 

@@ -1,4 +1,10 @@
 <?php
+
+ use prodigyview\media\Image;
+ use prodigyview\media\Video;
+ use prodigyview\media\Audio;
+ 
+ 
 /**
  * With Helium being extension of ProdigyView, it offers the ability to manpulate images, audio and video. ProdigyView requires
  * Imagick and FFMPEG, therefore Helium requires the same.
@@ -7,10 +13,10 @@
  */
 
 /**
- * Configure the options for PVImage and initialize the close. For using image manipulation, remember
+ * Configure the options for Image and initialize the close. For using image manipulation, remember
  * that Imagick should be installed. If not needed, comment out.
  */
-PVImage::init(array(
+Image::init(array(
 	'write_image' => false,
 ));
 
@@ -18,10 +24,10 @@ PVImage::init(array(
  * Configure the options for audio manipulation. FFMPEG must be installed on the server to use.
  * If not needed, comment out.
  */
-PVAudio::init(array());
+Audio::init(array());
 
 /**
  * Configure the options for video manipulation. FFMPEG must be installed on the server to use.
  * If not needed, comment out.
  */
-PVVideo::init(array());
+Video::init(array());

@@ -14,8 +14,8 @@ class logsController extends baseController {
 		parent::__construct($registry, $configurtion );
 		
 		if(!SessionService::read('is_loggedin')) {
-			PVTemplate::errorMessage('The section is restricted to members. Please login.');
-			PVRouter::redirect('/login');
+			Template::errorMessage('The section is restricted to members. Please login.');
+			Router::redirect('/login');
 		}
 		
 	}

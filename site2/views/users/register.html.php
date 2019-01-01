@@ -5,7 +5,7 @@
 				Register To Our Blog
 			</p>
 			
-			<form  id="contactForm"method="post" ng-controller="UsersCtrl" action="<?= PVTools::getCurrentUrl(); ?>">
+			<form  id="contactForm"method="post" ng-controller="UsersCtrl" action="<?= prodigyview\network\Router::getCurrentUrl(); ?>">
 				
 				<div class="form-group">
 					<label>First Name</label>

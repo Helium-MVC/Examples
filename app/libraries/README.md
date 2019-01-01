@@ -16,13 +16,13 @@ Even those the libraries are placed in the library folder, they have to loaded i
 ```php
 <?php
 //Load a library that is in the global path, in the app/libraries folder
-PVLibraries::addLibrary('MailLoader', array('path' => PV_ROOT.DS.'app' .DS.'libraries'.DS.'MailLoader'.DS, 'explicit_load' => true));
+Libraries::addLibrary('MailLoader', array('path' => PV_ROOT.DS.'app' .DS.'libraries'.DS.'MailLoader'.DS, 'explicit_load' => true));
 
 //Load a library that is local only to the current site, inside the libraries folder
-PVLibraries::addLibrary('RedisCache', array('explicit_load' => true));
+Libraries::addLibrary('RedisCache', array('explicit_load' => true));
 ?>
 ```
-Libraries are added with PVLibraries::addLibrary with the first value being the key, or library name. The 2nd value is an array of options used to configure how the library is loaded. The configuration options passed into the library are defined below:
+Libraries are added with Libraries::addLibrary with the first value being the key, or library name. The 2nd value is an array of options used to configure how the library is loaded. The configuration options passed into the library are defined below:
 
 ##### path
 The path is the location of the library if it is not in a local scope. In other words, we can place our library anywhere and point to it.

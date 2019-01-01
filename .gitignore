@@ -8,11 +8,17 @@ composer.lock
 tmp/*
 !tmp/index.php
 site1/public_html/img/uploads/*
+site1/tmp/*
 site2/public_html/img/uploads/*
+site2/tmp/*
 site3/public_html/img/uploads/*
+site3/tmp/*
 api/public_html/img/uploads/
 !site1/public_html/img/uploads/index.php
 !site2/public_html/img/uploads/index.php
 !site3/public_html/img/uploads/index.php
 !api/public_html/img/uploads/index.php
+!site1/tmp/index.php
+!site2/tmp/index.php
+!site3/tmp/index.php
 redux-blog/node_modules/*

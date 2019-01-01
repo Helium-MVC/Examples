@@ -6,6 +6,8 @@ use app\models\HModel;
 use app\services\EmailService;
 use app\services\LoggingService;
 
+use prodigyview\system\Configuration;
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -63,19 +65,19 @@ class Comments extends HModel {
 			$mailer = new PHPMailer;
 			
 			$mailer->isSMTP();  
-			$mailer->Host = \PVConfiguration::getConfiguration('mail') -> host;
-			$mailer->Port = \PVConfiguration::getConfiguration('mail') -> port;
+			$mailer->Host = Configuration::getConfiguration('mail') -> host;
+			$mailer->Port = Configuration::getConfiguration('mail') -> port;
 			$mailer ->isHTML(true);
 			$mailer->SMTPSecure = 'tls';
 		
 			//Default Sending Information
-			$mailer->From = \PVConfiguration::getConfiguration('mail') -> from_address;
-			$mailer->FromName = \PVConfiguration::getConfiguration('mail') -> from_name; 
+			$mailer->From = Configuration::getConfiguration('mail') -> from_address;
+			$mailer->FromName = Configuration::getConfiguration('mail') -> from_name; 
 			
 			//Set Login Credentials
 			$mailer->SMTPAuth = true; 
-			$mailer->Username = \PVConfiguration::getConfiguration('mail') -> login;
-			$mailer->Password = \PVConfiguration::getConfiguration('mail') -> password;
+			$mailer->Username = Configuration::getConfiguration('mail') -> login;
+			$mailer->Password = Configuration::getConfiguration('mail') -> password;
 			
 			
 			$mailer->AddAddress($original_poster -> email, $original_poster -> first_name . ' ' . $original_poster -> last_name);

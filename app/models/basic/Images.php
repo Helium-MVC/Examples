@@ -4,6 +4,11 @@ namespace app\models\basic;
 use app\models\HModel;
 use app\services\LoggingService;
 
+use prodigyview\media\Image;
+use prodigyview\util\Tools;
+use prodigyview\util\FileManager;
+use prodigyview\util\Validator;
+
 /**
  * Images
  * 
@@ -67,7 +72,7 @@ class Images extends HModel {
 		$storage_service = new $storageProdiver;
 		
 		//Create The Image
-		$image = \PVImage::scaleImage(($file) ?:$this -> image_original_url , $width, $height, array('bestfit' => true, 'return' => 'image_object'));
+		$image = \Image::scaleImage(($file) ?:$this -> image_original_url , $width, $height, array('bestfit' => true, 'return' => 'image_object'));
 		$content_type = 'image/' . strtolower($image->getImageFormat());
 		$extension = $this -> getExtension($content_type);
 		
@@ -93,7 +98,7 @@ class Images extends HModel {
 		$image -> clear();
 		
 		//Create The Image
-		$image = \PVImage::scaleImage(($file) ?:$this -> image_original_url , $width, $height, array('bestfit' => false, 'return' => 'image_object'));
+		$image = \Image::scaleImage(($file) ?:$this -> image_original_url , $width, $height, array('bestfit' => false, 'return' => 'image_object'));
 		
 		//Set Save Name
 		$save_location = '';
@@ -147,11 +152,11 @@ class Images extends HModel {
 	 */
 	public function fixOrientation($file, $return = 'file') {
 		 	
-		$mime = \PVFileManager::getFileMimeType($file);
+		$mime = \FileManager::getFileMimeType($file);
     
-		$save_name = \PVTools::generateRandomString().uniqid(). $this -> getExtension($mime);
+		$save_name = \Tools::generateRandomString().uniqid(). $this -> getExtension($mime);
 	    
-	    if(!\PVValidator::check('gif_file', $mime)) {
+	    if(!\Validator::check('gif_file', $mime)) {
 	      $image = new \Imagick($file);
 	      $orientation = $image -> getImageOrientation();
 	      
@@ -193,13 +198,13 @@ class Images extends HModel {
 	 */
 	public function getExtension(string $mime_type){
 
-    		if(\PVValidator::check('png_file', $mime_type)) {
+    		if(\Validator::check('png_file', $mime_type)) {
 	      return '.png';
-	    } else if(\PVValidator::check('jpg_file', $mime_type)) {
+	    } else if(\Validator::check('jpg_file', $mime_type)) {
 	      return '.jpeg';
-	    } else if(\PVValidator::check('gif_file', $mime_type)) {
+	    } else if(\Validator::check('gif_file', $mime_type)) {
 	      return'.gif';
-	    } else if(\PVValidator::check('bmp_file', $mime_type)) {
+	    } else if(\Validator::check('bmp_file', $mime_type)) {
 	      return '.bmp';
 	    } else {
 	    		return false;
@@ -223,7 +228,7 @@ class Images extends HModel {
 			
 			$storageProdiver = $this -> _storageService;
 			$storage_service = new $storageProdiver;
-			$mime_type = \PVFileManager::getFileMimeType($file);
+			$mime_type = \FileManager::getFileMimeType($file);
 			$extension = $this -> getExtension($mime_type);
 			$save_location = '';
 			

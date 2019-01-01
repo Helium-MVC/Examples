@@ -2,10 +2,11 @@
 /**
  * Important Explanation
  * 
- * All the models in Helium use PVCache when the caching is enabled. PVCache by default
+ * All the models in Helium use Cache when the caching is enabled. Cache by default
  * used the file system - which has limitations.
  * 
  * For this basic site, we are just goign to stick with file cache.
  */
+use prodigyview\util\Cache;
 
-PVCache::init(array());
+Cache::init(array());

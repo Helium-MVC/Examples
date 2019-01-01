@@ -2,19 +2,22 @@
 /**
  * Important Explanation
  * 
- * All the models in Helium use PVCache when the caching is enabled. PVCache by default
+ * All the models in Helium use Cache when the caching is enabled. Cache by default
  * used the file system - which has limitations.
  * 
  * For this site, if you check in the libraries/RedisCache, you will what is known as an
- * adapter. This adapter replaces the functions of PVCache to use Redis instead of the 
+ * adapter. This adapter replaces the functions of Cache to use Redis instead of the 
  * default file system.
  * 
  * See the controller/logsController.php for cached results example
  */
+ 
+use prodigyview\util\Cache;
+use prodigyview\system\Configuration;
 
-$redis = PVConfiguration::getConfiguration('redis');
+$redis = Configuration::getConfiguration('redis');
 
-PVCache::init(array(
+Cache::init(array(
 	'host' => $redis -> host,
 	'port' => $redis -> port
 ));

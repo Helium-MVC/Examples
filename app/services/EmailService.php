@@ -13,6 +13,9 @@
  */
 namespace app\services;
 
+use prodigyview\system\Configuration;
+use prodigyview\util\Tools;
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -38,14 +41,14 @@ class EmailService {
 	 */
 	protected function _setSendDetails() {
 		$this->_mailer->isSMTP();
-		$this->_mailer->Host = \PVConfiguration::getConfiguration('mail')->host;
-		$this->_mailer->Port = \PVConfiguration::getConfiguration('mail')->port;
+		$this->_mailer->Host = Configuration::getConfiguration('mail')->host;
+		$this->_mailer->Port = Configuration::getConfiguration('mail')->port;
 		$this->_mailer->isHTML(true);
 		$this->_mailer->SMTPSecure = 'tls';
 
 		//Default Sending Information
-		$this->_mailer->From = \PVConfiguration::getConfiguration('mail')->from_address;
-		$this->_mailer->FromName = \PVConfiguration::getConfiguration('mail')->from_name;
+		$this->_mailer->From = Configuration::getConfiguration('mail')->from_address;
+		$this->_mailer->FromName = Configuration::getConfiguration('mail')->from_name;
 	}
 
 	/**
@@ -57,8 +60,8 @@ class EmailService {
 	protected function _setAuthDetails() {
 		$this->_mailer->SMTPAuth = true;
 		
-		$this->_mailer->Username = \PVConfiguration::getConfiguration('mail')->login;
-		$this->_mailer->Password = \PVConfiguration::getConfiguration('mail')->password;
+		$this->_mailer->Username = Configuration::getConfiguration('mail')->login;
+		$this->_mailer->Password = Configuration::getConfiguration('mail')->password;
 	}
 
 	/**
@@ -93,7 +96,7 @@ class EmailService {
 	 * @return boolean Status of the email sent
 	 */
 	public function sendPasswordReset($user) {
-		$data = array('user_reset_token' => \PVTools::generateRandomString(15));
+		$data = array('user_reset_token' => Tools::generateRandomString(15));
 
 		$user->update($data);
 

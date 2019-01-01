@@ -10,15 +10,17 @@
  * class
  */
  
-PVLibraries::init(array());
+ use prodigyview\system\Libraries;
+ 
+Libraries::init(array());
 
 //Load a library that is local only to the current site, inside the libraries folder
-PVLibraries::addLibrary('twitter_bootstrap_alerts', array('explicit_load' => true));
+Libraries::addLibrary('twitter_bootstrap_alerts', array('explicit_load' => true));
 
 //Load a library that is local only to the current site, inside the libraries folder
-PVLibraries::addLibrary('hstore', array('explicit_load' => true));
+Libraries::addLibrary('hstore', array('explicit_load' => true));
 
 //Load a library that is in the global path, in the app/libraries folder
-PVLibraries::addLibrary('MailLoader', array('path' => PV_ROOT.DS.'app' .DS.'libraries'.DS.'MailLoader'.DS, 'explicit_load' => true));
+Libraries::addLibrary('MailLoader', array('path' => PV_ROOT.DS.'app' .DS.'libraries'.DS.'MailLoader'.DS, 'explicit_load' => true));
 
-PVLibraries::loadLibraries();
+Libraries::loadLibraries();

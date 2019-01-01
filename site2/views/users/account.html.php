@@ -10,7 +10,7 @@
   				</div>
   				<div class="card-body">
   	
-					<form  id="updateInfoForm" enctype="multipart/form-data" method="post" action="<?= PVTools::getCurrentUrl(); ?>">
+					<form  id="updateInfoForm" enctype="multipart/form-data" method="post" action="<?= prodigyview\network\Router::getCurrentUrl(); ?>">
 						
 						<?php if($user -> image_id): ?>
 							<div class="text-center">
@@ -62,7 +62,7 @@
     					Update Your Email
   				</div>
   				<div class="card-body">
-					<form  id="updateEmailForm"method="post" action="<?= PVTools::getCurrentUrl(); ?>">
+					<form  id="updateEmailForm"method="post" action="<?= prodigyview\network\Router::getCurrentUrl(); ?>">
 						
 						<p><strong>Current Email:</strong> <?= $user -> email; ?></p>
 						<div class="form-group">
@@ -88,7 +88,7 @@
     					Update Your Password
   				</div>
   				<div class="card-body">
-					<form  id="updatePasswordForm"method="post" action="<?= PVTools::getCurrentUrl(); ?>">
+					<form  id="updatePasswordForm"method="post" action="<?= prodigyview\network\Router::getCurrentUrl(); ?>">
 						
 						<div class="form-group">
 							<label>New Password</label>

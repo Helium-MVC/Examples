@@ -3,6 +3,8 @@ namespace app\models\basic;
 
 use app\models\HModel;
 
+use prodigyview\system\Database;
+
 /**
  * class ActionLogger
  * 
@@ -74,10 +76,10 @@ class ActionLogger extends HModel {
 		$tablename = $this -> getTableName();
 		
 		//Create the query
-		$query = 'UPDATE ' . $tablename . ' SET entity_state = \' '.\PVDatabase::makeSafe(json_encode($state)).' \' WHERE record_id='.$this -> record_id. ' ;';
+		$query = 'UPDATE ' . $tablename . ' SET entity_state = \' '.Database::makeSafe(json_encode($state)).' \' WHERE record_id='.$this -> record_id. ' ;';
 		
 		//Run the query directly
-		\PVDatabase::query($query);
+		Database::query($query);
 		
 		//Re-sync models data
 		$this -> sync();
@@ -99,10 +101,10 @@ class ActionLogger extends HModel {
 		$tablename = $this -> getTableName();
 		
 		//Create the query
-		$query = 'UPDATE ' . $tablename . ' SET meta_data = \' '.\PVDatabase::makeSafe(json_encode($meta)).' \' WHERE record_id='.$this -> record_id. ' ;';
+		$query = 'UPDATE ' . $tablename . ' SET meta_data = \' '.Database::makeSafe(json_encode($meta)).' \' WHERE record_id='.$this -> record_id. ' ;';
 		
 		//Run the query directly
-		\PVDatabase::query($query);
+		Database::query($query);
 		
 		//Re-sync models data
 		$this -> sync();

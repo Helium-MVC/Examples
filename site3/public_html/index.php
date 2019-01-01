@@ -1,6 +1,9 @@
 <?php
 
 use prodigyview\helium\He2App;
+
+use prodigyview\system\Configuration;
+
 //Turn on error reporting
 if(isset($_SERVER['ENV']) && $_SERVER['ENV'] == 'production'){
 	ini_set('display_errors','Off');
@@ -37,7 +40,7 @@ prodigyview\helium\He2App::addObserver('prodigyview\helium\He2App::_initRegistry
   include SITE_PATH.'config/bootstrap.php';
    
    $redis = new \Redis();
-   $redis->connect(\PVConfiguration::getConfiguration('redis') -> host, \PVConfiguration::getConfiguration('redis') -> port);
+   $redis->connect(Configuration::getConfiguration('redis') -> host, Configuration::getConfiguration('redis') -> port);
    
   //Set the model and service used for session handling
   app\services\session\SessionService::initializeSession(app\services\session\RedisSessionService::initializeSession($redis));

@@ -1,4 +1,5 @@
 <?php 
+use prodigyview\util\Validator;
 /**
  * Format
  * 
@@ -19,7 +20,14 @@ class Format {
 		return '$' . money_format('%i', $number);
 	}
 	
-	public function number($number) : double {
+	/**
+	 * Formats a number, grouped by thousands
+	 * 
+	 * @param int/double/float number
+	 * 
+	 * @return string
+	 */
+	public function number($number) : string {
 		return number_format($number);
 	}
 	
@@ -41,7 +49,7 @@ class Format {
 			}
 			
 			return $timestamp -> toDateTime() -> format($format); 
-		} else if(PVValidator::isInteger($timestamp)) {
+		} else if(Validator::isInteger($timestamp)) {
 		
 			return date($format, $timestamp/1000);
 
@@ -63,6 +71,14 @@ class Format {
 		return $timestamp;
 	}
 	
+	/**
+	 * Calculate the time elasped from a timestamp to give how long ago an action
+	 * occured.
+	 * 
+	 * @param string $timestamp
+	 * 
+	 * @return string
+	 */
 	public function timeElapsed($timestamp) {
 		$time = time() - strtotime($timestamp);
 
@@ -118,10 +134,20 @@ class Format {
   		return sprintf('%02d:%02d:%02d', ($t/3600),($t/60%60), $t%60);
 	}
 	
+	/**
+	 * Formats an Open Graph tags to be outputted into the meta
+	 */
 	public function ogTag($content) {
 		
 		$content = str_replace('"', '\'', $content);
 		
 		return strip_tags($content);
+	}
+	
+	/**
+	 * Abbreviates the text for shorter input.
+	 */
+	public function truncateText(string $string, int $length = 10, string $trailing = '...', bool $strip_tags = TRUE, string $allowed_tags = '') {
+		return Tools:: truncateText($string,$length,$trailing, $strip_tags,$allowed_tags);
 	}
 }

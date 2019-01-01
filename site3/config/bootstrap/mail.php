@@ -4,8 +4,9 @@
  * are set in the environment.php file. Helium, through the extension of ProdigyView, has the ability to send email through the
  * regular php mail and through the smtp.
  */
+use prodigyview\util\Mail;
 
-PVMail::init(array(
+Mail::init(array(
 
 ));
 

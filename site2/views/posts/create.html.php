@@ -3,7 +3,7 @@
 		<div class="col-lg-8 col-md-10 mx-auto">
 			<h1>Create A Post</h1>
 			
-			<form  id="postForm" enctype="multipart/form-data" method="post" ng-controller="PostsCtrl" action="<?= PVTools::getCurrentUrl(); ?>">
+			<form  id="postForm" enctype="multipart/form-data" method="post" ng-controller="PostsCtrl" action="<?= prodigyview\network\Router::getCurrentUrl(); ?>">
 				
 				<?php include('_form.html.php'); ?>
 				

@@ -1,6 +1,9 @@
 <?php
 namespace app\facades;
 
+use prodigyview\util\Validator;
+use prodigyview\template\Template;
+
 /**
  * ValidationFacade
  * 
@@ -30,29 +33,29 @@ class ValidationFacade {
 		$this -> _errors = array();
 		
 		if($action == 'create') {
-			if(!\PVValidator::check('notempty', $data['first_name'])) {
+			if(!Validator::check('notempty', $data['first_name'])) {
 				$this -> _errors[] = 'First name is required to register';
 			}
-			if(!\PVValidator::check('notempty', $data['last_name'])) {
+			if(!Validator::check('notempty', $data['last_name'])) {
 				$valid = false;
 				$this -> _errors[] = 'Last name is required to register';
 			}
 			
-			if(!\PVValidator::check('notempty', $data['email'])) {
+			if(!Validator::check('notempty', $data['email'])) {
 				$valid = false;
 				$this -> _errors[] = 'Email is required to register';
 			} 
 			
-			if(!\PVValidator::check('notempty', $data['password'])) {
+			if(!Validator::check('notempty', $data['password'])) {
 				$valid = false;
 				$this -> _errors[] = 'Password is required to register';
 			}
 		} else if($action == 'email') {
-			if(!\PVValidator::check('notempty', $data['email'])) {
+			if(!Validator::check('notempty', $data['email'])) {
 				$this -> _errors[] = 'Email address cannot be empty';
 			}
 		} else if($action == 'password') {
-			if(!\PVValidator::check('notempty', $data['password'])) {
+			if(!Validator::check('notempty', $data['password'])) {
 				$this -> _errors[] = 'Password cannot be empty';
 			}
 		}
@@ -83,7 +86,7 @@ class ValidationFacade {
 		$this -> _errors = array();
 		
 		if($action == 'create') {
-			if(!\PVValidator::check('notempty', $data['user_id'])) {
+			if(!Validator::check('notempty', $data['user_id'])) {
 				$valid = false;
 				$this -> _errors[] = 'The post must belong to a user';
 			}
@@ -92,10 +95,10 @@ class ValidationFacade {
 		}
 		
 		if($action == 'create' || $action == 'update') {
-			if(!\PVValidator::check('notempty', $data['title'])) {
+			if(!Validator::check('notempty', $data['title'])) {
 				$this -> _errors[] = 'The post must have a title';
 			}
-			if(!\PVValidator::check('notempty', $data['content'])) {
+			if(!Validator::check('notempty', $data['content'])) {
 				$valid = false;
 				$this -> _errors[] = 'The post requires content';
 			}
@@ -127,16 +130,16 @@ class ValidationFacade {
 		$this -> _errors = array();
 		
 		if($action == 'create' || $action == 'update') {
-			if(!\PVValidator::check('notempty', $data['name'])) {
+			if(!Validator::check('notempty', $data['name'])) {
 				$this -> _errors[] = 'Name is required.';
 			}
 
-			if(!\PVValidator::check('notempty', $data['email'])) {
+			if(!Validator::check('notempty', $data['email'])) {
 				$valid = false;
 				$this -> _errors[] = 'Email is required';
 			}
 			
-			if(!\PVValidator::check('notempty', $data['message'])) {
+			if(!Validator::check('notempty', $data['message'])) {
 				$valid = false;
 				$this -> _errors[] = 'Message is required';
 			}
@@ -171,12 +174,12 @@ class ValidationFacade {
 	}
 	
 	/**
-	 * Display the error in the view using PVTemplate
+	 * Display the error in the view using Template
 	 */
 	private function _displayErrors() {
 		
 		foreach($this -> _errors as $error) {
-			\PVTemplate::errorMessage($error);
+			Template::errorMessage($error);
 		}//end foreach
 		
 	}

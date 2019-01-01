@@ -18,7 +18,7 @@ class ShowAlert extends PVObject {
 	 */
 	public function showAlert() {
 		
-		$he2_alerts = PVSession::readSession('he2_alerts');
+		$he2_alerts = Session::readSession('he2_alerts');
 		
 		if(!empty($he2_alerts)) {
 			
@@ -26,7 +26,7 @@ class ShowAlert extends PVObject {
 				echo $alert;	
 		}
 		
-		PVSession::writeSession('he2_alerts', '' );
+		Session::writeSession('he2_alerts', '' );
 	}
 
 }

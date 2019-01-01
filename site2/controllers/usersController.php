@@ -7,6 +7,13 @@ use app\models\uuid\UserPasswords;
 use app\services\AuthenticationService;
 use app\services\session\SessionService;
 
+use prodigyview\template\Template;
+use prodigyview\network\Router;
+use prodigyview\network\Request;
+use prodigyview\network\Response;
+use prodigyview\util\Validator;
+use prodigyview\util\FileManager;
+
 include('baseController.php');
 
 class usersController extends baseController {
@@ -29,10 +36,10 @@ class usersController extends baseController {
 		$failed_login_attempts = false;
 		
 		if($this -> registry -> post && $this->Token->check($this -> registry -> post) && AuthenticationService::authenticate($this -> registry -> post['email'], $this -> registry -> post['password'])) {
-			PVTemplate::successMessage('Login Successful!');
+			Template::successMessage('Login Successful!');
 			return $this -> redirect('/profile/'. SessionService::read('user_id'));
 		} else if($this -> registry -> post) {
-			PVTemplate::errorMessage('Invalid Username/Password');
+			Template::errorMessage('Invalid Username/Password');
 			
 			$failed_login_attempts = SessionService::read('failed_login_attempts');
 		}
@@ -45,7 +52,7 @@ class usersController extends baseController {
 		$user = new Users();
 		
 		if($this -> registry -> post && $this->Token->check($this -> registry -> post) && $user -> create($this -> registry -> post)) {
-			PVTemplate::successMessage('Account successfully created!');
+			Template::successMessage('Account successfully created!');
 			AuthenticationService::forceLogin($user -> email);
 			return $this -> redirect('/profile/'. SessionService::read('user_id'));
 		}
@@ -88,7 +95,7 @@ class usersController extends baseController {
 			
 			if(isset($this -> registry -> post['update_profile']) && $user -> update($this -> registry -> post)) {
 				
-				if(isset($this -> registry -> files['profile_image'] ) && $this -> registry -> files['profile_image']['error'] == 0 && PVValidator::isImageFile(PVFileManager::getFileMimeType($this -> registry -> files['profile_image']['tmp_name'])) ) {	
+				if(isset($this -> registry -> files['profile_image'] ) && $this -> registry -> files['profile_image']['error'] == 0 && Validator::isImageFile(FileManager::getFileMimeType($this -> registry -> files['profile_image']['tmp_name'])) ) {	
 					$image = Images::uploadImage($this -> registry -> files['profile_image']['tmp_name']);
 					
 					if($image) {
@@ -96,7 +103,7 @@ class usersController extends baseController {
 					}
 				}
 					
-				PVTemplate::successMessage('Profile successfully updated.');
+				Template::successMessage('Profile successfully updated.');
 			
 			} else if(isset($this -> registry -> post['update_email'])) {
 				$email = (isset($this -> registry -> post['email'])) ? $this -> registry -> post['email'] : '';
@@ -106,10 +113,10 @@ class usersController extends baseController {
 				
 				if(!$tmp_user || $tmp_user -> user_id = $user -> user_id) {
 					if($user -> update(array('email' => $email))){
-						PVTemplate::successMessage('Email successfully updated.');
+						Template::successMessage('Email successfully updated.');
 					}
 				} else{
-					PVTemplate::errorMessage('Another user has that email');
+					Template::errorMessage('Another user has that email');
 				}
 			} else if(isset($this -> registry -> post['update_password'])) {
 				$password = UserPasswords::findOne(array(
@@ -117,7 +124,7 @@ class usersController extends baseController {
 				));
 				
 				if($password -> update($this -> registry -> post)) {
-					PVTemplate::successMessage('Password successfully updated.');
+					Template::successMessage('Password successfully updated.');
 				}
 			}
 		}

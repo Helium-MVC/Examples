@@ -8,7 +8,7 @@ class SearchTerms {
     $terms = str_replace('|', '', $terms);
     $terms = str_replace('&', '', $terms);
     $terms = str_replace('\'', '', $terms);
-    $terms = PVDatabase::makeSafe($terms);
+    $terms = Database::makeSafe($terms);
     $terms_array = explode(',', $terms);
     $terms = '';
     $join = '';

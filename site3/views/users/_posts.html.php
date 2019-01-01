@@ -1,6 +1,6 @@
 <?php foreach($posts as $post): ?>
 				<div class="post-preview">
-					<a href="/posts/view/<?= $post -> post_id; ?>"> <h2 class="post-title"> <?= $post -> title; ?></h2> <h3 class="post-subtitle"> <?= PVTools::truncateText($post -> content, 200); ?> </h3> </a>
+					<a href="/posts/view/<?= $post -> post_id; ?>"> <h2 class="post-title"> <?= $post -> title; ?></h2> <h3 class="post-subtitle"> <?= prodigyview\util\Tools::truncateText($post -> content, 200); ?> </h3> </a>
 					<p class="post-meta">
 						Posted on <?= $this -> Format -> dateTime($post -> date_created); ?>
 					</p>

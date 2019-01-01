@@ -117,7 +117,7 @@ class HModel extends He2Model {
 			$data = MongoSelector::getID($data);
 		} else if($cast === 'array_recursive'){
 			settype($data, 'array');
-			$data = \PVConversions::objectToArray($data);
+			$data = \Conversions::objectToArray($data);
 		} else if($cast === 'sanitize') {
 			$data = self::sanitizeInput($data);
 		} else if($cast === 'sanitize_wysiwyg') {

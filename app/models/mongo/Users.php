@@ -85,7 +85,7 @@ class Users extends HModel {
 		
 		$query = 'UPDATE ' . $tablename . ' SET preferences = preferences || hstore($1, $2) WHERE user_id=$3 ;';
 		
-		$dbconn = \PVDatabase::getDatabaseLink();
+		$dbconn = \Database::getDatabaseLink();
 		
 		$params = array($key, $value, $this -> user_id);
 		
@@ -138,7 +138,7 @@ class Users extends HModel {
 	public function sendWelcomeEmail() {
 			
 		$email_service = new EmailService();
-		$email_service -> sendActivationEmail($this, \PVConfiguration::getConfiguration('sites') -> site2);
+		$email_service -> sendActivationEmail($this, \Configuration::getConfiguration('sites') -> site2);
 		
 	}
 	
@@ -148,7 +148,7 @@ class Users extends HModel {
 Users::addFilter('app\models\uuid\Users', 'create','filter', function($data, $options) {
 	
 	//Generate a random string for their activation token
-	$data['data']['activation_token'] = \PVTools::generateRandomString();
+	$data['data']['activation_token'] = \Tools::generateRandomString();
 	
 	//Format the email by making it lowercase and trimming white space
 	if(isset($data['data']['email'])) {

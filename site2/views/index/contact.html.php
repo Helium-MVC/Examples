@@ -5,7 +5,7 @@
 				Want to get in touch? Fill out the form below to send me a message and I will get back to you as soon as possible!
 			</p>
 			
-			<form  id="contactForm" method="post" action="<?= PVTools::getCurrentUrl(); ?>">
+			<form  id="contactForm" method="post" action="<?= prodigyview\network\Router::getCurrentUrl(); ?>">
 				<div class="control-group">
 					<div class="form-group floating-label-form-group controls">
 						<label>Name</label>

@@ -34,11 +34,11 @@ class Navigation extends Twig_Extension implements Twig_ExtensionInterface {
 	public function getController() {
 		
 		if(!$this -> _controller) {
-			$route = PVRouter::getRoute();
+			$route = Router::getRoute();
 			$controller = $route['controller'];
 			
 			if(!$controller) {
-				$controller = PVRouter::getRouteVariable('controller');
+				$controller = Router::getRouteVariable('controller');
 			}
 			
 			$this -> _controller = $controller;
@@ -59,11 +59,11 @@ class Navigation extends Twig_Extension implements Twig_ExtensionInterface {
 	public function getAction() {
 		
 		if(!$this -> _action) {
-			$route = PVRouter::getRoute();
+			$route = Router::getRoute();
 			$action = $route['action'];
 			
 			if(!$action ) {
-				$action = PVRouter::getRouteVariable('action');
+				$action = Router::getRouteVariable('action');
 			}
 		
 			$this -> _action = $action;

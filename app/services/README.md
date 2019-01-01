@@ -16,7 +16,7 @@ Our email service in this example uses PHPMailer for sending the email, the Logg
 ```php
 <?php
 //Set the smtp arguments for sending an email
-PVConfiguration::addConfiguration('mail', array(
+Configuration::addConfiguration('mail', array(
     'mailer' => 'smtp', 
     'login' => '', 
     'password' => '', 

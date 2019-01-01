@@ -8,6 +8,12 @@ use prodigyview\helium\He2Controller;
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\ServiceAccount;
 
+use prodigyview\template\Template;
+use prodigyview\network\Router;
+use prodigyview\network\Request;
+use prodigyview\network\Response;
+use prodigyview\system\Configuration;
+
 /**
  * baseController
  * 
@@ -31,7 +37,7 @@ class baseController extends He2Controller {
 		parent::__construct($registry, $configurtion );
 		
 		//Setup the Firebase Connection
-		$serviceAccount = ServiceAccount::fromJsonFile(PVConfiguration::getConfiguration('firebase') -> jsonFile);
+		$serviceAccount = ServiceAccount::fromJsonFile(Configuration::getConfiguration('firebase') -> jsonFile);
 		$firebase = (new Factory)->withServiceAccount($serviceAccount)->create();
 		$this -> _firebase = $firebase->getDatabase();
 		$auth = $firebase->getAuth();
@@ -91,7 +97,7 @@ class baseController extends He2Controller {
 			'message' => $this -> _formatLogMessage($message)
 		);
 		
-		$loggly_key = PVConfiguration::getConfiguration('loggly') -> key;
+		$loggly_key = Configuration::getConfiguration('loggly') -> key;
 		
 		//PVCommunicator sends CURL call to loggly
 		$communicator = new PVCommunicator();
@@ -120,7 +126,7 @@ class baseController extends He2Controller {
 			'message' => $this -> _formatLogMessage($message)
 		);
 		
-		$loggly_key = PVConfiguration::getConfiguration('loggly') -> key;
+		$loggly_key = Configuration::getConfiguration('loggly') -> key;
 		
 		//PVCommunicator sends CURL call to loggly
 		$communicator = new PVCommunicator();
@@ -137,11 +143,11 @@ class baseController extends He2Controller {
 	 */
 	private function _getStateRoute() : string {
 		
-		$route = PVRouter::getRoute();
+		$route = Router::getRoute();
 		$action = (isset($route['action'])) ? $route['action'] : '';
 		
 		if(!$action ) {
-			$action = (PVRouter::getRouteVariable('action')) ?: '';
+			$action = (Router::getRouteVariable('action')) ?: '';
 		}
 		
 		return $action;

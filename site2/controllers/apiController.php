@@ -7,6 +7,13 @@ use app\models\uuid\ActionLogger;
 use app\services\AuthenticationService;
 use app\services\Session\SessionService;
 
+use prodigyview\template\Template;
+use prodigyview\network\Router;
+use prodigyview\network\Request;
+use prodigyview\network\Response;
+use prodigyview\util\Tools;
+use prodigyview\system\Security;
+
 include('baseController.php');
 
 /**
@@ -26,13 +33,13 @@ class apiController extends baseController {
 		 * request 
 		 */
 		 
-		//Get the request. PVRequest is a ProdigyView method
-		$request = new PVRequest();
+		//Get the request. Request is a ProdigyView method
+		$request = new Request();
 		$this-> _data = $request->getRequestData('array');
 		
 		//Deny any request that has an invalid CSRF Token
 		if($request->getRequestMethod() === 'post' && !$this ->Token->check($this -> _data)) {
-			echo PVResponse::createResponse('400', 'CSRF Tokens Are Invalid');
+			echo Response::createResponse('400', 'CSRF Tokens Are Invalid');
 			exit();
 		}
 		
@@ -46,10 +53,10 @@ class apiController extends baseController {
 		
 		$private_key = SessionService::read('api_token');
 		
-		$session_signature = PVSecurity::encodeHmacSignature($public_key, $private_key, 'sha1', false);
+		$session_signature = Security::encodeHmacSignature($public_key, $private_key, 'sha1', false);
 		
 		if(!hash_equals($signature, $session_signature)) {
-			echo PVResponse::createResponse('400', 'Invalid API Verification');
+			echo Response::createResponse('400', 'Invalid API Verification');
 			exit();
 		}
 		
@@ -90,7 +97,7 @@ class apiController extends baseController {
 		if($model && $model -> update($this->_data, array('validate_options' => array('display' => false, 'event' => 'update')))) {
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else if(!$model) {
-			echo PVResponse::createResponse(404, 'User Not Found' );
+			echo Response::createResponse(404, 'User Not Found' );
 		} else {
 			$this -> _errorResponse($model);
 		}
@@ -120,7 +127,7 @@ class apiController extends baseController {
 				$this -> _errorResponse($model);
 			}
 		} else {
-			echo PVResponse::createResponse(404, 'Another user has that email');
+			echo Response::createResponse(404, 'Another user has that email');
 		}
 		
 		exit();
@@ -140,7 +147,7 @@ class apiController extends baseController {
 		if($model && $model -> update($this->_data, array('validate_options' => array('display' => false, 'event' => 'update')))) {
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else if(!$model) {
-			echo PVResponse::createResponse(404, 'User Not Found' );
+			echo Response::createResponse(404, 'User Not Found' );
 		} else {
 			$this -> _errorResponse($model);
 		}
@@ -160,7 +167,7 @@ class apiController extends baseController {
 		if($model) {
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else {
-			echo PVResponse::createResponse(404, 'User Not Found' );
+			echo Response::createResponse(404, 'User Not Found' );
 		}
 		
 		exit();
@@ -180,7 +187,7 @@ class apiController extends baseController {
 			
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else if($this -> registry -> post) {
-			echo PVResponse::createResponse(404, 'Invalid Username/Password' );
+			echo Response::createResponse(404, 'Invalid Username/Password' );
 		}
 		
 		exit();
@@ -216,7 +223,7 @@ class apiController extends baseController {
 		if($model && $model -> update($this->_data, array('validate_options' => array('display' => false, 'event' => 'update')))) {
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else if(!$model) {
-			echo PVResponse::createResponse(404, 'Post Not Found' );
+			echo Response::createResponse(404, 'Post Not Found' );
 		} else {
 			$this -> _errorResponse($model);
 		}
@@ -236,7 +243,7 @@ class apiController extends baseController {
 		if($model) {
 			$this -> _jsonResponse($model -> getIterator() -> getData());
 		} else {
-			echo PVResponse::createResponse(404, 'Post Not Found' );
+			echo Response::createResponse(404, 'Post Not Found' );
 		}
 		
 		exit();
@@ -293,7 +300,7 @@ class apiController extends baseController {
 			}
 		}
 		
-		echo PVResponse::createResponse(425, $string  );
+		echo Response::createResponse(425, $string  );
 	}
 	
 	

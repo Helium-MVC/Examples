@@ -1,6 +1,6 @@
 <?php 
 //We are injecting our js app into the html
-PVLibraries::enqueueJavascript('components/accounts.js'); 
+$this->Meta->addJavascript('/js/components/accounts.js'); 
 ?>
 
 <div class="container">
@@ -10,7 +10,7 @@ PVLibraries::enqueueJavascript('components/accounts.js');
 				Register To Our Blog
 			</p>
 			
-			<form  id="contactForm"method="post" v-on:submit.prevent="register" action="<?= PVTools::getCurrentUrl(); ?>">
+			<form  id="contactForm"method="post" v-on:submit.prevent="register" action="<?= prodigyview\network\Router::getCurrentUrl(); ?>">
 				
 				<div class="form-group">
 					<label>First Name</label>

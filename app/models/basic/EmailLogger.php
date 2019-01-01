@@ -35,7 +35,7 @@ class EmailLogger extends HModel {
 		
 		$tablename = $this -> getTableName();
 		
-		$dbconn = \PVDatabase::getDatabaseLink();
+		$dbconn = \Database::getDatabaseLink();
 		
 		$query = 'UPDATE ' . $tablename . ' SET to_addresses = to_addresses || hstore($1, $2) WHERE log_id=$3 ;';
 		
@@ -68,7 +68,7 @@ class EmailLogger extends HModel {
 		
 		$tablename = $this -> getTableName();
 		
-		$dbconn = \PVDatabase::getDatabaseLink();
+		$dbconn = \Database::getDatabaseLink();
 		
 		$query = 'UPDATE ' . $tablename . ' SET cc_addresses = cc_addresses || hstore($1, $2) WHERE log_id=$3 ;';
 		
@@ -101,7 +101,7 @@ class EmailLogger extends HModel {
 		
 		$tablename = $this -> getTableName();
 		
-		$dbconn = \PVDatabase::getDatabaseLink();
+		$dbconn = \Database::getDatabaseLink();
 		
 		$query = 'UPDATE ' . $tablename . ' SET bcc_addresses = bcc_addresses || hstore($1, $2) WHERE log_id=$3 ;';
 		

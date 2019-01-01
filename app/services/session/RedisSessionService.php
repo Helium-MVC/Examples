@@ -2,6 +2,10 @@
 
 namespace app\services\session;
 
+use prodigyview\system\Session;
+use prodigyview\system\Security;
+use prodigyview\util\Tools;
+
 /**
  * RedisSessionService
  * 
@@ -34,17 +38,17 @@ class RedisSessionService implements SessionInterface {
 			
 			//Generate a new session id if none
 			if(!$session_id) {
-				$session_id = \PVTools::generateRandomString(20);
+				$session_id = Tools::generateRandomString(20);
 				session_id( session_id);
 				session_start();
 			}
 			
 			//Write session to cookie and session
-			\PVSession::writeCookie('session_id', $session_id);
-			\PVSession::writeSession('session_id', $session_id);
+			Session::writeCookie('session_id', $session_id);
+			Session::writeSession('session_id', $session_id);
 			
 			//Create API Token
-			self::write('api_token', \PVSecurity::generateToken(20));
+			self::write('api_token', Security::generateToken(20));
 		}
 		
 		
@@ -84,10 +88,10 @@ class RedisSessionService implements SessionInterface {
 	 * @return string $id
 	 */
 	public static function getID() {
-		$session_id = \PVSession::readCookie('session_id');
+		$session_id = Session::readCookie('session_id');
 		
 		if(!$session_id){
-			$session_id = \PVSession::readSession('session_id');
+			$session_id = Session::readSession('session_id');
 		}
 		
 		return $session_id;

@@ -5,6 +5,11 @@ use app\models\HModel;
 use app\models\basic\UserPassowrds;
 use app\services\LoggingService;
 
+use prodigyview\util\Tools;
+use prodigyview\system\Configuration;
+use prodigyview\util\Validator;
+use prodigyview\util\FileManager;
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -98,19 +103,19 @@ class Users extends HModel {
 		$mailer = new PHPMailer;
 			
 		$mailer->isSMTP();  
-		$mailer->Host = \PVConfiguration::getConfiguration('mail') -> host;
-		$mailer->Port = \PVConfiguration::getConfiguration('mail') -> port;
+		$mailer->Host = Configuration::getConfiguration('mail') -> host;
+		$mailer->Port = Configuration::getConfiguration('mail') -> port;
 		$mailer ->isHTML(true);
 		$mailer->SMTPSecure = 'tls';
 		
 		//Default Sending Information
-		$mailer->From = \PVConfiguration::getConfiguration('mail') -> from_address;
-		$mailer->FromName = \PVConfiguration::getConfiguration('mail') -> from_name; 
+		$mailer->From = Configuration::getConfiguration('mail') -> from_address;
+		$mailer->FromName = Configuration::getConfiguration('mail') -> from_name; 
 			
 		//Set Login Credentials
 		$mailer->SMTPAuth = true; 
-		$mailer->Username = \PVConfiguration::getConfiguration('mail') -> login;
-		$mailer->Password = \PVConfiguration::getConfiguration('mail') -> password;
+		$mailer->Username = Configuration::getConfiguration('mail') -> login;
+		$mailer->Password = Configuration::getConfiguration('mail') -> password;
 		
 		$mailer->AddAddress($this->email, $this->first_name . ' ' . $this->last_name);
 
@@ -118,12 +123,12 @@ class Users extends HModel {
 		
 		$mailer->Body = \MailLoader::loadHtml('activation_email', array(
 			'account' => $this,
-			'site_url' => \PVConfiguration::getConfiguration('sites') -> site1
+			'site_url' => Configuration::getConfiguration('sites') -> site1
 		));
 		
 		$mailer->AltBody = \MailLoader::loadText('activation_email', array(
 			'account' => $this,
-			'site_url' => \PVConfiguration::getConfiguration('sites') -> site1
+			'site_url' => Configuration::getConfiguration('sites') -> site1
 		));
 		
 		$sent_status = true;
@@ -143,7 +148,7 @@ class Users extends HModel {
 Users::addFilter('app\models\basic\Users', 'create','filter', function($data, $options) {
 	
 	//Generate a random string for their activation token
-	$data['data']['activation_token'] = \PVTools::generateRandomString();
+	$data['data']['activation_token'] = Tools::generateRandomString();
 	
 	//Set date registered
 	$data['data']['date_registered'] = date("Y-m-d H:i:s");

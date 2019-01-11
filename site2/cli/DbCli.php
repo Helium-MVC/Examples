@@ -1,6 +1,6 @@
 <?php
 use prodigyview\util\FileManager;
-use prodigyview\system\Database;
+use prodigyview\database\Database;
 
 /**
  * DbCli

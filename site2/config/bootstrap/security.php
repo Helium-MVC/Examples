@@ -5,7 +5,7 @@
  */
  
 use prodigyview\system\Security;
-use prodigyview\system\Database;
+use prodigyview\database\Database;
 
 $security_config = array(		
 	'mcrypt_key' => '8v9Fp.',									//Set the encryption key

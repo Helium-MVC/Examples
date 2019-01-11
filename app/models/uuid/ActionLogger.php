@@ -1,7 +1,7 @@
 <?php
 namespace app\models\uuid;
 
-use prodigyview\system\Database;
+use prodigyview\database\Database;
 
 /**
  * class ActionLogger

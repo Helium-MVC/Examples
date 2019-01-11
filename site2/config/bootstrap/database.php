@@ -27,7 +27,7 @@
  */
 
 use prodigyview\system\Configuration;
-use prodigyview\system\Database;
+use prodigyview\database\Database;
  
 /**
  * The connect below is based upon the configuration in

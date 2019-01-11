@@ -3,7 +3,7 @@ namespace app\models\basic;
 
 use app\models\HModel;
 
-use prodigyview\system\Database;
+use prodigyview\database\Database;
 
 /**
  * class ActionLogger

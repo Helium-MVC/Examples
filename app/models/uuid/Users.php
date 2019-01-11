@@ -6,7 +6,7 @@ use app\models\uuid\UserPassowrds;
 use app\services\EmailService;
 use app\services\LoggingService;
 
-use prodigyview\system\Database;
+use prodigyview\database\Database;
 use prodigyview\system\Configuration;
 use prodigyview\util\Tools;
 use prodigyview\util\Validator;

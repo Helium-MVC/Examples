@@ -31,7 +31,7 @@
  * the app/config/config.php
  */
 use prodigyview\system\Configuration;
-use prodigyview\system\Database;
+use prodigyview\database\Database;
 
 $database = Configuration::getConfiguration('mysql');
 
